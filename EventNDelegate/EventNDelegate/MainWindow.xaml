@@ -1,0 +1,39 @@
+﻿<Window x:Class="EventNDelegate.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:EventNDelegate"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="350" Width="825">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <StackPanel Margin="10" Grid.Row="0" Orientation="Horizontal">
+            <Button Name="Test1" Content="Test1" Click="Test1_Click"/>
+            <StackPanel>
+                <TextBlock Text="TimesTwo(5) "/>
+                <TextBox Name="txt_timestwo" Text="" />
+                <TextBlock Text="Multiply(5, 6) "/>
+                <TextBox Name="txt_multiply" Text="" />
+            </StackPanel>
+            <Button Name="Test2" Content="Test2" Click="Test2_Click"/>
+            <TextBlock Name="test2" Width="100"/>
+            <Button Name="Test3" Content="Test3" Click="Test3_Click"/>
+            <TextBlock Name="test3" Width="100" />
+        </StackPanel>
+        <StackPanel Margin="10" Grid.Row="1" Orientation="Horizontal">
+            <Button Name="btn1" Content="Start1" HorizontalAlignment="Left" Width="80" Height="80" Click="btn1_Click"/>
+            <Label Name="Label1" Content="0" FontSize="12" Width="35" VerticalAlignment="Center"/>
+            <ProgressBar Name="player1" Minimum="0" Maximum="100" Width="680"/>
+        </StackPanel>
+        <StackPanel Margin="10"  Grid.Row="2" Orientation="Horizontal">
+            <Button Name="btn2" Content="Start2" HorizontalAlignment="Left" Width="80" Height="80" Click="btn2_Click"/>
+            <Label Name="Label2" Content="0" FontSize="12" Width="35" VerticalAlignment="Center"/>
+            <ProgressBar Name="player2" Minimum="0" Maximum="100" Width="680"/>
+        </StackPanel>
+    </Grid>
+</Window>

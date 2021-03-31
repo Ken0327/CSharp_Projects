@@ -1441,11 +1441,11 @@
       "hideWarningsAndErrors": true
     },
     "restore": {
-      "projectUniqueName": "E:\\Github\\OOProgramming\\OOProgramming\\OOProgramming.csproj",
+      "projectUniqueName": "E:\\Github\\donet\\CSharp_Projects\\OOProgramming\\OOProgramming\\OOProgramming.csproj",
       "projectName": "OOProgramming",
-      "projectPath": "E:\\Github\\OOProgramming\\OOProgramming\\OOProgramming.csproj",
+      "projectPath": "E:\\Github\\donet\\CSharp_Projects\\OOProgramming\\OOProgramming\\OOProgramming.csproj",
       "packagesPath": "C:\\Users\\chenken\\.nuget\\packages\\",
-      "outputPath": "E:\\Github\\OOProgramming\\OOProgramming\\obj\\",
+      "outputPath": "E:\\Github\\donet\\CSharp_Projects\\OOProgramming\\OOProgramming\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
