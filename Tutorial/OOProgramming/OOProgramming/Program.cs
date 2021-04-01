@@ -1,6 +1,11 @@
 ﻿using OOProgramming.DesignPattern;
 using System;
+using System.Text;
 using static OOProgramming.Constructor;
+using static OOProgramming.DesignPattern.Adapter;
+using static OOProgramming.DesignPattern.RegistryofSingletons;
+using static OOProgramming.DesignPattern.Singleton;
+using static OOProgramming.Property;
 
 namespace OOProgramming
 {
@@ -20,6 +25,9 @@ namespace OOProgramming
                 Console.WriteLine("(4) Run Delegate method");
                 Console.WriteLine("(5) Run constructor");
                 Console.WriteLine("(6) Run Design Pattern - Facade");
+                Console.WriteLine("(7) Run Design Pattern - Adapter");
+                Console.WriteLine("(8) Run Design Pattern - Singleton");
+                Console.WriteLine("(9) Run Design Pattern - Registry of Singletons");
                 Console.WriteLine("Please insert number:");
                 var result = Console.ReadLine();
                 switch (result)
@@ -41,6 +49,15 @@ namespace OOProgramming
                         break;
                     case "6":
                         RunDesignPattern_Facade();
+                        break;
+                    case "7":
+                        RunDesignPattern_Adapter();
+                        break;
+                    case "8":
+                        RunDesignPattern_Singleton();
+                        break;
+                    case "9":
+                        RunDesignPattern_RegistryofSingletons();
                         break;
                 }
                 Console.WriteLine("Do you want to continue? Yes=1, No=0");
@@ -310,14 +327,90 @@ namespace OOProgramming
 
         private static void RunDesignPattern_Adapter()
         {
-            Console.WriteLine("Start (6) Run Design Pattern - Facade");
+            Console.WriteLine("Start (7) Run Design Pattern - Adapter");
             var description =
-                "Facade(門面/外觀模式)目的：讓User透過高層的 夾層 來呼叫子系統，降低User對於子系統的依賴，也更輕鬆的操作複雜的子系統。" + "\n" +
-                "夾層的實作可以是Class也可以是Interface，主要目的必須隔離User直接操作子系統。" + "\n" +
-                "使用Facade的理由:" + "\n" +
-                "隔離User對於子系統的依賴，避免發生日後子系統修改導致User也必須跟著修改(連動性問題)。";
+                "Adapter(轉接器模式)" + "\n" +
+                "目的：將兩個以上不同的介面統一成一個介面，讓User更輕鬆維護。" + "\n" +
+                "實際情境中，可能出現架構上已經設計兩套Library在專案中，突然需求需要第三個Library，這時候Adapter模式下只需要將共用介面引用至第三個Library中開發完交付給User，User只有修改new出第三套Libraray所產生的Instance就大功告成了。";
             Console.WriteLine(description);
             Console.WriteLine("------------------------------------------------------------------------");
+            //Lib_1
+            ICommunication Tunnel = new UdpCommunication();
+            //Lib_2
+            //ICommunication Tunnel = new TcpCommunication();
+            //Lib_3
+            //ICommunication Tunnel = new MqttCommunication();
+
+            try
+            {
+                Tunnel.Connect("192.168.243.1", 3254);
+                byte[] sendBuffer = GetSendBuffer();
+                Tunnel.Send(sendBuffer);
+
+                byte[] receiveBuffer = Tunnel.Receive();
+                Tunnel.Disconnect();
+                Console.WriteLine(GetReceiveString(receiveBuffer));
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+            }
+            Console.ReadLine();
+        }
+
+        private static void RunDesignPattern_Singleton()
+        {
+            Console.WriteLine("Start (8) Run Design Pattern - Singleton");
+            var description =
+                "Singleton(單例/獨立模式)" + "\n" +
+                "目的:在程式運作中，永遠只維持一份Instance在系統中，讓所有User取得相同一個Instance。" + "\n" +
+                "運用情境1：在開發Socket TCP的系統中，Socket Server的連線數量對公司而言是最直接的成本因素，所以會盡量保持Client端系統永遠只保持一條連線。" + "\n" +
+                "運用情境2：對於DB讀取一份資料屬於長期不變動的資料，一般系統都會做Cache，減少對DB的負擔。";
+            Console.WriteLine(description);
+            Console.WriteLine("------------------------------------------------------------------------");
+            SocketClass.SocketObject.Connect("10.124.41.57", 3254);
+            byte[] sendBuffer = GetSendBuffer();
+            SocketClass.SocketObject.Send(sendBuffer);
+
+            byte[] receiveBuffer = SocketClass.SocketObject.Receive();
+            SocketClass.SocketObject.Disconnect();
+            Console.WriteLine(GetReceiveString(receiveBuffer));
+            Console.ReadLine();
+        }
+
+        private static void RunDesignPattern_RegistryofSingletons()
+        {
+            Console.WriteLine("Start (9) Run Design Pattern - Registry of Singletons");
+            var description =
+                "Registry of Singletons (Multiton pattern)" + "\n" +
+                "目的：共同管理單例的Instance。" + "\n" +
+                "系統運作中，單例的Instance非常多，變成須要有一個共通的地方來管理會使得取出Instance更加簡便。";
+            Console.WriteLine(description);
+            Console.WriteLine("------------------------------------------------------------------------");
+            var o1 = SingletonRegistry.GetInstance<Class1>();
+            var o2 = SingletonRegistry.GetInstance<Class1>();
+            var o3 = SingletonRegistry.GetInstance<Class2>();
+            Console.WriteLine(o1);
+            Console.WriteLine(o2);
+            Console.WriteLine(o3);
+
+            Console.WriteLine("Compare whether o1 and o2 are equal?");
+            Console.WriteLine(object.ReferenceEquals(o1, o2));
+            Console.WriteLine("Compare whether o1 and o3 are equal?");
+            Console.WriteLine(object.ReferenceEquals(o1, o3));
+
+            Console.ReadLine();
+        }
+
+        private static byte[] GetSendBuffer()
+        {
+            string data = "Hi Tunnel!";
+            return Encoding.UTF8.GetBytes(data);
+        }
+
+        public static string GetReceiveString(byte[] buffer)
+        {
+            return Encoding.UTF8.GetString(buffer);
         }
 
         public static void Method1(string text)
