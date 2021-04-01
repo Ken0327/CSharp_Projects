@@ -1,0 +1,17 @@
+﻿<Window x:Class="DataBinding.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DataBinding"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="350" Width="525">
+    <Grid>
+        <Button Content="Start" HorizontalAlignment="Left" Margin="28,26,0,0" VerticalAlignment="Top" Width="125" Height="46" Click="Button_Click"/>
+        <TextBlock Name="message" HorizontalAlignment="Left" Margin="99,121,0,0" TextWrapping="Wrap" Text="空" VerticalAlignment="Top" Height="31" Width="299"/>
+        <TextBlock Name="second" HorizontalAlignment="Left" Margin="67,93,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top"/>
+        <Label Content="秒數" HorizontalAlignment="Left" Margin="28,88,0,0" VerticalAlignment="Top"/>
+        <Label Content="Messages" HorizontalAlignment="Left" Margin="28,116,0,0" VerticalAlignment="Top"/>
+
+    </Grid>
+</Window>

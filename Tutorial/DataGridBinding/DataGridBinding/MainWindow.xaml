@@ -1,0 +1,55 @@
+﻿<Window x:Class="DataGridBinding.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DataGridBinding"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="600" Width="800">
+    <Grid Margin="5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50" />
+            <RowDefinition Height="50" />
+            <RowDefinition Height="50" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" Margin="5">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" >
+                <TextBlock Text="輸入工號" FontSize="16" Foreground="Brown" FontWeight="Black" Margin="5 0"/>
+                <TextBox Name="userID" Width="100" Height="28" Margin="10 0"/>
+                <Button Name="Login" Content="確定" FontSize="16" Width="100" Height="28" Click="Login_Click"/>
+            </StackPanel>
+        </Grid>
+        <Grid Grid.Row="1" Margin="5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="2*" />
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBox Name="Show_Filter" Margin="5" Text="篩選字串" FontSize="16" BorderThickness="0" Foreground="Purple" FontWeight="Black" />
+                        <TextBox Name="Search_Text"  FontSize="16" Text="010" TextChanged="Search_Text_TextChanged" Margin="5" MinWidth="140" />
+                    </StackPanel>
+            </Grid>
+            <Grid Grid.Column="1">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Height="23" Margin="2" TextWrapping="Wrap" Text="Path:" FontSize="20" />
+                    <TextBlock Name="gpnListPath" Height="23" Margin="2" TextWrapping="Wrap" Text="C:\LaserMaster\GPNList.xml" FontSize="20" />
+                </StackPanel>
+            </Grid>
+        </Grid>
+        <Grid Grid.Row="2">
+            <StackPanel Orientation="Horizontal">
+                <Button Name="Search" Content="查詢" Margin="5" Click="SearchGPN_Click" FontSize="16" Width="132" Height="28" />
+                <Button Name="Insert" Content="加入GPN" Margin="35,5,5,5" Width="132" Height="28" FontSize="16" Click="InsertGPN_Click" />
+                <Button Name="Delete" Content="刪除GPN" Margin="35,5,5,5" Width="132" Height="28" FontSize="16" Click="DeleteGPN_Click" />
+                <Button x:Name="Modify" Content="修改GPN" Margin="35,5,5,5" Width="132" Height="28" FontSize="16" Click="ModifyGPN_Click" />
+            </StackPanel>
+        </Grid>
+        <Grid Grid.Row="3">
+            <ScrollViewer HorizontalScrollBarVisibility="Auto">
+                <DataGrid x:Name="datagrid_gpnlist" SelectedCellsChanged="gpnlist_SelectedCellsChanged" FontSize="16" CanUserAddRows="False" AutoGenerateColumns="True" />
+            </ScrollViewer>
+        </Grid>
+    </Grid>
+</Window>
