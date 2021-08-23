@@ -50,9 +50,17 @@ namespace OOProgramming.DesignPattern
             public byte[] Receive()
             {
                 byte[] buffer = new byte[1024];
-                int receiveSize = socket.Receive(buffer);
-                Array.Resize(ref buffer, receiveSize);
-                return buffer;
+                try
+                {
+                    int receiveSize = socket.Receive(buffer);
+                    Array.Resize(ref buffer, receiveSize);
+                    return buffer;
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.ToString());
+                    return buffer;
+                }
             }
 
             public void Disconnect()

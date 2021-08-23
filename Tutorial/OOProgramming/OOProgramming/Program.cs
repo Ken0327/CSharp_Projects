@@ -1,8 +1,11 @@
 ﻿using OOProgramming.DesignPattern;
+using OOProgramming.DesignPattern.ObserverVsDelegateVsEvent;
+using OOProgramming.DesignPattern.ObserverVsDelegateVsEvent.Delegate;
 using System;
 using System.Text;
 using static OOProgramming.Constructor;
 using static OOProgramming.DesignPattern.Adapter;
+using static OOProgramming.DesignPattern.ObserverDesignPattern;
 using static OOProgramming.DesignPattern.RegistryofSingletons;
 using static OOProgramming.DesignPattern.Singleton;
 using static OOProgramming.Property;
@@ -28,6 +31,8 @@ namespace OOProgramming
                 Console.WriteLine("(7) Run Design Pattern - Adapter");
                 Console.WriteLine("(8) Run Design Pattern - Singleton");
                 Console.WriteLine("(9) Run Design Pattern - Registry of Singletons");
+                Console.WriteLine("(10) Run Design Pattern - Observer Design Pattern");
+                Console.WriteLine("(11) Run Design Pattern - Observer Vs Delegate Vs Event");
                 Console.WriteLine("Please insert number:");
                 var result = Console.ReadLine();
                 switch (result)
@@ -58,6 +63,12 @@ namespace OOProgramming
                         break;
                     case "9":
                         RunDesignPattern_RegistryofSingletons();
+                        break;
+                    case "10":
+                        RunDesignPattern_ObserverDesignPattern();
+                        break;
+                    case "11":
+                        RunDesignPattern_ObserverVsDelegateVsEvent();
                         break;
                 }
                 Console.WriteLine("Do you want to continue? Yes=1, No=0");
@@ -172,11 +183,11 @@ namespace OOProgramming
             // Virtual class
             Man man = new Man();
 
-            man.consumption(200, (byte)1);
+            man.consumption(200, (byte)3);
 
             Woman woman = new Woman();
 
-            woman.consumption(150, (byte)1);
+            woman.consumption(150, (byte)3);
 
             foreach (var item in man.GetconsumptionList())
             {
@@ -375,6 +386,8 @@ namespace OOProgramming
             byte[] receiveBuffer = SocketClass.SocketObject.Receive();
             SocketClass.SocketObject.Disconnect();
             Console.WriteLine(GetReceiveString(receiveBuffer));
+
+            Console.WriteLine("Done. 請按任意鍵繼續");
             Console.ReadLine();
         }
 
@@ -399,6 +412,7 @@ namespace OOProgramming
             Console.WriteLine("Compare whether o1 and o3 are equal?");
             Console.WriteLine(object.ReferenceEquals(o1, o3));
 
+            Console.WriteLine("Done. 請按任意鍵繼續");
             Console.ReadLine();
         }
 
@@ -424,6 +438,61 @@ namespace OOProgramming
         public static void Method3(string text)
         {
             Console.WriteLine("Show Method3:" + text);
+        }
+
+        private static void RunDesignPattern_ObserverDesignPattern()
+        {
+            Console.WriteLine("Start (10) Run Design Pattern - Observer Design Pattern");
+            var description =
+                "The observer design pattern enables a subscriber to register with and receive notifications from a provider. It is suitable for any scenario that requires push-based notification." + "\n" +
+                "目的：觀察者模式是軟體設計模式的一種。在此種模式中，一個目標物件管理所有相依於它的觀察者物件，並且在它本身的狀態改變時主動發出通知。這通常透過呼叫各觀察者所提供的方法來實現。此種模式通常被用來實時事件處理系統。";
+            Console.WriteLine(description);
+            Console.WriteLine("------------------------------------------------------------------------");
+            BaggageHandler provider = new BaggageHandler();
+            ArrivalsMonitor observer1 = new ArrivalsMonitor("BaggageClaimMonitor1");
+            ArrivalsMonitor observer2 = new ArrivalsMonitor("SecurityExit");
+
+            provider.BaggageStatus(712, "Detroit", 3);
+            Console.WriteLine("BaggageClaimMonitor1 Subscribe");
+            observer1.Subscribe(provider);
+            provider.BaggageStatus(712, "Kalamazoo", 3);
+            provider.BaggageStatus(400, "New York-Kennedy", 1);
+            provider.BaggageStatus(712, "Detroit", 3);
+            Console.WriteLine("SecurityExit Subscribe");
+            observer2.Subscribe(provider);
+            provider.BaggageStatus(511, "San Francisco", 2);
+            provider.BaggageStatus(712);
+            Console.WriteLine("SecurityExit Unsubscribe");
+            observer2.Unsubscribe();
+            provider.BaggageStatus(400);
+            provider.LastBaggageClaimed();
+
+            Console.WriteLine("Done. 請按任意鍵繼續");
+            Console.ReadLine();
+        }
+
+
+        public static void RunDesignPattern_ObserverVsDelegateVsEvent()
+        {
+            Console.WriteLine("Start (11) Run Design Pattern - Observer Vs Delegate Vs Event");
+            var description =
+                "The observer design pattern enables a subscriber to register with and receive notifications from a provider. It is suitable for any scenario that requires push-based notification." + "\n" +
+                "目的：觀察者模式是軟體設計模式的一種。在此種模式中，一個目標物件管理所有相依於它的觀察者物件，並且在它本身的狀態改變時主動發出通知。這通常透過呼叫各觀察者所提供的方法來實現。此種模式通常被用來實時事件處理系統。" + "\n" +
+                "模擬情境: 假設你的公司開發了一個溫度監測的機器，可以連接到各種裝置上；公司希望其他外部開發人員也可以利用這個溫度監測器來撰寫自己的應用程式；而你的工作就是開發一組.Net的SDK，當偵測到溫度變化時，能立即讓所有使用SDK的程式收到即時的溫度通知。";
+            Console.WriteLine(description);
+            Console.WriteLine("------------------------------------------------------------------------");
+
+            Console.WriteLine("(1) Use Observer Pattern");
+            Observer.Execute();
+
+            Console.WriteLine("(2) Use Delegate");
+            DelegateMethod.Execute();
+
+            Console.WriteLine("(3) Use Event");
+            EventMethod.Execute();
+
+            Console.WriteLine("Done. 請按任意鍵繼續");
+            Console.ReadLine();
         }
     }
 }
