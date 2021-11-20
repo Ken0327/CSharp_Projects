@@ -22,6 +22,7 @@ namespace OOProgramming
             while (isRun)
             {
                 Console.WriteLine("C# Object-Oriented Programming Demo:");
+                Console.WriteLine("(0) OOP Programming Overview");
                 Console.WriteLine("(1) Run OOP Programming - AccountingSheet");
                 Console.WriteLine("(2) Run Abstract vs Virtual - Comsuption");
                 Console.WriteLine("(3) Run Methods parameter: ref, out, params");
@@ -37,6 +38,9 @@ namespace OOProgramming
                 var result = Console.ReadLine();
                 switch (result)
                 {
+                    case "0":
+                        OOPOverview();
+                        break;
                     case "1":
                         AccountingSheet();
                         break;
@@ -78,6 +82,20 @@ namespace OOProgramming
                 }
             }
         }
+
+        private static void OOPOverview()
+        {
+            Console.WriteLine("(1) Classes and Objects");
+            var result = Console.ReadLine();
+            switch (result)
+            {
+                case "1":
+                    var a = new OOP.ClassesAndObjects();
+                    a.Main();
+                    break;
+            }
+        }
+
 
         private static void AccountingSheet()
         {
