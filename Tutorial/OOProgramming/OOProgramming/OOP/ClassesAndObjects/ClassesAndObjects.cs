@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace OOProgramming.OOP
 {
@@ -73,7 +71,7 @@ namespace OOProgramming.OOP
                 y = x * x;
                 Console.WriteLine(y);
             }
-            static void Main(string[] args)
+            static void Start(string[] args)
             {
                 //function calling directly
                 staticDemo.calcute();
@@ -83,6 +81,13 @@ namespace OOProgramming.OOP
         //Entry point
         public void Main()
         {
+            Console.WriteLine(
+                "Classes are special kinds of templates from which you can create objects. Each object contains data and methods to manipulate and access that data. " +
+                "The class defines the data and the functionality that each object of that class can contain. " +
+                "A class declaration consists of a class header and body.The class header includes attributes, modifiers, and the class keyword. " +
+                "The class body encapsulates the members of the class, that are the data members and member functions.The syntax of a class declaration is as follows:"
+                );
+            Console.WriteLine("------------------------------------------------------------------------");
             // object instantiation
             customer obj = new customer();
 
@@ -115,6 +120,8 @@ namespace OOProgramming.OOP
                 "A static class is declared using the 'static' keyword." +
                 "If the class is declared as static then the compiler never creates an instance of the class. " +
                 "All the member fields, properties and functions must be declared as static and they are accessed by the class name directly not by a class instance object.");
+
+            Console.WriteLine("------------------------------------------------------------------------");
         }
     }
 }

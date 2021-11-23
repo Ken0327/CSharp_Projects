@@ -13,4 +13,9 @@
     <LangVersion>7.1</LangVersion>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Reference Include="LibraryUtil">
+      <HintPath>..\..\LibraryUtil\LibraryUtil\bin\Debug\LibraryUtil.dll</HintPath>
+    </Reference>
+  </ItemGroup>
 </Project>

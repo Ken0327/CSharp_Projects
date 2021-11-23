@@ -86,12 +86,22 @@ namespace OOProgramming
         private static void OOPOverview()
         {
             Console.WriteLine("(1) Classes and Objects");
+            Console.WriteLine("(2) Creating and accessing Class Component Library");
+            Console.WriteLine("(3) Constructor and Destructor");
             var result = Console.ReadLine();
             switch (result)
             {
                 case "1":
                     var a = new OOP.ClassesAndObjects();
                     a.Main();
+                    break;
+                case "2":
+                    var b = new OOP.CreatingClassLibrary();
+                    b.Main();
+                    break;
+                case "3":
+                    var c = new OOP.ConstructorAndDestructor();
+                    c.Main();
                     break;
             }
         }
