@@ -105,8 +105,10 @@ namespace OOProgramming.OOP
                 "Typically, a class will reside entirely in a single file." +
                 "However, in situations where multiple developers need access to the same class, then having the class in multiple files can be beneficial." +
                 "The partial keywords allow a class to span multiple source files.When compiled, the elements of the partial types are combined into a single assembly. " +
-                "There are some rules for defining a partial class as in the following; A partial type must have the same accessibility. " +
-                "Each partial type is preceded with the 'partial' keyword. If the partial type is sealed or abstract then the entire class will be sealed and abstract. " +
+                "There are some rules for defining a partial class as in the following; \n" +
+                "1) A partial type must have the same accessibility. \n" +
+                "2) Each partial type is preceded with the 'partial' keyword. \n" +
+                "3) If the partial type is sealed or abstract then the entire class will be sealed and abstract. \n" +
                 "In the following example we are adding two files, partialPart1.cs and partialPart2.cs, and declare a partial class, partialclassDemo, in both classes.");
 
             //partial class instance
