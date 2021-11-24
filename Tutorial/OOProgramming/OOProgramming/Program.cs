@@ -88,6 +88,9 @@ namespace OOProgramming
             Console.WriteLine("(1) Classes and Objects");
             Console.WriteLine("(2) Creating and accessing Class Component Library");
             Console.WriteLine("(3) Constructor and Destructor");
+            Console.WriteLine("(4) Function Overloading");
+            Console.WriteLine("(5) Encapsulation");
+            Console.WriteLine("(6) Inheritance");
             var result = Console.ReadLine();
             switch (result)
             {
@@ -102,6 +105,18 @@ namespace OOProgramming
                 case "3":
                     var c = new OOP.ConstructorAndDestructor();
                     c.Main();
+                    break;
+                case "4":
+                    var d = new OOP.FunctionOverloading();
+                    d.Main();
+                    break;
+                case "5":
+                    var e = new OOP.Encapsulation();
+                    e.Main();
+                    break;
+                case "6":
+                    var f = new OOP.Inheritance();
+                    f.Main();
                     break;
             }
         }
