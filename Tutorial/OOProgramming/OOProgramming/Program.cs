@@ -91,6 +91,11 @@ namespace OOProgramming
             Console.WriteLine("(4) Function Overloading");
             Console.WriteLine("(5) Encapsulation");
             Console.WriteLine("(6) Inheritance");
+            Console.WriteLine("(7) Virtual and Hiding Methods");
+            Console.WriteLine("(8) Abstract Classes");
+            Console.WriteLine("(9) Sealed Classes");
+            Console.WriteLine("(10) Interface");
+            Console.WriteLine("(11) Polymorphism");
             var result = Console.ReadLine();
             switch (result)
             {
@@ -117,6 +122,26 @@ namespace OOProgramming
                 case "6":
                     var f = new OOP.Inheritance();
                     f.Main();
+                    break;
+                case "7":
+                    var g = new OOP.VirtualAndHidingMethods();
+                    g.Main();
+                    break;
+                case "8":
+                    var h = new OOP.AbstractClass();
+                    h.Main();
+                    break;
+                case "9":
+                    var i = new OOP.SealedClass();
+                    i.Main();
+                    break;
+                case "10":
+                    var j = new OOP.Interface();
+                    j.Main();
+                    break;
+                case "11":
+                    var k = new OOP.Polymorphism();
+                    k.Main();
                     break;
             }
         }
