@@ -6,7 +6,7 @@ namespace OOProgramming
 {
     class Woman_abstract : entertainment_abstract
     {
-        //實作virtual的消費方法
+        //實作abstract的消費方法
         public override void consumption(int _money, byte _flag)
         {
             if (consumptionList == null)

@@ -34,6 +34,7 @@ namespace OOProgramming
                 Console.WriteLine("(9) Run Design Pattern - Registry of Singletons");
                 Console.WriteLine("(10) Run Design Pattern - Observer Design Pattern");
                 Console.WriteLine("(11) Run Design Pattern - Observer Vs Delegate Vs Event");
+                Console.WriteLine("(12) Run Design Pattern - Object Pool");
                 Console.WriteLine("Please insert number:");
                 var result = Console.ReadLine();
                 switch (result)
@@ -74,9 +75,12 @@ namespace OOProgramming
                     case "11":
                         RunDesignPattern_ObserverVsDelegateVsEvent();
                         break;
+                    case "12":
+                        RunDesignPattern_ObjectPool();
+                        break;
                 }
                 Console.WriteLine("Do you want to continue? Yes=1, No=0");
-                if (Console.ReadLine() !="1")
+                if (Console.ReadLine() != "1")
                 {
                     isRun = false;
                 }
@@ -356,12 +360,12 @@ namespace OOProgramming
             method += Method3;
             method.Invoke("HI");
             Console.ReadLine();
-        } 
+        }
 
         private static void RunConstructor()
         {
             Console.WriteLine("Start (5) Run constructor");
-            var description = 
+            var description =
                 "建構式: 當一個類別建立時，類別首先呼叫的函式稱為建構式，也可以當作一個類別當在初始化的方法。" + "\n" +
                 "建構式有一點特別，列出以下幾點" + "\n" +
                 "1. 建構式本身不能繼承。" + "\n" +
@@ -561,6 +565,29 @@ namespace OOProgramming
 
             Console.WriteLine("Done. 請按任意鍵繼續");
             Console.ReadLine();
+        }
+
+        public static void RunDesignPattern_ObjectPool()
+        {
+            Console.WriteLine("Start (11) Run Design Pattern - ObjectPool");
+            var description =
+                "The object pool pattern is a software creational design pattern that uses a set of initialized objects kept ready to use – a 'pool' – rather than allocating and destroying them on demand." + "\n" +
+                "目的：一個物件池包含一組已經初始化過且可以使用的物件，而可以在有需求時創建和銷毀物件。池的用戶可以從池子中取得物件，對其進行操作處理，並在不需要時歸還給池子而非直接銷毀它。這是一種特殊的工廠物件。" +
+                "若初始化、實例化的代價高，且有需求需要經常實例化，但每次實例化的數量較少的情況下，使用物件池可以獲得顯著的效能提升。從池子中取得物件的時間是可預測的，但新建一個實例所需的時間是不確定。";
+            Console.WriteLine(description);
+            Console.WriteLine("------------------------------------------------------------------------");
+        
+            ObjectPool<MyClass> objPool = new ObjectPool<MyClass>();
+            MyClass obj = objPool.Get();
+            objPool.Release(obj);
+
+            Console.WriteLine("Done. 請按任意鍵繼續");
+            Console.ReadLine();
+        }
+
+        class MyClass 
+        {
+            int test = 0;
         }
     }
 }
