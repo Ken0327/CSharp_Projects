@@ -232,6 +232,7 @@ namespace OOProgramming
         {
             // Abstract
             Console.WriteLine("Start (2) Run Abstract vs Virtual - Comsuption");
+            Console.WriteLine("Abstract - Comsuption");
             Man_abstract man_abstract = new Man_abstract();
 
             man_abstract.consumption(200, (byte)1);
@@ -250,9 +251,10 @@ namespace OOProgramming
                 Console.Write(item + "\n");
             }
             Console.Write("女生剩下" + woman_abstract.getMoney() + "元\n");
-            Console.ReadLine();
 
-            // Virtual class
+            Console.WriteLine("Virtual - Comsuption");
+
+            // Virtual clas
             Man man = new Man();
 
             man.consumption(200, (byte)3);
@@ -271,6 +273,8 @@ namespace OOProgramming
                 Console.Write(item + "\n");
             }
             Console.Write("女生剩下" + woman.getMoney() + "元\n");
+
+            Console.WriteLine("Done. 請按任意鍵繼續");
             Console.ReadLine();
         }
 
@@ -305,6 +309,8 @@ namespace OOProgramming
             TestClass B;
             Add2(out B);
             Console.WriteLine("執行完Add方法後，x=" + B.x);
+
+            Console.WriteLine("Done. 請按任意鍵繼續");
             Console.ReadLine();
         }
 
@@ -359,6 +365,8 @@ namespace OOProgramming
             method += Method2;
             method += Method3;
             method.Invoke("HI");
+
+            Console.WriteLine("Done. 請按任意鍵繼續");
             Console.ReadLine();
         }
 
@@ -389,6 +397,7 @@ namespace OOProgramming
             Console.WriteLine(J.GetX());
             Console.WriteLine(J.GetY());
 
+            Console.WriteLine("Done. 請按任意鍵繼續");
             Console.ReadLine();
         }
 
@@ -405,6 +414,8 @@ namespace OOProgramming
             byte[] bytes = { 3, 2, 5, 4 };
             int i = Facade.ByteToInt(bytes);
             Console.WriteLine(i);
+
+            Console.WriteLine("Done. 請按任意鍵繼續");
             Console.ReadLine();
         }
 
@@ -438,6 +449,8 @@ namespace OOProgramming
             {
                 Console.WriteLine(e.ToString());
             }
+
+            Console.WriteLine("Done. 請按任意鍵繼續");
             Console.ReadLine();
         }
 

@@ -13,11 +13,11 @@ namespace OOProgramming
                 consumptionList = new List<string>();
 
             if (_flag == (byte)1)
-                consumptionList.Add("花了" + _money + "買衣服");
+                consumptionList.Add("女生花了" + _money + "買衣服");
             else if (_flag == (byte)2)
-                consumptionList.Add("花了" + _money + "買包包");
+                consumptionList.Add("女生花了" + _money + "買包包");
             else
-                consumptionList.Add("花了" + _money + "買雜物");
+                consumptionList.Add("女生花了" + _money + "買雜物");
 
             RecreationFee -= _money;
         }
