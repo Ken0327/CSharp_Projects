@@ -6,6 +6,7 @@
 ### CheckBox.CheckState:
     Gets or set a value indicating whether the CheckBox is in the checked state.
 
+
 ## 2. What is the difference between IEnumerable and List?
 ### IEnumerable:
     Exposes an enumerator, which supports a simple iteration over a non-generic collection.
@@ -16,6 +17,7 @@
     - When you might use a List or Array:
         You need the results right away and are possibly mutating the structure you are querying later on.
 
+
 ## 3. What is the difference between Array and List?
 ### Arrays is a reference Type
     You can store multiple variables of the same type in an array data structure. You declare an array by specifying the type of its elements. If you want the array to store elements of any type, you can specify object as its type. In the unified type system of C#, all types, predefined and user-defined, reference types and value types, inherit directly or indirectly from Object.
@@ -25,6 +27,7 @@
 ### List is a generic type
     - When you might use an List:
         If the size of the data is not very huge, and you need to traverse and write operations on the data use List. Because Lists internally use dynamic arrays, increasing the size of the array at run time is an expensive operations.
+
 
 ## 4. What is the worst time complexity of Arrays and Hashtable?
 ### The time complexity of Arrays
@@ -64,6 +67,7 @@
 | Red Black Tree  | O(log N) | O(log N) | O(log N) | O(log N) |
 
 
+
 ## 5. What is the difference between Mutex and Semaphore in multi thread?
 ### Mutex
     Mutex works like a lock in C# for thread synchronization, but it works across multiple processes. Mutex provides a mechnism to prevent two threads from performance one or more actions simultaneously.
@@ -71,16 +75,20 @@
 ### Semaphore
     Semaphore allows one or more threads to enter and execute their task with thread safety. Object of semaphore class takes two parameters. First parameter explains the number of processes for initial start and the second parameter is used to define the maximum number of processes which can be used for initial start. The second parameter must be equal or greater than the first parameter.
 
+
 ## 6. What is the difference between Merge and Rebase in git?
 ### Git Merge
     Git merge is a command that allows you to merge branches from Git.
     1. Simple and familiar.
     2. Preserves complete history and chronological order.
     3. Maintains the context of the branch.
-    
+    ![ScreenShot](/merge.JPG)
 
 ### Git Rebase
     Git rebase is a command that allows developers to integrate changes from one branch to another.
     1. Streamlines a potentially complex history.
     2. Avoids merge commit “noise” in busy repos with busy branches.
     3. Cleans intermediate commits by making them a single commit, which can be helpful for DevOps teams.
+    ![ScreenShot](https://github.com/Ken0327/CSharp_Projects/blob/main/Tutorial/C%23Questions/rebase.JPG)
+    
+    Reference: https://www.atlassian.com/git/tutorials/merging-vs-rebasing
