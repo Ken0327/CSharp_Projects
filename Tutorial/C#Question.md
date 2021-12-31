@@ -82,13 +82,13 @@
     1. Simple and familiar.
     2. Preserves complete history and chronological order.
     3. Maintains the context of the branch.
-    ![alt text](https://github.com/Ken0327/CSharp_Projects/blob/main/Tutorial/C%23Questions/merge.JPG?raw=true)
+    ![Merge](/merge.JPG)
 
 ### Git Rebase
     Git rebase is a command that allows developers to integrate changes from one branch to another.
     1. Streamlines a potentially complex history.
     2. Avoids merge commit “noise” in busy repos with busy branches.
     3. Cleans intermediate commits by making them a single commit, which can be helpful for DevOps teams.
-    ![alt text](https://github.com/Ken0327/CSharp_Projects/blob/main/Tutorial/C%23Questions/rebase.JPG?raw=true)
-
+    ![Rebase](https://github.com/Ken0327/CSharp_Projects/blob/main/Tutorial/C%23Questions/rebase.JPG)
+    
     Reference: https://www.atlassian.com/git/tutorials/merging-vs-rebasing
