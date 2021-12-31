@@ -83,7 +83,7 @@
     2. Preserves complete history and chronological order.
     3. Maintains the context of the branch.
 
-![Merge](/merge.JPG)
+![Merge](merge.JPG)
 
 ### Git Rebase
     Git rebase is a command that allows developers to integrate changes from one branch to another.
@@ -91,6 +91,6 @@
     2. Avoids merge commit “noise” in busy repos with busy branches.
     3. Cleans intermediate commits by making them a single commit, which can be helpful for DevOps teams.
 
-![Rebase](/rebase.JPG)
+![Rebase](rebase.JPG)
     
     Reference: https://www.atlassian.com/git/tutorials/merging-vs-rebasing
