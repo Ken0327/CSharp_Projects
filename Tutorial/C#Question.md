@@ -64,7 +64,7 @@
 | Red Black Tree  | O(log N) | O(log N) | O(log N) | O(log N) |
 
 
-## 3. What is the difference Mutex and Semaphore in multi thread?
+## 5. What is the difference Mutex and Semaphore in multi thread?
 ### Mutex
     Mutex works like a lock in C# for thread synchronization, but it works across multiple processes. Mutex provides a mechnism to prevent two threads from performance one or more actions simultaneously.
  
