@@ -64,9 +64,10 @@
 | Red Black Tree  | O(log N) | O(log N) | O(log N) | O(log N) |
 
 
-## 3. What is the difference Mutex and Semaphore?
+## 3. What is the difference Mutex and Semaphore in multi thread?
 ### Mutex
-    Mutex works like a lock in C# for thread synchronization, but it works across multiple processes. Mutex provides safety against the external threads.
+    Mutex works like a lock in C# for thread synchronization, but it works across multiple processes. Mutex provides a mechnism to prevent two threads from performance one or more actions simultaneously.
  
 ### Semaphore
-    Semaphore allows one or more threads to enter and execute their task with thread safety. Object of semaphore class takes two parameters. First parameter explains the number of processes for initial start and the second parameter is used to define the maximum number of processes which can be used for initial start. The second parameter must be equal or greater than the first parameter. 
+    Semaphore allows one or more threads to enter and execute their task with thread safety. Object of semaphore class takes two parameters. First parameter explains the number of processes for initial start and the second parameter is used to define the maximum number of processes which can be used for initial start. The second parameter must be equal or greater than the first parameter.
+
