@@ -288,13 +288,11 @@ namespace OOProgramming
             b = Add2(b);
             Console.Write(a);
             Console.Write(b);
-            Console.ReadLine();
 
             TestClass A = new TestClass();
             Console.WriteLine("初始值x=" + A.x);
             Add(A);
             Console.WriteLine("執行完Add方法後，x=" + A.x);
-            Console.ReadLine();
 
             // add ref
             Console.WriteLine("Add ref parameter:");
@@ -428,6 +426,8 @@ namespace OOProgramming
                 "實際情境中，可能出現架構上已經設計兩套Library在專案中，突然需求需要第三個Library，這時候Adapter模式下只需要將共用介面引用至第三個Library中開發完交付給User，User只有修改new出第三套Libraray所產生的Instance就大功告成了。";
             Console.WriteLine(description);
             Console.WriteLine("------------------------------------------------------------------------");
+            
+            // Example 1
             //Lib_1
             ICommunication Tunnel = new UdpCommunication();
             //Lib_2
@@ -449,6 +449,10 @@ namespace OOProgramming
             {
                 Console.WriteLine(e.ToString());
             }
+
+            // Example 2
+            var a = new Adapter1();
+            a.Main();
 
             Console.WriteLine("Done. 請按任意鍵繼續");
             Console.ReadLine();
@@ -593,6 +597,24 @@ namespace OOProgramming
             ObjectPool<MyClass> objPool = new ObjectPool<MyClass>();
             MyClass obj = objPool.Get();
             objPool.Release(obj);
+
+            Console.WriteLine("Done. 請按任意鍵繼續");
+            Console.ReadLine();
+        }
+
+        public static void RunDesignPattern_SimpleFactory()
+        {
+            Console.WriteLine("Start (11) Run Design Pattern - ObjectPool");
+            var description =
+                "目的：統一集中管理產生Instance的地方。" + "\n" +
+                "使用工廠模式可以解決分散各地產生Instance的困擾，如果分散十個地方有new Instance，異動的時候就必須十個地方都要改，如果有統一產生Instance地方那就只需要修改產生Instance的段落即可。";
+            Console.WriteLine(description);
+            Console.WriteLine("------------------------------------------------------------------------");
+
+            var commucation = SimpleFactory.CommucationFactory
+                        .GetInstance(SimpleFactory.CommucationType.Tcp);
+            commucation.Connect("127.0.01:8888", 8080);
+            Console.ReadLine();
 
             Console.WriteLine("Done. 請按任意鍵繼續");
             Console.ReadLine();
