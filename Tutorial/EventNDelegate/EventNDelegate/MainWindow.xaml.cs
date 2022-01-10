@@ -112,10 +112,10 @@ namespace EventNDelegate
             _Thread.Start();
         }
 
-            void SetLabel()
+        void SetLabel()
         {
             //同步方式
-            // player2.Dispatcher.Invoke(SetLabel_delegate);
+            //player2.Dispatcher.Invoke(SetLabel_delegate);
             //非同步
             player2.Dispatcher.BeginInvoke(new SomeDelegate(SetLabel_delegate));
             // player2.Dispatcher.BeginInvoke(new Action(() => { SetLabel_delegate(); }));

@@ -58,6 +58,7 @@ namespace OOProgramming.OOP
         {
             public virtual void LeaderName()
             {
+                Console.WriteLine("Mr. K");
             }
         }
 

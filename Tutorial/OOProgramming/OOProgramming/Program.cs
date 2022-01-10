@@ -137,7 +137,7 @@ namespace OOProgramming
                     break;
                 case "9":
                     var i = new OOP.SealedClass();
-                    i.Main();
+
                     break;
                 case "10":
                     var j = new OOP.Interface();
