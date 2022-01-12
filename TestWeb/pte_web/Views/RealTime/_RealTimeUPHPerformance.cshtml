@@ -1,0 +1,237 @@
+﻿
+@*@model PTE_Web.Models.ItemUPHList*@
+
+
+
+
+<!-- UPH 變化圖 End-->
+
+
+<div class="row">
+    <div class="col-md-8">
+        <fieldset>
+            <legend></legend>
+                <div id="chartdiv" style="min-width:500px;height:500px"></div>
+        </fieldset>
+    </div>
+        <div class="col-md-4">
+            <fieldset>
+                <legend>Delta Form</legend>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <blockquote><h2>@ViewBag.P_description</h2>
+                        <small>ItemNameType: <cite title="Source Title"> @ViewBag.P_itemnametype</cite></small>
+                        <small>Production Map UPH: <cite title="Source Title"> @ViewBag.UPH</cite></small>
+                        </blockquote>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <blockquote>
+                        <div class="table-responsive">
+                        <table id="example_2" class="display table" style="font-size:15px">
+                            <thead>
+                                <tr>
+                                    <th>Item</th>
+                                    <th>Now</th>
+                                    <th>Previous</th>
+                                    <th>Delta</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>FYR:</td>
+                                    <td>@ViewBag.TableDict["T_FYR"] %</td>
+                                    <td>@ViewBag.TableDict["P_FYR"] %</td>
+                                    <td>@ViewBag.TableDict["D_FYR"] %</td>
+                                </tr>
+                                <tr>
+                                    <td>Spare</td>
+                                    <td>@ViewBag.TableDict["T_Spare"] s</td>
+                                    <td>@ViewBag.TableDict["P_Spare"] s</td>
+                                    <td>@ViewBag.TableDict["D_Spare"] %</td>
+                                </tr>
+                                <tr>
+                                    <td>Estimate UPH</td>
+                                    <td>@ViewBag.TableDict["T_EstimateUPH"] units</td>
+                                    <td>@ViewBag.TableDict["P_EstimateUPH"] units</td>
+                                    <td>@ViewBag.TableDict["D_EstimateUPH"] %</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        </div>
+                        </blockquote>
+                    </div>
+                </div>
+            </fieldset>            
+        </div>
+</div>
+<script>
+                            var table = id('example_2');
+                        var totRowIndex = table.getElementsByTagName('tr').length;
+                        var tfConfig = {
+                            // instruct TableFilter location to import ressources from
+                            base_path: '~/Content/TableFilter/',
+                            paging: {
+                                results_per_page: ['Records: ', [10, 25, 50, 100]]
+                            },
+                            col_0: 'select',
+                            alternate_rows: true,
+                            rows_counter: true,
+                            btn_reset: true,
+                            loader: true,
+                            status_bar: true,
+                            sort: true,
+                            sort_config: {
+                                sort_types: ['String', 'String', 'String', 'String']
+                            },
+                            mark_active_columns: true,
+                            highlight_keywords: true,
+                            //no_results_message: true,
+                            col_types: [
+                                'string','string','string','string'
+                            ],
+                            col_widths: [
+                               '120px','100px', '100px', '100px'
+                            ],
+                            extensions: [{ name: 'sort' }]
+
+                        };
+
+                        var tf = new TableFilter('example_2', tfConfig);
+                     tf.init();
+</script>
+<script>                
+                var chart = am4core.create("chartdiv", am4charts.XYChart);
+
+                var data = [];
+
+                var numbers = @(new HtmlString(ViewBag.chartlist))
+
+                numbers.forEach(function(item){
+                    item.DateTime = new Date(parseInt(item.DateTime.substr(6)))
+                });
+
+                chart.data =numbers;                
+                chart.colors.step = 2;
+                // Create axes
+                var dateAxis = chart.xAxes.push(new am4charts.DateAxis());
+                dateAxis.baseInterval = {"timeUnit":"hour","count":1};
+                dateAxis.renderer.minGridDistance = 50;
+
+                var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+
+                valueAxis.max = @(ViewBag.UPH+200);
+                // Create value axis range
+                var range = valueAxis.axisRanges.create();
+                range.value = @ViewBag.UPH;
+                range.grid.stroke = am4core.color("red");
+                range.grid.strokeWidth = 2;
+                range.grid.strokeOpacity = 1;
+                range.label.inside = true;
+                range.label.text = "UPH: [bold]{value}[/]";
+                range.label.fill = range.grid.stroke;
+                range.label.align = "left";
+                range.label.verticalCenter = "bottom";
+
+                function createAxisAndSeries(field, name, opposite, bullet, visible) {
+                  var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+                  var series = chart.series.push(new am4charts.LineSeries());
+                  series.dataFields.valueY = field;
+                  series.dataFields.dateX = "DateTime";
+                  series.strokeWidth = 2;
+                  series.yAxis = valueAxis;
+                  series.name = name;
+                  series.tooltipText = "{name}: [bold]{valueY}[/]";
+                  series.tensionX = 0.9;
+                  series.visible = visible;
+                  var interfaceColors = new am4core.InterfaceColorSet();
+
+                    if (field != "FYR") {
+                        switch (bullet) {
+                            case "triangle":
+                                var bullet = series.bullets.push(new am4charts.Bullet());
+                                bullet.width = 12;
+                                bullet.height = 12;
+                                bullet.horizontalCenter = "middle";
+                                bullet.verticalCenter = "middle";
+
+                                var triangle = bullet.createChild(am4core.Triangle);
+                                triangle.stroke = interfaceColors.getFor("background");
+                                triangle.strokeWidth = 2;
+                                triangle.direction = "top";
+                                triangle.width = 12;
+                                triangle.height = 12;
+                                triangle.visible = visible
+                                break;
+
+                            case "rectangle":
+                                var bullet = series.bullets.push(new am4charts.Bullet());
+                                bullet.width = 10;
+                                bullet.height = 10;
+                                bullet.horizontalCenter = "middle";
+                                bullet.verticalCenter = "middle";
+                                var rectangle = bullet.createChild(am4core.Rectangle);
+                                rectangle.stroke = interfaceColors.getFor("background");
+                                rectangle.strokeWidth = 2;
+                                rectangle.width = 10;
+                                rectangle.height = 10;
+                                rectangle.visible = visible;
+                                break;
+                            default:
+                                var bullet = series.bullets.push(new am4charts.CircleBullet());
+                                bullet.circle.stroke = interfaceColors.getFor("background");
+                                bullet.circle.strokeWidth = 2;
+                                break;
+                        }
+                    } else {
+                        var bullet = series.bullets.push(new am4charts.Bullet());
+                       bullet.events.on("hit", function (ev) {
+                     var item = ev.target.dataItem.component.tooltipDataItem.dataContext;
+                     GetItemNameTypeIssue(item.ItemNameType,item.Date)
+                 },this);
+                    var image = bullet.createChild(am4core.Image);
+                    image.width = 30;
+                    image.height = 30;
+                    image.horizontalCenter = "middle";
+                    image.verticalCenter = "middle";
+                    image.propertyFields.href = "href";
+                    image.adapter.add("mask", function (mask, target) {
+                        var circleBullet = target.parent;
+                        return circleBullet.circle;
+                    })
+                }
+                  valueAxis.renderer.line.strokeOpacity = 1;
+                  valueAxis.renderer.line.strokeWidth = 2;
+                  valueAxis.renderer.line.stroke = series.stroke;
+                  valueAxis.renderer.labels.template.fill = series.stroke;
+                  valueAxis.renderer.opposite = opposite;
+                  valueAxis.renderer.grid.template.disabled = true;
+                }
+                createAxisAndSeries("EstimateUPH", "EstimateUPH", true, "triangle",false);
+                createAxisAndSeries("FYR", "FYR", true, "circle",true);
+                createAxisAndSeries("AvgSpare", "AvgSpare", true, "rectangle",true);
+                var valueAxis_Total = chart.yAxes.push(new am4charts.ValueAxis());
+                valueAxis_Total.renderer.grid.template.location = 0;
+                var Histt_series = chart.series.push(new am4charts.ColumnSeries3D());
+                Histt_series.dataFields.valueY = "RealOutput";
+                Histt_series.dataFields.dateX = "DateTime";
+                Histt_series.xAxis = dateAxis;
+                Histt_series.yAxis = valueAxis;
+                Histt_series.tooltipText = "RealOutput: [bold]{valueY}[/]";
+                Histt_series.name="RealOutput";
+                Histt_series.clustered = true;
+
+                Histt_series.columns.template.fillOpacity = 0.8;
+                Histt_series.columns.template.strokeOpacity = 0;
+    Histt_series.columns.template.fill = am4core.color("#ff9d6f");
+                    // Add legend
+                chart.legend = new am4charts.Legend();
+                // Add cursor
+    chart.cursor = new am4charts.XYCursor();
+    chart.cursor.fullWidthLineX = true;
+	chart.cursor.xAxis = dateAxis;
+	chart.cursor.lineX.strokeOpacity = 0;
+	chart.cursor.lineX.fill = am4core.color("#000");
+	chart.cursor.lineX.fillOpacity = 0.1;
+</script>

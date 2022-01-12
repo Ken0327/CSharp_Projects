@@ -1,0 +1,357 @@
+﻿@{
+    ViewBag.Title = "MGUHome";
+    Layout = "~/Views/Shared/_Layout_bootstrap.cshtml";
+}
+
+<style>
+
+    .vertical {
+        text-align: center;
+        margin-top: 20px;
+    }
+</style>
+<div class="row">
+    <div class="col-md-12">
+        <div class="white-box">
+            <div id="chartdiv" style="height:700px"></div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="DailyModal" role="dialog" aria-labelledby="DailyModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" style="min-width:1500px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <h2>Station</h2>
+                        </div>
+                        <div class="col-md-1">
+                            <h2> Spare</h2>
+                        </div>
+                        <div class="col-md-5">
+                            <h2> Fail Item</h2>
+                        </div>
+                        <div class="col-md-2 textCenter">
+                            <h2>  FYR</h2>
+                        </div>
+                        <div class="col-md-2">
+                            <h2> Job List</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="container" id="DailyModel_id">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+                   Date.prototype.Format = function (format) {
+                    var date = {
+                        "M+": this.getMonth() + 1,
+                        "d+": this.getDate(),
+                        "h+": this.getHours(),
+                        "m+": this.getMinutes(),
+                        "s+": this.getSeconds(),
+                        "q+": Math.floor((this.getMonth() + 3) / 3),
+                        "S": this.getMilliseconds()
+                    };
+                    if (/(y+)/i.test(format)) {
+                        format = format.replace(RegExp.$1, (this.getFullYear() + '').substr(4 - RegExp.$1.length));
+                    }
+                    for (var k in date) {
+                        if (new RegExp("(" + k + ")").test(format)) {
+                            format = format.replace(RegExp.$1, RegExp.$1.length == 1 ? date[k] : ("00" + date[k]).substr(("" + date[k]).length));
+                        }
+                    }
+                    return format;
+                };
+
+// Create chart instance
+var chart = am4core.create("chartdiv", am4charts.XYChart);
+
+// Add Chart Title
+var title = chart.titles.create();
+title.text = "[bold font-size: 20]MGU18 Daily Trend  [/]\n Since Aug. 2020";
+title.textAlign = "middle";
+
+// Increase contrast by taking evey second color
+chart.colors.step = 2;
+
+// Add data
+chart.data = @(new HtmlString(ViewBag.DailyJsonList));
+
+// Create axes
+var dateAxis = chart.xAxes.push(new am4charts.DateAxis());
+dateAxis.renderer.minGridDistance = 50;
+
+var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+    valueAxis.renderer.opposite = false;
+    valueAxis.min = 80;
+    valueAxis.max = 100;
+    valueAxis.title.text = "FPR (%)";
+
+// Create value axis range
+//var range = valueAxis.axisRanges.create();
+//range.value = 95;
+//range.grid.stroke = am4core.color("red");
+//range.grid.strokeWidth = 2;
+//range.grid.strokeOpacity = 1;
+//range.label.inside = true;
+//range.label.text = "FPR: [bold]95[/] %";
+//range.label.fill = range.grid.stroke;
+//range.label.align = "right";
+//range.label.verticalCenter = "bottom";
+
+// Create series
+function createAxisAndSeries(field, name, bullet) {
+  var series = chart.series.push(new am4charts.LineSeries());
+  series.dataFields.valueY = field;
+  series.dataFields.dateX = "date";
+  series.strokeWidth = 3;
+  series.yAxis = valueAxis;
+  series.name = name;
+  series.tooltipText = "{name}: [bold]{valueY}[/] %";
+  //series.tensionX = 0.8;
+  series.showOnInit = true;
+
+  var interfaceColors = new am4core.InterfaceColorSet();
+
+  switch(bullet) {
+    case "triangle":
+      var bullet = series.bullets.push(new am4charts.Bullet());
+      bullet.width = 12;
+      bullet.height = 12;
+      bullet.horizontalCenter = "middle";
+      bullet.verticalCenter = "middle";
+
+      var triangle = bullet.createChild(am4core.Triangle);
+      triangle.stroke = interfaceColors.getFor("background");
+      triangle.strokeWidth = 2;
+      triangle.direction = "top";
+      triangle.width = 12;
+      triangle.height = 12;
+      break;
+    case "rectangle":
+      var bullet = series.bullets.push(new am4charts.Bullet());
+      bullet.width = 10;
+      bullet.height = 10;
+      bullet.horizontalCenter = "middle";
+      bullet.verticalCenter = "middle";
+
+      var rectangle = bullet.createChild(am4core.Rectangle);
+      rectangle.stroke = interfaceColors.getFor("background");
+      rectangle.strokeWidth = 2;
+      rectangle.width = 10;
+      rectangle.height = 10;
+      break;
+    default:
+      var bullet = series.bullets.push(new am4charts.CircleBullet());
+      bullet.circle.stroke = interfaceColors.getFor("background");
+      bullet.circle.strokeWidth = 2;
+      break;
+  }
+}
+
+createAxisAndSeries("FCT_FPR", "FCT", "circle");
+createAxisAndSeries("FLASHING_FPR", "Flashing", "triangle");
+createAxisAndSeries("RUNIN_FPR", "RUNIN", "triangle");
+createAxisAndSeries("AFT_FPR", "AFT", "triangle");
+
+//createAxisAndSeries("hits", "Hits", true, "rectangle");
+
+///////////////rectangle
+
+  var series = chart.series.push(new am4charts.LineSeries());
+  series.dataFields.valueY = "SFT_FPR";
+  series.dataFields.dateX = "date";
+  series.strokeWidth = 3;
+  series.yAxis = valueAxis;
+  series.name = "SFT";
+  series.tooltipText = "{name}: [bold]{valueY}[/] %";
+  //series.tensionX = 0.8;
+  series.showOnInit = true;
+
+  var interfaceColors = new am4core.InterfaceColorSet();
+
+var bullet = series.bullets.push(new am4charts.Bullet());
+      bullet.width = 10;
+      bullet.height = 10;
+      bullet.horizontalCenter = "middle";
+      bullet.verticalCenter = "middle";
+
+      var rectangle = bullet.createChild(am4core.Rectangle);
+      rectangle.stroke = interfaceColors.getFor("background");
+      rectangle.strokeWidth = 2;
+      rectangle.width = 10;
+      rectangle.height = 10;
+
+///////////////rectangle
+
+// Add legend
+chart.legend = new am4charts.Legend();
+
+// Make a panning cursor
+chart.cursor = new am4charts.XYCursor();
+chart.cursor.behavior = "panXY";
+chart.cursor.xAxis = dateAxis;
+
+// Create vertical scrollbar and place it before the value axis
+chart.scrollbarY = new am4core.Scrollbar();
+chart.scrollbarY.parent = chart.leftAxesContainer;
+
+// Create a horizontal scrollbar with previe and place it underneath the date axis
+chart.scrollbarX = new am4charts.XYChartScrollbar();
+chart.scrollbarX.series.push(series);
+chart.scrollbarX.parent = chart.bottomAxesContainer;
+dateAxis.start = 0.85;
+dateAxis.keepSelection = true;
+
+var valueAxis_Total = chart.yAxes.push(new am4charts.ValueAxis());
+valueAxis_Total.renderer.grid.template.location = 0;
+valueAxis_Total.renderer.opposite = true;
+valueAxis_Total.title.text = "Units";
+var Histt_series = chart.series.push(new am4charts.ColumnSeries());
+Histt_series.dataFields.valueY = "Total";
+Histt_series.dataFields.dateX = "date";
+Histt_series.xAxis = dateAxis;
+Histt_series.yAxis = valueAxis_Total;
+Histt_series.tooltipText = "Total: [bold]{valueY}[/]";
+Histt_series.name="Total";
+Histt_series.columns.template.fillOpacity = 0.5;
+Histt_series.columns.template.strokeOpacity = 0;
+Histt_series.columns.template.fill = am4core.color("#67d0f4");
+                function DailyInfo(ev) {
+                    var targetDate = new Date(ev.target._dataItem.dates.dateX)
+                    try {
+
+                        $.ajax({
+                            type: 'POST',
+                            url: "@Url.Action("GetDailyInfo", "MGU")",
+                            data: JSON.stringify({ workdate:targetDate.Format("yyyy-MM-dd") }),
+                            contentType: 'application/json',
+                            success: function (data) {
+                                   $('#DailyModel_id').empty();
+                                for (var i = 0; i < data.length; i++) {
+
+                                    addElementDiv("DailyModel_id", i)
+
+                                    //Detail btn
+                                    $('#detail_btn_' + i).FancyGrid({
+                                      width: 'fit',
+                                        height:  'fit',
+                                         data: data[i].DetailLinkList,
+                                         paging: {
+                                            pageSize: 5,
+                                            pageSizeData: [5,10,20,50,500,1000]
+                                          },
+                                        columns: [{
+                                          index: 'JobNumber',
+                                          title: 'Job Number',
+                                          type: 'string',
+                                          width: 100
+                                        },{
+                                          index: 'Total',
+                                          title: 'Total',
+                                          type: 'string',
+                                           align: 'center',
+                                           cellAlign: 'center',
+                                          width: 50
+                                        }]
+                                    });
+                                    //工單
+                                    $('#job_' + i).text(data[i].Station+"("+data[i].Total+")").css({ 'font-size': 20 });
+                                    //Spare
+                                     $('#spare_' + i).text(data[i].Spare).css({ 'font-size': 20 });
+                                    //FailItem
+
+                                     $('#FailItem_' + i).FancyGrid({
+                                      width: 'fit',
+                                        height:  'fit',
+                                         data: data[i]._FailItemList,
+                                         paging: {
+                                            pageSize: 5,
+                                            pageSizeData: [5,10,20,50,500,1000]
+                                          },
+                                        columns: [{
+                                          index: 'FailStepNumber',
+                                          title: 'Step #',
+                                          type: 'string',
+                                          width: 70
+                                        },{
+                                          index: 'StepDesctiption',
+                                          title: 'ItemName',
+                                          type: 'string',
+                                          width: 250
+                                        },{
+                                          index: 'FailCount',
+                                          title: 'FailCount',
+                                          type: 'string',
+                                           align: 'center',
+                                           cellAlign: 'center',
+                                          width: 60
+                                        },{
+                                          index: 'FailRate',
+                                          title: 'Rate(%)',
+                                          type: 'string',
+                                           align: 'center',
+                                           cellAlign: 'center',
+                                          width: 70
+                                        }]
+                                    });
+                                    //FYR
+                                    var color=['#8fc28f','#035203']
+                                    if (data[i].FYR < 90) {
+                                       color=['#c98a81','#de1e04']
+                                    }
+                                     Circles.create({
+                                            id: 'FYR_' + i,
+                                            radius: 60,
+                                            value: data[i].FYR,
+                                            maxValue: 100,
+                                            width: 8,
+                                            text: function (value) { return value + '%'; },
+                                            colors: color,
+                                            duration: 400,
+                                            wrpClass: 'circles-wrp',
+                                            textClass: 'circles-text',
+                                            valueStrokeClass: 'circles-valueStroke',
+                                            maxValueStrokeClass: 'circles-maxValueStroke',
+                                            styleWrapper: true,
+                                            styleText: true
+                                        });
+
+                                }
+                           $('#DailyModal').modal('show');
+                            }
+                        });
+                    } catch (ex) {
+                        Alert("error");
+                    }
+
+                 }
+    Histt_series.columns.template.events.on("hit", DailyInfo, this);
+
+        function addElementDiv(obj,id) {
+　　　　var parent = $('#'+obj)
+        //新增 div
+
+        parent.append('<div class="row" style="border-bottom-style: dotted;">'+
+       '<div class="col-md-2"><div id="job_' + id + '"></div></div>' +
+            '<div class="col-md-1"><div id="spare_' + id + '"></div></div>' +
+            '<div class="col-md-5"><div id="FailItem_' + id + '"></div></div>' +
+            '<div class="col-md-2 vertical"><div class="circle" id="FYR_' + id + '"></div></div>' +
+            '<div class="col-md-2"><div id="detail_btn_' + id + '"></div></div></div>');
+
+　　}
+</script>

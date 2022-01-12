@@ -1,0 +1,824 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\EntityFramework.6.3.0\build\EntityFramework.props" Condition="Exists('..\packages\EntityFramework.6.3.0\build\EntityFramework.props')" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{D60F0868-34A6-4573-9C56-2D4F00B3F7D0}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>PTE_Web</RootNamespace>
+    <AssemblyName>PTE_Web</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
+    <UseIISExpress>true</UseIISExpress>
+    <Use64BitIISExpress />
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <TypeScriptToolsVersion>2.8</TypeScriptToolsVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Antlr3.Runtime, Version=3.5.0.2, Culture=neutral, PublicKeyToken=eb42632606e9261f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="ClosedXML, Version=0.94.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ClosedXML.0.94.2\lib\net46\ClosedXML.dll</HintPath>
+    </Reference>
+    <Reference Include="Dapper, Version=1.50.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapper.1.50.5\lib\net451\Dapper.dll</HintPath>
+    </Reference>
+    <Reference Include="DocumentFormat.OpenXml, Version=2.7.2.0, Culture=neutral, PublicKeyToken=8fb06cb64d019a17, processorArchitecture=MSIL">
+      <HintPath>..\packages\DocumentFormat.OpenXml.2.7.2\lib\net46\DocumentFormat.OpenXml.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.3.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.3.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="ExcelNumberFormat, Version=1.0.3.0, Culture=neutral, PublicKeyToken=23c6f5d73be07eca, processorArchitecture=MSIL">
+      <HintPath>..\packages\ExcelNumberFormat.1.0.3\lib\net20\ExcelNumberFormat.dll</HintPath>
+    </Reference>
+    <Reference Include="FastMember, Version=1.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\FastMember.1.3.0\lib\net45\FastMember.dll</HintPath>
+    </Reference>
+    <Reference Include="Google.Protobuf, Version=3.5.1.0, Culture=neutral, PublicKeyToken=a7d26565bac4d604, processorArchitecture=MSIL">
+      <HintPath>..\packages\Google.Protobuf.3.5.1\lib\net45\Google.Protobuf.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="MySql.Data, Version=8.0.15.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <HintPath>..\packages\MySql.Data.8.0.15\lib\net452\MySql.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\packages\NLog.4.5.11\lib\net45\NLog.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel" />
+    <Reference Include="System.Configuration.Install" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Drawing.Design" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.FileSystem.Primitives, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.FileSystem.Primitives.4.0.1\lib\net46\System.IO.FileSystem.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO.Packaging, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.Packaging.4.0.0\lib\net46\System.IO.Packaging.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Management" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.7\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Optimization, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.7\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Net.Http">
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest">
+    </Reference>
+    <Reference Include="WebGrease, Version=1.6.5135.21930, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
+    </Reference>
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Class\cPk.cs" />
+    <Compile Include="Class\DailyFYRInfo.cs" />
+    <Compile Include="Class\GPNSpare.cs" />
+    <Compile Include="Class\MonthCpkData.cs" />
+    <Compile Include="Class\NewSpecHistogramData.cs" />
+    <Compile Include="Class\SpareDaily.cs" />
+    <Compile Include="Connections\ConnectionFactory.cs" />
+    <Compile Include="Connections\DataBaseGroundHandler.cs" />
+    <Compile Include="Connections\DataHandlerFunctions.cs" />
+    <Compile Include="Connections\ITMXPServerQuery.cs" />
+    <Compile Include="Connections\MGUDataHandler.cs" />
+    <Compile Include="Controllers\AnalyzeToolController.cs" />
+    <Compile Include="Controllers\DashBoardController.cs" />
+    <Compile Include="Controllers\FixtureBoardController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\IssueIndexController.cs" />
+    <Compile Include="Controllers\MGUController.cs" />
+    <Compile Include="Controllers\PTEWebDataBaseBrowserController.cs" />
+    <Compile Include="Controllers\RealTimeController.cs" />
+    <Compile Include="Controllers\SpareToolController.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CpkModel.cs" />
+    <Compile Include="Models\DashBoardGroundModel.cs" />
+    <Compile Include="Models\DataBrowser.cs" />
+    <Compile Include="Models\DataPoint.cs" />
+    <Compile Include="Models\DeltaIModel.cs" />
+    <Compile Include="Models\FailItemModel.cs" />
+    <Compile Include="Models\General.cs" />
+    <Compile Include="Models\IssueContentModel.cs" />
+    <Compile Include="Models\ItemNameDesModel.cs" />
+    <Compile Include="Models\MGUInfo.cs" />
+    <Compile Include="Models\Model1.cs" />
+    <Compile Include="Models\OrgInfoConfig.cs" />
+    <Compile Include="Models\PageModels.cs" />
+    <Compile Include="Models\ProductOwnerModel.cs" />
+    <Compile Include="Models\PTEWEB_Issues_Actions.cs" />
+    <Compile Include="Models\PTEWEB_Issues_ByDaily.cs" />
+    <Compile Include="Models\PTEWEB_Issues_Reply.cs" />
+    <Compile Include="Models\PTEWEB_Issues_ReplyCause.cs" />
+    <Compile Include="Models\PTEWEB_Issues_Title.cs" />
+    <Compile Include="Models\PTEWEB_ItemNameType_ByDaily.cs" />
+    <Compile Include="Models\PTEWEB_ItemNameType_ByDaily_TOP10_FailItem.cs" />
+    <Compile Include="Models\PTEWEB_ItemNameType_ByDaily_TOP10_LongCycleTime.cs" />
+    <Compile Include="Models\PTEWEB_ItemNameType_RealOutput_ByDaily.cs" />
+    <Compile Include="Models\PTEWEB_nonITMXP_ByDaily.cs" />
+    <Compile Include="Models\RealTimeModel.cs" />
+    <Compile Include="Models\ReportModel.cs" />
+    <Compile Include="Models\TextTemplate1.TempTable.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TextTemplate1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TypeRawData_Correlation.cs" />
+    <Compile Include="obj\Debug\TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs" />
+    <Compile Include="obj\Debug\TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs" />
+    <Compile Include="obj\Debug\TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs" />
+    <Compile Include="obj\Release\TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs" />
+    <Compile Include="obj\Release\TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs" />
+    <Compile Include="obj\Release\TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="archives\PTEfile\Debug.20190227.txt" />
+    <Content Include="archives\PTEfile\Debug.20190304.txt" />
+    <Content Include="archives\PTEfile\Debug.20190305.txt" />
+    <Content Include="archives\PTEfile\Debug.20190724.txt" />
+    <Content Include="archives\PTEfile\Debug.20190730.txt" />
+    <Content Include="archives\PTEfile\Debug.20190801.txt" />
+    <Content Include="archives\PTEfile\Debug.20190802.txt" />
+    <Content Include="archives\PTEfile\Debug.20190805.txt" />
+    <Content Include="archives\PTEfile\Trace.20190730.txt" />
+    <Content Include="archives\Trace.20190227.txt" />
+    <Content Include="archives\Trace.20190304.txt" />
+    <Content Include="archives\Trace.20190305.txt" />
+    <Content Include="archives\Trace.20190724.txt" />
+    <Content Include="archives\Trace.20190730.txt" />
+    <Content Include="archives\Trace.20190801.txt" />
+    <Content Include="archives\Trace.20190802.txt" />
+    <Content Include="archives\Trace.20190805.txt" />
+    <Content Include="bin\Antlr3.Runtime.dll" />
+    <Content Include="bin\Antlr3.Runtime.pdb" />
+    <Content Include="bin\ClosedXML.dll" />
+    <Content Include="bin\ClosedXML.pdb" />
+    <Content Include="bin\ClosedXML.xml" />
+    <Content Include="bin\Dapper.dll" />
+    <Content Include="bin\Dapper.xml" />
+    <Content Include="bin\DocumentFormat.OpenXml.dll" />
+    <Content Include="bin\DocumentFormat.OpenXml.xml" />
+    <Content Include="bin\ExcelNumberFormat.dll" />
+    <Content Include="bin\ExcelNumberFormat.xml" />
+    <Content Include="bin\FastMember.dll" />
+    <Content Include="bin\Google.Protobuf.dll" />
+    <Content Include="bin\Google.Protobuf.xml" />
+    <Content Include="bin\Microsoft.AI.DependencyCollector.xml" />
+    <Content Include="bin\Microsoft.AI.Web.xml" />
+    <Content Include="bin\Microsoft.AI.WindowsServer.xml" />
+    <Content Include="bin\Microsoft.AspNet.TelemetryCorrelation.xml" />
+    <Content Include="bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml" />
+    <Content Include="bin\Microsoft.Web.Infrastructure.dll" />
+    <Content Include="bin\MySql.Data.dll" />
+    <Content Include="bin\MySql.Data.xml" />
+    <Content Include="bin\Newtonsoft.Json.dll" />
+    <Content Include="bin\Newtonsoft.Json.pdb" />
+    <Content Include="bin\Newtonsoft.Json.xml" />
+    <Content Include="bin\NLog.dll" />
+    <Content Include="bin\NLog.xml" />
+    <Content Include="bin\PTE_Web.dll" />
+    <Content Include="bin\PTE_Web.pdb" />
+    <Content Include="bin\System.Diagnostics.DiagnosticSource.xml" />
+    <Content Include="bin\System.IO.FileSystem.Primitives.dll" />
+    <Content Include="bin\System.IO.Packaging.dll" />
+    <Content Include="bin\System.Web.Helpers.dll" />
+    <Content Include="bin\System.Web.Helpers.xml" />
+    <Content Include="bin\System.Web.Mvc.dll" />
+    <Content Include="bin\System.Web.Mvc.xml" />
+    <Content Include="bin\System.Web.Optimization.dll" />
+    <Content Include="bin\System.Web.Optimization.xml" />
+    <Content Include="bin\System.Web.Razor.dll" />
+    <Content Include="bin\System.Web.Razor.xml" />
+    <Content Include="bin\System.Web.WebPages.Deployment.dll" />
+    <Content Include="bin\System.Web.WebPages.Deployment.xml" />
+    <Content Include="bin\System.Web.WebPages.dll" />
+    <Content Include="bin\System.Web.WebPages.Razor.dll" />
+    <Content Include="bin\System.Web.WebPages.Razor.xml" />
+    <Content Include="bin\System.Web.WebPages.xml" />
+    <Content Include="bin\WebGrease.dll" />
+    <Content Include="Content\74H8.gif" />
+    <Content Include="Content\ajaxLoading\css\preloader.css" />
+    <Content Include="Content\ajaxLoading\js\jquery.blockUI.min.js" />
+    <Content Include="Content\ajaxLoading\js\jquery.preloader.js" />
+    <Content Include="Content\ajaxLoading\js\jquery.preloader.min.js" />
+    <Content Include="Content\amcharts\amcharts3\amcharts.js" />
+    <Content Include="Content\amcharts\amcharts3\export.css" />
+    <Content Include="Content\amcharts\amcharts3\export.min.js" />
+    <Content Include="Content\amcharts\amcharts3\light.js" />
+    <Content Include="Content\amcharts\amcharts3\serial.js" />
+    <Content Include="Content\amcharts\amcharts4\animated.js" />
+    <Content Include="Content\amcharts\amcharts4\charts.js" />
+    <Content Include="Content\amcharts\amcharts4\core.js" />
+    <Content Include="Content\amcharts\amcharts4\frozen.js" />
+    <Content Include="Content\amcharts\amcharts4\themes\animated.js" />
+    <Content Include="Content\amcharts\amcharts4\themes\frozen.js" />
+    <Content Include="Content\assets\css\bootstrap.min.css" />
+    <Content Include="Content\assets\css\datatables\jquery.dataTables-custom.css" />
+    <Content Include="Content\assets\css\datatables\jquery.datatables.min.css" />
+    <Content Include="Content\assets\css\icons.css" />
+    <Content Include="Content\assets\css\icons\font-awesome\font-awesome.css" />
+    <Content Include="Content\assets\css\icons\font-awesome\fonts\fontawesome-webfont.svg" />
+    <Content Include="Content\assets\css\icons\ion-icon\fonts\bkp\ionicons.svg" />
+    <Content Include="Content\assets\css\icons\ion-icon\fonts\ionicons.svg" />
+    <Content Include="Content\assets\css\icons\ion-icon\ionicons.css" />
+    <Content Include="Content\assets\css\icons\material-design-icon\fonts\materialdesignicons-webfont.svg" />
+    <Content Include="Content\assets\css\icons\material-design-icon\materialdesignicons.css" />
+    <Content Include="Content\assets\css\icons\simple-line-icon\fonts\Simple-Line-Icons.svg" />
+    <Content Include="Content\assets\css\icons\simple-line-icon\simple-line-icons.css" />
+    <Content Include="Content\assets\css\icons\themify-icon\fonts\themify.svg" />
+    <Content Include="Content\assets\css\icons\themify-icon\themify-icons.css" />
+    <Content Include="Content\assets\css\jquery-ui.min.css" />
+    <Content Include="Content\assets\css\responsive.css" />
+    <Content Include="Content\assets\css\style.css" />
+    <Content Include="Content\assets\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Content\assets\images\loading.gif" />
+    <Content Include="Content\assets\images\logo2.png" />
+    <Content Include="Content\assets\images\title-logo.jpg" />
+    <Content Include="Content\assets\js\bootstrap.min.js" />
+    <Content Include="Content\assets\js\custom.js" />
+    <Content Include="Content\assets\js\functions.js" />
+    <Content Include="Content\assets\js\jquery.min.js" />
+    <Content Include="Content\assets\js\jquery.nicescroll.js" />
+    <Content Include="Content\assets\js\jquery.slimscroll.js" />
+    <Content Include="Content\assets\js\modernizr.min.js" />
+    <Content Include="Content\assets\pages\dashboard.js" />
+    <Content Include="Content\assets\pages\multi-select-init.js" />
+    <Content Include="Content\assets\pages\table-data.js" />
+    <Content Include="Content\assets\plugins\datarangepicker\daterangepicker.css" />
+    <Content Include="Content\assets\plugins\datarangepicker\daterangepicker.js" />
+    <Content Include="Content\assets\plugins\datatables\jquery.datatables.min.js" />
+    <Content Include="Content\assets\plugins\inputmask\jasny-bootstrap.min.js" />
+    <Content Include="Content\assets\plugins\jquery-multi-select\css\multi-select.css" />
+    <Content Include="Content\assets\plugins\jquery-multi-select\js\jquery.multi-select.js" />
+    <Content Include="Content\assets\plugins\jquery-multi-select\js\jquery.quicksearch.js" />
+    <Content Include="Content\assets\plugins\jquery-sparkline\jquery.charts-sparkline.js" />
+    <Content Include="Content\assets\plugins\jquery-ui\jquery-ui.min.js" />
+    <Content Include="Content\assets\plugins\moment\moment.js" />
+    <Content Include="Content\assets\plugins\morris-chart\morris.js" />
+    <Content Include="Content\assets\plugins\morris-chart\raphael-min.js" />
+    <Content Include="Content\assets\css\bootstrap-glyphicons.css" />
+    <Content Include="Content\attachment.jpg" />
+    <Content Include="Content\bootstrap-grid.css" />
+    <Content Include="Content\bootstrap-grid.min.css" />
+    <Content Include="Content\bootstrap-reboot.css" />
+    <Content Include="Content\bootstrap-reboot.min.css" />
+    <Content Include="Content\bootstrap-switch\css\jquery.btnswitch.min.css" />
+    <Content Include="Content\bootstrap-switch\jquery.btnswitch.min.js" />
+    <Content Include="Content\bootstrap.css" />
+    <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\DeleteAction.png" />
+    <Content Include="Content\down.jpg" />
+    <Content Include="Content\edit.png" />
+    <Content Include="Content\File.png" />
+    <Content Include="Content\hand.png" />
+    <Content Include="Content\mab-jquery-taginput.css" />
+    <Content Include="Content\tablePlugin\css\structure\fonts\jquery-ui.svg" />
+    <Content Include="Content\tablePlugin\css\structure\infragistics.css" />
+    <Content Include="Content\tablePlugin\css\themes\infragistics\infragistics.theme.css" />
+    <Content Include="Content\up.jpg" />
+    <Content Include="Scripts\Chart.js" />
+    <Content Include="Scripts\circles.js" />
+    <Content Include="Content\datetimepicker\css\flatpickr.css" />
+    <Content Include="Content\datetimepicker\js\confirmDate.js" />
+    <Content Include="Content\datetimepicker\js\flatpickr.2.js" />
+    <Content Include="Content\datetimepicker\js\flatpickr.js" />
+    <Content Include="Content\datetimepicker\js\minMaxTimePlugin.js" />
+    <Content Include="Content\datetimepicker\js\rangePlugin.js" />
+    <Content Include="Content\datetimepicker\js\weekSelect.js" />
+    <Content Include="Content\Excel.png" />
+    <Content Include="Content\exclamation-Action.png" />
+    <Content Include="Content\exclamation-Close.png" />
+    <Content Include="Content\exclamation-Open.png" />
+    <Content Include="Content\fancyGrid\fancy.css" />
+    <Content Include="Content\fancyGrid\fancy.min.css" />
+    <Content Include="Content\fancyGrid\images\blue\bar-nav.png" />
+    <Content Include="Content\fancyGrid\images\blue\blue_check.png" />
+    <Content Include="Content\fancyGrid\images\blue\bottom.png" />
+    <Content Include="Content\fancyGrid\images\blue\calendar.png" />
+    <Content Include="Content\fancyGrid\images\blue\check.gif" />
+    <Content Include="Content\fancyGrid\images\blue\check.png" />
+    <Content Include="Content\fancyGrid\images\blue\expand.png" />
+    <Content Include="Content\fancyGrid\images\blue\load.gif" />
+    <Content Include="Content\fancyGrid\images\blue\menu.png" />
+    <Content Include="Content\fancyGrid\images\blue\options-slide.png" />
+    <Content Include="Content\fancyGrid\images\blue\paging.png" />
+    <Content Include="Content\fancyGrid\images\blue\radio.png" />
+    <Content Include="Content\fancyGrid\images\blue\refresh.png" />
+    <Content Include="Content\fancyGrid\images\blue\search.png" />
+    <Content Include="Content\fancyGrid\images\blue\sort-arrows.png" />
+    <Content Include="Content\fancyGrid\images\bootstrap\bottom.png" />
+    <Content Include="Content\fancyGrid\images\bootstrap\calendar.png" />
+    <Content Include="Content\fancyGrid\images\bootstrap\check.png" />
+    <Content Include="Content\fancyGrid\images\bootstrap\expand.png" />
+    <Content Include="Content\fancyGrid\images\bootstrap\menu.png" />
+    <Content Include="Content\fancyGrid\images\bootstrap\options-slide.png" />
+    <Content Include="Content\fancyGrid\images\bootstrap\paging.png" />
+    <Content Include="Content\fancyGrid\images\bootstrap\refresh.png" />
+    <Content Include="Content\fancyGrid\images\bootstrap\sort-arrows.png" />
+    <Content Include="Content\fancyGrid\images\bootstrap\spin.png" />
+    <Content Include="Content\fancyGrid\images\dark\bar-nav.png" />
+    <Content Include="Content\fancyGrid\images\dark\bottom.png" />
+    <Content Include="Content\fancyGrid\images\dark\calendar-1.png" />
+    <Content Include="Content\fancyGrid\images\dark\calendar.png" />
+    <Content Include="Content\fancyGrid\images\dark\check.png" />
+    <Content Include="Content\fancyGrid\images\dark\expand.png" />
+    <Content Include="Content\fancyGrid\images\dark\menu.png" />
+    <Content Include="Content\fancyGrid\images\dark\options-slide.png" />
+    <Content Include="Content\fancyGrid\images\dark\paging.png" />
+    <Content Include="Content\fancyGrid\images\dark\radio.png" />
+    <Content Include="Content\fancyGrid\images\dark\refresh.png" />
+    <Content Include="Content\fancyGrid\images\dark\search.png" />
+    <Content Include="Content\fancyGrid\images\dark\sort-arrows.png" />
+    <Content Include="Content\fancyGrid\images\default\back.png" />
+    <Content Include="Content\fancyGrid\images\default\bar-nav.png" />
+    <Content Include="Content\fancyGrid\images\default\bottom.png" />
+    <Content Include="Content\fancyGrid\images\default\calendar-2.png" />
+    <Content Include="Content\fancyGrid\images\default\calendar.png" />
+    <Content Include="Content\fancyGrid\images\default\check.png" />
+    <Content Include="Content\fancyGrid\images\default\col-drag-bottom.png" />
+    <Content Include="Content\fancyGrid\images\default\col-drag-top.png" />
+    <Content Include="Content\fancyGrid\images\default\dirty.png" />
+    <Content Include="Content\fancyGrid\images\default\dots.png" />
+    <Content Include="Content\fancyGrid\images\default\expand.png" />
+    <Content Include="Content\fancyGrid\images\default\filter.png" />
+    <Content Include="Content\fancyGrid\images\default\load.gif" />
+    <Content Include="Content\fancyGrid\images\default\mark.png" />
+    <Content Include="Content\fancyGrid\images\default\menu-expand.png" />
+    <Content Include="Content\fancyGrid\images\default\menu.png" />
+    <Content Include="Content\fancyGrid\images\default\next.png" />
+    <Content Include="Content\fancyGrid\images\default\options-slide.png" />
+    <Content Include="Content\fancyGrid\images\default\paging.png" />
+    <Content Include="Content\fancyGrid\images\default\radio.png" />
+    <Content Include="Content\fancyGrid\images\default\refresh.png" />
+    <Content Include="Content\fancyGrid\images\default\search.png" />
+    <Content Include="Content\fancyGrid\images\default\small-arrow-bottom.png" />
+    <Content Include="Content\fancyGrid\images\default\small-dots.png" />
+    <Content Include="Content\fancyGrid\images\default\sort-arrows.png" />
+    <Content Include="Content\fancyGrid\images\default\sort-over.png" />
+    <Content Include="Content\fancyGrid\images\default\sort.png" />
+    <Content Include="Content\fancyGrid\images\default\spin.png" />
+    <Content Include="Content\fancyGrid\images\default\tree-expand.png" />
+    <Content Include="Content\fancyGrid\images\default\wide_dd.gif" />
+    <Content Include="Content\fancyGrid\images\gray\a_bg.png" />
+    <Content Include="Content\fancyGrid\images\gray\bottom.png" />
+    <Content Include="Content\fancyGrid\images\gray\calendar.png" />
+    <Content Include="Content\fancyGrid\images\gray\check.png" />
+    <Content Include="Content\fancyGrid\images\gray\col-drag-bottom.png" />
+    <Content Include="Content\fancyGrid\images\gray\col-drag-top.png" />
+    <Content Include="Content\fancyGrid\images\gray\expand.png" />
+    <Content Include="Content\fancyGrid\images\gray\load.gif" />
+    <Content Include="Content\fancyGrid\images\gray\menu.png" />
+    <Content Include="Content\fancyGrid\images\gray\options-slide.gif" />
+    <Content Include="Content\fancyGrid\images\gray\paging.png" />
+    <Content Include="Content\fancyGrid\images\gray\radio.png" />
+    <Content Include="Content\fancyGrid\images\gray\refresh.png" />
+    <Content Include="Content\fancyGrid\images\gray\search.png" />
+    <Content Include="Content\fancyGrid\images\gray\sort-arrows.png" />
+    <Content Include="Content\fancyGrid\images\gray\spin.png" />
+    <Content Include="Content\fancyGrid\images\load.gif" />
+    <Content Include="Content\fancyGrid\images\sand\back.png" />
+    <Content Include="Content\fancyGrid\images\sand\bar-nav.png" />
+    <Content Include="Content\fancyGrid\images\sand\bottom.png" />
+    <Content Include="Content\fancyGrid\images\sand\calendar.png" />
+    <Content Include="Content\fancyGrid\images\sand\check.png" />
+    <Content Include="Content\fancyGrid\images\sand\col-drag-bottom.png" />
+    <Content Include="Content\fancyGrid\images\sand\col-drag-top.png" />
+    <Content Include="Content\fancyGrid\images\sand\expand.png" />
+    <Content Include="Content\fancyGrid\images\sand\menu-expand.png" />
+    <Content Include="Content\fancyGrid\images\sand\menu.png" />
+    <Content Include="Content\fancyGrid\images\sand\next.png" />
+    <Content Include="Content\fancyGrid\images\sand\options-slide.png" />
+    <Content Include="Content\fancyGrid\images\sand\paging.png" />
+    <Content Include="Content\fancyGrid\images\sand\radio.png" />
+    <Content Include="Content\fancyGrid\images\sand\refresh.png" />
+    <Content Include="Content\fancyGrid\images\sand\search.png" />
+    <Content Include="Content\fancyGrid\images\sand\sort-arrows.png" />
+    <Content Include="Content\fancyGrid\images\sand\sort.png" />
+    <Content Include="Content\fancyGrid\images\sand\spin.png" />
+    <Content Include="Content\fancyGrid\images\sand\wide_dd.png" />
+    <Content Include="Content\highCharts\highcharts.js" />
+    <Content Include="Content\highCharts\histogram-bellcurve.js" />
+    <Content Include="Content\segmented-controls.css" />
+    <Content Include="Content\TableFilter\sortabletable.js" />
+    <Content Include="Content\TableFilter\style\colsVisibility.css" />
+    <Content Include="Content\TableFilter\style\filtersVisibility.css" />
+    <Content Include="Content\TableFilter\style\tablefilter.css" />
+    <Content Include="Content\TableFilter\style\themes\blank.png" />
+    <Content Include="Content\TableFilter\style\themes\btn_clear_filters.png" />
+    <Content Include="Content\TableFilter\style\themes\btn_filter.png" />
+    <Content Include="Content\TableFilter\style\themes\btn_first_page.gif" />
+    <Content Include="Content\TableFilter\style\themes\btn_last_page.gif" />
+    <Content Include="Content\TableFilter\style\themes\btn_next_page.gif" />
+    <Content Include="Content\TableFilter\style\themes\btn_previous_page.gif" />
+    <Content Include="Content\TableFilter\style\themes\downsimple.png" />
+    <Content Include="Content\TableFilter\style\themes\icn_clp.png" />
+    <Content Include="Content\TableFilter\style\themes\icn_exp.png" />
+    <Content Include="Content\TableFilter\style\themes\icn_filter.gif" />
+    <Content Include="Content\TableFilter\style\themes\icn_filterActive.gif" />
+    <Content Include="Content\TableFilter\style\themes\upsimple.png" />
+    <Content Include="Content\TableFilter\tablefilter.js" />
+    <Content Include="Content\TableFilter\tfAdapter.sortabletable.js" />
+    <Content Include="Content\tooltip.css" />
+    <Content Include="favicon.ico" />
+    <Content Include="Global.asax" />
+    <Content Include="Content\Site.css" />
+    <Content Include="logs\PTEfile\Debug.txt" />
+    <Content Include="logs\PTEfile\Trace.txt" />
+    <Content Include="logs\Trace.txt" />
+    <Content Include="Models\TextTemplate1.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>TextTemplate1.TempTable.cs</LastGenOutput>
+    </Content>
+    <Content Include="obj\Debug\PTE_Web.csproj.FileListAbsolute.txt" />
+    <Content Include="obj\Debug\PTE_Web.dll" />
+    <Content Include="obj\Debug\PTE_Web.pdb" />
+    <Content Include="obj\Debug\TempPE\Models.TextTemplate1.TempTable.cs.dll" />
+    <Content Include="Scripts\bootstrap.bundle.js" />
+    <Content Include="Scripts\bootstrap.bundle.min.js" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="ApplicationInsights.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\assets\css\icons\font-awesome\fonts\fontawesome-webfont.eot" />
+    <Content Include="Content\assets\css\icons\font-awesome\fonts\fontawesome-webfont.ttf" />
+    <Content Include="Content\assets\css\icons\font-awesome\fonts\fontawesome-webfont.woff" />
+    <Content Include="Content\assets\css\icons\font-awesome\fonts\fontawesome-webfont.woff2" />
+    <Content Include="Content\assets\css\icons\font-awesome\fonts\FontAwesome.otf" />
+    <Content Include="Content\assets\css\icons\ion-icon\fonts\bkp\ionicons.eot" />
+    <Content Include="Content\assets\css\icons\ion-icon\fonts\bkp\ionicons.ttf" />
+    <Content Include="Content\assets\css\icons\ion-icon\fonts\bkp\ionicons.woff" />
+    <Content Include="Content\assets\css\icons\ion-icon\fonts\ionicons.eot" />
+    <Content Include="Content\assets\css\icons\ion-icon\fonts\ionicons.ttf" />
+    <Content Include="Content\assets\css\icons\ion-icon\fonts\ionicons.woff" />
+    <Content Include="Content\assets\css\icons\material-design-icon\fonts\materialdesignicons-webfont.eot" />
+    <Content Include="Content\assets\css\icons\material-design-icon\fonts\materialdesignicons-webfont.ttf" />
+    <Content Include="Content\assets\css\icons\material-design-icon\fonts\materialdesignicons-webfont.woff" />
+    <Content Include="Content\assets\css\icons\material-design-icon\fonts\materialdesignicons-webfont.woff2" />
+    <Content Include="Content\assets\css\icons\simple-line-icon\fonts\Simple-Line-Icons.eot" />
+    <Content Include="Content\assets\css\icons\simple-line-icon\fonts\Simple-Line-Icons.ttf" />
+    <Content Include="Content\assets\css\icons\simple-line-icon\fonts\Simple-Line-Icons.woff" />
+    <Content Include="Content\assets\css\icons\simple-line-icon\fonts\Simple-Line-Icons.woff2" />
+    <Content Include="Content\assets\css\icons\themify-icon\fonts\themify.eot" />
+    <Content Include="Content\assets\css\icons\themify-icon\fonts\themify.ttf" />
+    <Content Include="Content\assets\css\icons\themify-icon\fonts\themify.woff" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\bootstrap.min.js.map" />
+    <Content Include="Scripts\bootstrap.js.map" />
+    <Content Include="Scripts\bootstrap.bundle.min.js.map" />
+    <Content Include="Scripts\bootstrap.bundle.js.map" />
+    <Content Include="Content\bootstrap.min.css.map" />
+    <Content Include="Content\bootstrap.css.map" />
+    <Content Include="Content\bootstrap-reboot.min.css.map" />
+    <Content Include="Content\bootstrap-reboot.css.map" />
+    <Content Include="Content\bootstrap-grid.min.css.map" />
+    <Content Include="Content\bootstrap-grid.css.map" />
+    <Content Include="Scripts\company-data.js" />
+    <Content Include="Scripts\esm\popper-utils.js" />
+    <Content Include="Scripts\esm\popper-utils.min.js" />
+    <Content Include="Scripts\esm\popper.js" />
+    <Content Include="Scripts\esm\popper.min.js" />
+    <Content Include="Scripts\esm\popper.min.js.map" />
+    <Content Include="Scripts\esm\popper.js.map" />
+    <Content Include="Scripts\esm\popper-utils.min.js.map" />
+    <Content Include="Scripts\esm\popper-utils.js.map" />
+    <Content Include="Content\TableFilter\tablefilter.js.map" />
+    <Content Include="NLog.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\ajaxLoading\css\preloader.scss" />
+    <Content Include="Content\條碼影印.pdf" />
+    <Content Include="Content\assets\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Content\assets\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="Content\assets\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="Content\assets\fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="bin\ApplicationInsights.config" />
+    <Content Include="bin\NLog.config" />
+    <None Include="bin\PTE_Web.dll.config" />
+    <Content Include="Content\tablePlugin\css\structure\fonts\jquery-ui.ttf" />
+    <Content Include="Content\tablePlugin\css\structure\fonts\jquery-ui.woff" />
+    <None Include="NLog.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="obj\Debug\build.force" />
+    <Content Include="obj\Debug\DesignTimeResolveAssemblyReferencesInput.cache" />
+    <Content Include="obj\Debug\PTE_Web.csproj.CopyComplete" />
+    <Content Include="obj\Debug\PTE_Web.csproj.CoreCompileInputs.cache" />
+    <Content Include="obj\Debug\PTE_Web.csprojAssemblyReference.cache" />
+    <Content Include="obj\Debug\Tsc.out" />
+    <Content Include="obj\Release\PTE_Web.csproj.CopyComplete" />
+    <Content Include="obj\Release\Tsc.out" />
+    <None Include="Properties\PublishProfiles\ReleaseProfile.pubxml" />
+    <None Include="Scripts\jquery-3.3.1.intellisense.js" />
+    <Content Include="Scripts\fancyGrid\fancy-angular.js" />
+    <Content Include="Scripts\fancyGrid\fancy.full.js" />
+    <Content Include="Scripts\fancyGrid\fancy.full.min.js" />
+    <Content Include="Scripts\fancyGrid\fancy.js" />
+    <Content Include="Scripts\fancyGrid\fancy.min.js" />
+    <Content Include="Scripts\fancyGrid\modules\ajax.js" />
+    <Content Include="Scripts\fancyGrid\modules\ajax.min.js" />
+    <Content Include="Scripts\fancyGrid\modules\chart-integration.js" />
+    <Content Include="Scripts\fancyGrid\modules\chart-integration.min.js" />
+    <Content Include="Scripts\fancyGrid\modules\column-drag.js" />
+    <Content Include="Scripts\fancyGrid\modules\column-drag.min.js" />
+    <Content Include="Scripts\fancyGrid\modules\date.js" />
+    <Content Include="Scripts\fancyGrid\modules\date.min.js" />
+    <Content Include="Scripts\fancyGrid\modules\dd.js" />
+    <Content Include="Scripts\fancyGrid\modules\dd.min.js" />
+    <Content Include="Scripts\fancyGrid\modules\dom.js" />
+    <Content Include="Scripts\fancyGrid\modules\dom.min.js" />
+    <Content Include="Scripts\fancyGrid\modules\edit.js" />
+    <Content Include="Scripts\fancyGrid\modules\edit.min.js" />
+    <Content Include="Scripts\fancyGrid\modules\excel.js" />
+    <Content Include="Scripts\fancyGrid\modules\excel.min.js" />
+    <Content Include="Scripts\fancyGrid\modules\expander.js" />
+    <Content Include="Scripts\fancyGrid\modules\expander.min.js" />
+    <Content Include="Scripts\fancyGrid\modules\exporter.js" />
+    <Content Include="Scripts\fancyGrid\modules\exporter.min.js" />
+    <Content Include="Scripts\fancyGrid\modules\filter.js" />
+    <Content Include="Scripts\fancyGrid\modules\filter.min.js" />
+    <Content Include="Scripts\fancyGrid\modules\form.js" />
+    <Content Include="Scripts\fancyGrid\modules\form.min.js" />
+    <Content Include="Scripts\fancyGrid\modules\grid.js" />
+    <Content Include="Scripts\fancyGrid\modules\grid.min.js" />
+    <Content Include="Scripts\fancyGrid\modules\grouped-header.js" />
+    <Content Include="Scripts\fancyGrid\modules\grouped-header.min.js" />
+    <Content Include="Scripts\fancyGrid\modules\grouping.js" />
+    <Content Include="Scripts\fancyGrid\modules\grouping.min.js" />
+    <Content Include="Scripts\fancyGrid\modules\i18n\cs.js" />
+    <Content Include="Scripts\fancyGrid\modules\i18n\da.js" />
+    <Content Include="Scripts\fancyGrid\modules\i18n\de.js" />
+    <Content Include="Scripts\fancyGrid\modules\i18n\en-AU.js" />
+    <Content Include="Scripts\fancyGrid\modules\i18n\en-UK.js" />
+    <Content Include="Scripts\fancyGrid\modules\i18n\en-US.js" />
+    <Content Include="Scripts\fancyGrid\modules\i18n\en.js" />
+    <Content Include="Scripts\fancyGrid\modules\i18n\es.js" />
+    <Content Include="Scripts\fancyGrid\modules\i18n\fi.js" />
+    <Content Include="Scripts\fancyGrid\modules\i18n\fr-CA.js" />
+    <Content Include="Scripts\fancyGrid\modules\i18n\fr.js" />
+    <Content Include="Scripts\fancyGrid\modules\i18n\id.js" />
+    <Content Include="Scripts\fancyGrid\modules\i18n\it.js" />
+    <Content Include="Scripts\fancyGrid\modules\i18n\ja.js" />
+    <Content Include="Scripts\fancyGrid\modules\i18n\ko.js" />
+    <Content Include="Scripts\fancyGrid\modules\i18n\nl.js" />
+    <Content Include="Scripts\fancyGrid\modules\i18n\no-NB.js" />
+    <Content Include="Scripts\fancyGrid\modules\i18n\no-NN.js" />
+    <Content Include="Scripts\fancyGrid\modules\i18n\pl.js" />
+    <Content Include="Scripts\fancyGrid\modules\i18n\pt-BR.js" />
+    <Content Include="Scripts\fancyGrid\modules\i18n\pt-PT.js" />
+    <Content Include="Scripts\fancyGrid\modules\i18n\ru.js" />
+    <Content Include="Scripts\fancyGrid\modules\i18n\sv.js" />
+    <Content Include="Scripts\fancyGrid\modules\i18n\tr.js" />
+    <Content Include="Scripts\fancyGrid\modules\i18n\zh-CN.js" />
+    <Content Include="Scripts\fancyGrid\modules\i18n\zh-TW.js" />
+    <Content Include="Scripts\fancyGrid\modules\infinite.js" />
+    <Content Include="Scripts\fancyGrid\modules\infinite.min.js" />
+    <Content Include="Scripts\fancyGrid\modules\menu.js" />
+    <Content Include="Scripts\fancyGrid\modules\menu.min.js" />
+    <Content Include="Scripts\fancyGrid\modules\paging.js" />
+    <Content Include="Scripts\fancyGrid\modules\paging.min.js" />
+    <Content Include="Scripts\fancyGrid\modules\selection.js" />
+    <Content Include="Scripts\fancyGrid\modules\selection.min.js" />
+    <Content Include="Scripts\fancyGrid\modules\server-data.js" />
+    <Content Include="Scripts\fancyGrid\modules\server-data.min.js" />
+    <Content Include="Scripts\fancyGrid\modules\sort.js" />
+    <Content Include="Scripts\fancyGrid\modules\sort.min.js" />
+    <Content Include="Scripts\fancyGrid\modules\spark.js" />
+    <Content Include="Scripts\fancyGrid\modules\spark.min.js" />
+    <Content Include="Scripts\fancyGrid\modules\state.js" />
+    <Content Include="Scripts\fancyGrid\modules\state.min.js" />
+    <Content Include="Scripts\fancyGrid\modules\summary.js" />
+    <Content Include="Scripts\fancyGrid\modules\summary.min.js" />
+    <Content Include="Scripts\fancyGrid\modules\touch.js" />
+    <Content Include="Scripts\fancyGrid\modules\touch.min.js" />
+    <Content Include="Scripts\fancyGrid\modules\tree.js" />
+    <Content Include="Scripts\fancyGrid\modules\tree.min.js" />
+    <Content Include="Scripts\infragistics.core.js" />
+    <Content Include="Scripts\infragistics.lob.js" />
+    <Content Include="Scripts\jquery-1.9.1.min.js" />
+    <Content Include="Scripts\jquery-3.3.1.js" />
+    <Content Include="Scripts\jquery-3.3.1.min.js" />
+    <Content Include="Scripts\jquery-3.3.1.slim.js" />
+    <Content Include="Scripts\jquery-3.3.1.slim.min.js" />
+    <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery-ui.min.js" />
+    <Content Include="Scripts\jquery.validate.js" />
+    <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\mab-jquery-taginput.js" />
+    <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\popper-utils.js" />
+    <Content Include="Scripts\popper-utils.min.js" />
+    <Content Include="Scripts\popper.js" />
+    <Content Include="Scripts\popper.min.js" />
+    <Content Include="Scripts\typeahead.bundle.min.js" />
+    <Content Include="Scripts\umd\popper-utils.js" />
+    <Content Include="Scripts\umd\popper-utils.min.js" />
+    <Content Include="Scripts\umd\popper.js" />
+    <Content Include="Scripts\umd\popper.min.js" />
+    <Content Include="iframe\iMonthlyReport.html" />
+    <Content Include="Scripts\utils.js" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Views\Web.config" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Home\About.cshtml" />
+    <Content Include="Views\Home\Contact.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Shared\_Layout_bootstrap.cshtml" />
+    <Content Include="Views\DashBoard\DashBoardDynamic.cshtml" />
+    <Content Include="Views\DashBoard\DashBoard.cshtml" />
+    <Content Include="Views\DashBoard\DashBoardByOrg.cshtml" />
+    <Content Include="Scripts\umd\popper.min.js.map" />
+    <Content Include="Scripts\umd\popper.js.map" />
+    <Content Include="Scripts\umd\popper-utils.min.js.map" />
+    <Content Include="Scripts\umd\popper-utils.js.map" />
+    <Content Include="Scripts\README.md" />
+    <Content Include="Scripts\popper.min.js.map" />
+    <Content Include="Scripts\popper.js.map" />
+    <Content Include="Scripts\popper-utils.min.js.map" />
+    <Content Include="Scripts\popper-utils.js.map" />
+    <Content Include="Views\AnalyzeTool\AnalyzeItemNameType.cshtml" />
+    <Content Include="Views\Shared\_Partial_DateTimePicker.cshtml" />
+    <Content Include="Views\AnalyzeTool\CorrelationWindow.cshtml" />
+    <Content Include="Views\Shared\_Layout_Simple.cshtml" />
+    <Content Include="Source\PTE Web 使用文件.pdf" />
+    <Content Include="Source\PTE Web 使用文件.pptx" />
+    <Content Include="Views\SpareTool\Index.cshtml" />
+    <Content Include="Views\SpareTool\Index2.cshtml" />
+    <Content Include="Views\RealTime\RealTimeUPHPerformance.cshtml" />
+    <Content Include="Views\RealTime\_RealTimeUPHPerformance.cshtml" />
+    <Content Include="Views\IssueIndex\Index.cshtml" />
+    <Content Include="Views\IssueIndex\IssueEditor.cshtml" />
+    <Content Include="Views\RealTime\RealTimeFixtureCorrelation.cshtml" />
+    <Content Include="Views\RealTime\RealUPHDailyHomePage.cshtml" />
+    <Content Include="Views\AnalyzeTool\RealTimeFixtureMonitor.cshtml" />
+    <Content Include="Views\MGU\MGUDashBoard.cshtml" />
+    <Content Include="Views\MGU\_GetSOStationData.cshtml" />
+    <Content Include="Views\PTEWebDataBaseBrowser\HomePlayGround.cshtml" />
+    <Content Include="Views\PTEWebDataBaseBrowser\_HomePalyGroundTable.cshtml" />
+    <Content Include="Views\DashBoard\ProductOwnerEditor.cshtml" />
+    <Content Include="Views\DashBoard\DashBoardByPerson.cshtml" />
+    <Content Include="Views\PTEWebDataBaseBrowser\CpkDataTable.cshtml" />
+    <Content Include="Views\DashBoard\_DashBoard_Trend.cshtml" />
+    <Content Include="Views\MGU\MGUHome.cshtml" />
+    <Content Include="Views\FixtureBoard\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+    <Folder Include="Content\assets\plugins\jquery-multi-select\NewFolder2\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <Content Include="Scripts\jquery-3.3.1.slim.min.map" />
+    <Content Include="Scripts\jquery-3.3.1.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <TypeScriptCompile Include="Scripts\index.d.ts" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>
+    </ApplicationIcon>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>64062</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:64062/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>此專案參考這部電腦上所缺少的 NuGet 套件。請啟用 NuGet 套件還原，以下載該套件。如需詳細資訊，請參閱 http://go.microsoft.com/fwlink/?LinkID=322105。缺少的檔案是 {0}。</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\EntityFramework.6.3.0\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.3.0\build\EntityFramework.props'))" />
+    <Error Condition="!Exists('..\packages\EntityFramework.6.3.0\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.3.0\build\EntityFramework.targets'))" />
+  </Target>
+  <Import Project="..\packages\EntityFramework.6.3.0\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.3.0\build\EntityFramework.targets')" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target> -->
+</Project>

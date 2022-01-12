@@ -1,0 +1,405 @@
+﻿@model IEnumerable<PTE_Web.Models.BasicTestPerformance>
+
+
+<div class="col-md-6">
+        <div class="white-box">
+           <h2 class="header-title">All Station Info</h2>
+           <div class="table-responsive" style="height:400px">
+               <table id="example_2" class="display table" style="font-size:15px">
+                        <thead>
+                            <tr style="text-align: right;">
+                                    <th>@Html.DisplayNameFor(model => model.ItemNameType)</th>
+                                    <th>@Html.DisplayNameFor(model => model.JobNumber)</th>
+                                    <th>@Html.DisplayNameFor(model => model.TestStation)</th>
+                                    <th>@Html.DisplayNameFor(model => model.Total)</th>
+                                    <th>@Html.DisplayNameFor(model => model.Fail)</th>
+                                    <th>@Html.DisplayNameFor(model => model.UPH)</th>
+                                    <th>@Html.DisplayNameFor(model => model.FPR)</th>
+                                    <th>@Html.DisplayNameFor(model => model.FYR)</th>
+                                    @*<th>@Html.DisplayNameFor(model => model.Retry_Rate)</th>*@
+                                    <th>@Html.DisplayNameFor(model => model.Avg_Pass_Time)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>@Html.DisplayFor(modelItem => item.ItemNameType)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.JobNumber)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.TestStation)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.Total)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.Fail)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.UPH)</td>
+                                   @if(item.FPR <= 98)
+                                   {
+                                       <td style="color:red">@Html.DisplayFor(modelItem => item.FPR)</td>
+                                   }
+                                   else
+                                   {
+                                       <td>@Html.DisplayFor(modelItem => item.FPR)</td>
+                                   }                                    
+                                    <td>@Html.DisplayFor(modelItem => item.FYR)</td>   
+                                    @*<td>@Html.DisplayFor(modelItem => item.Retry_Rate)</td>*@  
+                                    <td>@Html.DisplayFor(modelItem => item.Avg_Pass_Time)</td>  
+                                </tr>                            
+                            }
+                        </tbody>
+                    </table>
+           </div>
+        </div>
+    </div>
+
+<script data-config>
+                        var id = function (id) {
+                            return document.getElementById(id);
+                        };
+                        var table = id('example_2');
+                        var totRowIndex = table.getElementsByTagName('tr').length;
+                        var tfConfig = {
+                            // instruct TableFilter location to import ressources from
+                            base_path: '~/Content/TableFilter/',
+                            paging: {
+                                results_per_page: ['Records: ', [10, 25, 50, 100]]
+                            },
+                            //col_1: 'select',
+                            alternate_rows: true,
+                            rows_counter: true,
+                            btn_reset: true,
+                            loader: true,
+                            status_bar: true,
+                            sort: true,
+                            sort_config: {
+                                sort_types: ['US','US', 'String','US','US','US', 'US','US','US','US',]
+                            },
+                            mark_active_columns: true,
+                            highlight_keywords: true,
+                            //no_results_message: true,
+                            col_types: [
+                                'number','number', 'string', 'number', 'number', 'number', 'number', 'number'  ,'number'                 
+                            ],
+                            col_widths: [
+                               '140px', '140px', '140px','105px','105px','105px','150px','150px','175px'
+                            ],
+                            extensions: [{ name: 'sort' }]
+
+                        };
+
+                        var tf = new TableFilter('example_2', tfConfig);
+                     tf.init();
+                 </script>
+
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="white-box">
+           <h2 class="header-title">UPH/FYR Chart</h2>
+            <div id="chartdiv" style="min-width:500px;height:500px"></div>
+        </div>
+    </div>
+        <div class="col-md-6">
+        <div class="white-box">
+        <h2 class="header-title">Station Item Detail</h2>
+           <ul class="nav nav-tabs" >
+            @foreach(var item in ViewBag.StationList)
+            {
+                ViewBag.TitleValue = item + "_containers";
+                     if(@ViewBag.StationStatusDict[item] == "fade in active")
+                     {
+                        <li class="active">
+                            <a class="btn btn-info nav-link @ViewBag.StationStatusDict[item] "  data-toggle="tab" style="font:bold" href="#@ViewBag.TitleValue" role="tab" aria-expanded="true">@item</a>
+                        </li>
+                     }
+                     else
+                     {
+                         <li>
+                            <a class="nav-link btn btn-info" data-toggle="tab" href="#@ViewBag.TitleValue" style="font:bold" role="tab" aria-expanded="false">@item</a>
+                        </li>
+
+                     }           
+            }
+            </ul>
+            <div class="tab-content" id="myTabContents">
+                @foreach(var item in ViewBag.StationList)
+                {                   
+
+                    ViewBag.TitleValue = item + "_containers";
+                    <div class="tab-pane @ViewBag.StationStatusDict[item]" id="@ViewBag.TitleValue" role="tabpanel">
+                   <div class="table-responsive" style="height:400px">
+                       <table id="example_@item" class="display table" style="font-size:15px">
+                                <thead>
+                                    <tr style="text-align: right;">
+                                            <th>#</th>
+                                            <th>FailStepNumber</th>
+                                            <th>StepDesctiption</th>
+                                            <th>FixtureCorrelation</th>
+                                            <th>FailCount</th>
+                                            <th>FailRate (%)</th>
+                                            <th>FailPercent (%)</th>
+                                            <th>Detail</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var data in ViewBag.ItemInfoDict[item])
+                                    {
+                                        <tr>
+                                            <td>@data.Order</td>
+                                            <td>@data.FailStepNumber</td>
+                                            <td>@data.StepDesctiption</td>
+                                            <td>@data.FixtureCorrelation</td>
+                                            <td>@data.FailCount</td>      
+                                            <td>@data.FailRate</td>          
+                                            <td>@data.FailPercent</td> 
+                                            @*<td><button type="button" disabled id="btnAdd" class="btn btn-success">Detail</button></td>*@  
+                                            <td><button type="button" id="btnAdd" class="btn btn-default" onclick="getHistogram('@ViewBag.SO','@item','@data.FailStepNumber');GetResultsJSON();"><i class="fa fa-bar-chart-o"></i> CPK</button></td>
+                                        </tr>                            
+                                    }
+                                </tbody>
+                            </table>
+                   </div>   
+                    <script data-config>
+                        var id = function (id) {
+                            return document.getElementById(id);
+                        };
+                        var table = id('example_@item');
+                        var totRowIndex = table.getElementsByTagName('tr').length;
+                        var tfConfig = {
+                            // instruct TableFilter location to import ressources from
+                            base_path: '~/Content/TableFilter/',
+                            paging: {
+                                results_per_page: ['Records: ', [10, 25, 50, 100]]
+                            },
+                            //col_1: 'select',
+                            alternate_rows: true,
+                            rows_counter: true,
+                            btn_reset: true,
+                            loader: true,
+                            status_bar: true,
+                            sort: true,
+                            sort_config: {
+                                sort_types: ['US','US', 'String','String','US', 'US','US','String']
+                            },
+                            mark_active_columns: true,
+                            highlight_keywords: true,
+                            //no_results_message: true,
+                            col_types: [
+                                'number','number', 'string', 'string', 'number', 'number', 'number'  ,'string'                    
+                            ],
+                            col_widths: [
+                               '30px', '140px', '280px','205px','105px','105px','140px','140px'
+                            ],
+                            extensions: [{ name: 'sort' }]
+
+                        };
+
+                        var tf = new TableFilter('example_@item', tfConfig);
+                     tf.init();
+                 </script>
+
+                </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+        var chart = am4core.create("chartdiv", am4charts.XYChart);
+        chart.data = @(new HtmlString(ViewBag.StationOutline));
+        var categoryAxis = chart.yAxes.push(new am4charts.CategoryAxis());
+        categoryAxis.dataFields.category = "TestStation";
+        categoryAxis.renderer.inversed = true;
+        categoryAxis.renderer.grid.template.location = 0;
+
+        //create value axis for UPH
+        var valueAxis = chart.xAxes.push(new am4charts.ValueAxis());
+        valueAxis.renderer.opposite = true;
+        valueAxis.title.text = "UPH (units)";
+
+        //create value axis for FYR
+        var FYRAxis = chart.xAxes.push(new am4charts.ValueAxis());
+        FYRAxis.title.text = "FYR (%)";
+        FYRAxis.renderer.opposite = false;
+
+        //create columns
+        var series = chart.series.push(new am4charts.ColumnSeries());
+        series.dataFields.categoryY = "TestStation";
+        series.dataFields.valueX = "EstimateUPH";
+        series.name = "EstimateUPH";
+        series.columns.template.fillOpacity = 0.5;
+        series.columns.template.strokeOpacity = 0;
+        series.tooltipText = "EstimateUPH in {categoryY}: {valueX.value}";
+
+        //create line
+        var lineSeries = chart.series.push(new am4charts.LineSeries());
+        lineSeries.dataFields.categoryY = "TestStation";
+        lineSeries.dataFields.valueX = "FYR";
+        lineSeries.name = "FYR";
+        lineSeries.strokeWidth = 3;
+        lineSeries.tooltipText = "FYR in {categoryY}: {valueX.value}";
+        lineSeries.visible = false;
+        lineSeries.xAxis = FYRAxis;
+
+   
+
+        //add bullets
+        var circleBullet = lineSeries.bullets.push(new am4charts.CircleBullet());
+        circleBullet.circle.fill = am4core.color("#fff");
+        circleBullet.circle.strokeWidth = 2;
+
+        //add chart cursor
+        chart.cursor = new am4charts.XYCursor();
+        chart.cursor.behavior = "zoomY";
+
+        //add legend
+        chart.legend = new am4charts.Legend();
+</script>
+
+<div class="modal fade" id="showDistribution" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Detail Info</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="panel with-nav-tabs panel-success">
+                        <ul class="nav nav-tabs">
+                            <li class="active"><a data-toggle="tab" href="#tab1">Detail</a></li>
+                            @*<li><a data-toggle="tab" href="#menu1">Item Daily Fail</a></li>
+                            <li><a data-toggle="tab" href="#menu2">Cpk Calculator</a></li>*@
+                        </ul>
+                        <div class="tab-content">
+                            <div id="tab1" class="tab-pane fade in active" style="min-height:300px">
+                               <div class="table-responsive" style="height:300px">
+                                <table id="Fixture_Table" class="display table" style="font-size:15px">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 80px;  text-align: center;">MachineName</th>
+                                            <th style="width: 80px; text-align: center;">Position</th>
+                                            <th style="width: 80px; text-align: center;">FailCount</th>
+                                            <th style="width: 80px; text-align: center;">TestCount</th>
+                                            <th style="width: 80px; text-align: center;">FailPercent</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="IssueReply"></tbody>
+                                </table>  
+                               </div>
+                            </div>
+                            @*<div id="menu1" class="tab-pane fade">
+                                <div id="chart_divCPK" style="min-height:500px"></div>
+                            </div>
+                            <div id="menu2" class="tab-pane fade">
+                                <div class="row">
+                                    <div class="col-md-6">
+                     
+
+                                        <div class="row">
+                                            <fieldset>
+                                                <legend>Controller Tool</legend>
+
+                                                <div id="BinButton"></div>
+                                                <br />
+ 
+                                                <div class="col-xs-1">
+
+                                                    <div class="form-group">
+
+                                                        <button type="submit" class="btn btn-primary btn-lg" onclick="calNewBin()">Cal</button>
+                                                    </div>
+                                                </div>
+                                            </fieldset>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="col-md-12">
+                                            <div class="row">
+                                                <div class="col-xs-12">
+                                                    <div id="chart_div"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>*@
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<script>
+    function getHistogram(so,station,failitem) {
+        $.ajax({
+            url: "@Url.Action("Get_CPKData", "MGU")",
+            method: "post",
+            contentType: 'application/json',
+            data: JSON.stringify({ SO: so, Station: station, Failitem: failitem }),
+            success: function (data) {
+                $('#showDistribution').modal('show');
+                $('#IssueReply').empty();
+                var ContentStr = "";
+                for (var i = 0; i < data.length; i++) {
+                    ContentStr += '<tr>' +
+                        '<td>' + data[i].MachineName + '</td>' +
+                        '<td>' + data[i].Position + '</td>' +
+                        '<td>' + data[i].FailCount + '</td>' +
+                        '<td>' + data[i].TestCount + '</td>' +
+                        '<td>' + data[i].FailPercent + '</td>' +
+                        '</tr>';
+                }
+                $('#IssueReply').append(ContentStr);
+
+                
+            }, error: function (e) {
+                debugger;
+
+            }
+        });
+    }
+</script>
+
+<script data-config>
+                        var id = function (id) {
+                            return document.getElementById(id);
+                        };
+                        var table = id('Fixture_Table');
+                        var totRowIndex = table.getElementsByTagName('tr').length;
+                        var tfConfig = {
+                            // instruct TableFilter location to import ressources from
+                            base_path: '~/Content/TableFilter/',
+                            paging: {
+                                results_per_page: ['Records: ', [10, 25, 50, 100]]
+                            },
+                            //col_1: 'select',
+                            alternate_rows: true,
+                            rows_counter: true,
+                            btn_reset: true,
+                            loader: true,
+                            status_bar: true,
+                            sort: true,
+                            sort_config: {
+                                sort_types: [ 'String','String','US','US', 'US']
+                            },
+                            mark_active_columns: true,
+                            highlight_keywords: true,
+                            //no_results_message: true,
+                            col_types: [
+                                'string', 'string', 'number', 'number', 'number'                    
+                            ],
+                            col_widths: [
+                               '150px','150px','150px','150px','150px'
+                            ],
+                            extensions: [{ name: 'sort' }]
+
+                        };
+
+                        var tf = new TableFilter('Fixture_Table', tfConfig);
+                     tf.init();
+                 </script>

@@ -1,0 +1,236 @@
+﻿@using PTE_Web.Models;
+@model IEnumerable<TableRow>
+@{
+    ViewBag.Title = "CpkDataTable";
+    Layout = "~/Views/Shared/_Layout_bootstrap.cshtml";
+}
+
+
+<style>
+    input.largerCheckbox {
+        transform: scale(3);
+    }
+</style>
+<h2>CpkDataTable</h2>
+
+<!-- 日期選擇物件 Start-->
+<div class="row">
+    <div class="col-md-12">
+        <div class="white-box">
+            <form method="post" name="DateRangeForm" action="@ViewContext.RouteData.Values["action"]">
+                <div class="input-group">
+                    <b style="font-size:30px;"><span style="color:black">Org: </span></b>
+                    <input name="org" style="width:70px;font-size:30px;padding-right:30px" type="text" value=@TempData["Org"]>
+                    <b style="font-size:30px;padding-right:30px;padding-left:30px;"><span style="color:black">ItemNameType: </span></b>
+                    <input name="itemnametype" style="width:120px;font-size:30px;padding-right:30px" type="text" value=@TempData["ItemNameType"]>
+                    <b style="font-size:30px;padding-right:30px;padding-left:30px;"><span style="color:black">From </span></b>
+                    <input class=flatpickr style="width:200px;font-size:30px;padding-right:30px" type="text" placeholder=@TempData["StartDate"] name="startdate" data-id="rangePlugin">
+                    <b style="padding-right:30px;padding-left:30px;font-size:30px"><span style="color:black">to </span></b>
+                    <input type="text" align="middle" style="padding-right:30px;width:200px;font-size:30px" placeholder=@TempData["EndDate"] id="secondRangeInput" name="enddate">
+                    <input type="checkbox" style="margin-left:30px" class="largerCheckbox" name="bckItem">
+                    <label  for="checkbox-5"><span style="font-size:30px;padding-right:30px;padding-left:30px;">With Cpk</span></label>
+                    <input type='submit' class="btn waves-effect waves-light btn-primary" style="font-size:30px;margin-top:-20px;margin-left:15px;text-align:center;" value='Go' />                   
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="white-box">
+            <div class="table-responsive">
+                <div style="margin-left:20px;margin-right:20px;width: 100%;">
+                  <div style="position:relative">
+                    <div id="containers"></div>
+                  </div>
+                </div>
+                <script data-config>
+                     var model = @Html.Raw(Json.Encode(Model));
+                    $('#containers').FancyGrid({
+                        title: '@ViewBag.Description',
+                        renderTo: 'container',
+                        height: 'fit',
+                        width: 'fit',
+                        data: model,
+                        theme: 'gray',
+                        resizable: true,
+                        defaults: {
+                            type: 'string',
+                            width: 120,
+                            sortable: true,
+                            ellipsis: true,
+                            resizable: true,
+                            filter: {
+                                header: true,
+                                emptyText: 'Search'
+                            }
+                        },
+                        paging: {
+                            pageSize: 10,
+                            pageSizeData: [5, 10, 20, 50, 500, 1000]
+                        },
+                        exporter: true,
+                        tbar: [{
+                            text: 'Export to Excel',
+                            handler: function () {
+                                var thispageSize = this.getPageSize();
+                                this.setPageSize(this.getTotal());
+                                this.exportToExcel({
+                                    fileName: 'All_ItemTable_Excel',
+                                    header: true
+                                });
+                                this.setPageSize(thispageSize);
+                            }
+                        }, {
+                            text: 'Export to CSV',
+                            handler: function () {
+                                var thispageSize = this.getPageSize();
+                                this.setPageSize(this.getTotal());
+                                this.exportToCSV({
+                                    fileName: 'All_ItemTable_CSV.csv',
+                                    header: true
+                                });
+                                this.setPageSize(thispageSize);
+                            }
+                        }],
+                        columns: [{
+                            index: 'DBIndex',
+                            title: 'DBIndex',
+                            width: 80
+
+                        }, {
+                            index: 'ItemDescription',
+                            title: 'ItemDescription',
+                            width: 200
+
+                        }, {
+                            index: 'FailCount',
+                            title: 'FailCount',
+                            type: 'number',
+                            width: 200
+
+                        }, {
+                            index: 'TestCount',
+                            title: 'TestCount',
+                            type: 'number',
+                            width: 200
+                        }, {
+                            index: 'PassRate',
+                            title: 'PassRate (%)',
+                            type: 'number',
+                            width: 200
+                        }, {
+                            index: 'FailRate',
+                            title: 'FailRate (%)',
+                            type: 'number',
+                            width: 200
+                        }, {
+                            index: 'AVG',
+                            title: 'Average Pass Spare (s)',
+                            type: 'number',
+                            width: 200
+                        },{
+                            index: 'MinSpec',
+                            title: 'MinSpec',
+                            type: 'number',
+                            width: 150
+                        }, {
+                            index: 'MaxSpec',
+                            title: 'MaxSpec',
+                            type: 'number',
+                            width: 150
+                            }
+                            , {
+                            index: 'Cpk',
+                            title: 'Cpk',
+                            type: 'number',
+                            width: 200
+                            }
+                        ]
+                    });
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*<div class="row">
+    <div class="col-md-12">
+        <div class="white-box">
+            <div class="table-responsive">
+                <table id="Cpk_Table1" class="display table" style="font-size:20px">
+                    <thead>
+                        <tr style="text-align: right">
+                            <th>@Html.DisplayNameFor(model => model.DBIndex)</th>
+                            <th>@Html.DisplayNameFor(model => model.ItemDescription)</th>
+                            <th>@Html.DisplayNameFor(model => model.FailCount)</th>
+                            <th>@Html.DisplayNameFor(model => model.TestCount)</th>
+                            <th>@Html.DisplayNameFor(model => model.FailRate)</th>
+                            <th>@Html.DisplayNameFor(model => model.AVG)</th>
+                            <th>@Html.DisplayNameFor(model => model.MinSpec)</th>
+                            <th>@Html.DisplayNameFor(model => model.MaxSpec)</th>
+                            <th>@Html.DisplayNameFor(model => model.Cpk)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@Html.DisplayFor(modelItem => item.DBIndex)</td>
+                                <td>@Html.DisplayFor(modelItem => item.ItemDescription)</td>
+                                <td>@Html.DisplayFor(modelItem => item.FailCount)</td>
+                                <td>@Html.DisplayFor(modelItem => item.TestCount)</td>
+                                <td>@Html.DisplayFor(modelItem => item.FailRate) %</td>
+                                <td>@Html.DisplayFor(modelItem => item.AVG)</td>
+                                <td>@Html.DisplayFor(modelItem => item.MinSpec)</td>
+                                <td>@Html.DisplayFor(modelItem => item.MaxSpec)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Cpk)</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>    
+</div>*@
+
+ <script data-config>
+        var id = function (id) {
+            return document.getElementById(id);
+        };
+        var table = id('Cpk_Table1');
+        var totRowIndex = table.getElementsByTagName('tr').length;
+        var tfConfig = {
+            // instruct TableFilter location to import ressources from
+            base_path: '~/Content/TableFilter/',
+            paging: {
+                results_per_page: ['Records: ', [10, 25, 50, 100]]
+            },
+            alternate_rows: true,
+            rows_counter: true,
+            btn_reset: true,
+            loader: true,
+            status_bar: true,
+            //sort: true,
+            //sort_config: {
+            //    sort_types: ['String', 'US', 'US', 'US', 'US']
+            //},
+            mark_active_columns: true,
+            highlight_keywords: true,
+            //no_results_message: true,
+            col_types: [
+                'string', 'string', 'string', 'string', 'number', 'number', 'number', 'number', 'number'
+            ],
+            col_widths: [
+                '150px', '500px', '150px', '150px', '150px', '130px', '130px', '130px', '130px'
+            ],
+            //extensions: [{ name: 'sort' }]
+
+        };
+
+        var tf = new TableFilter('Cpk_Table1', tfConfig);
+
+        tf.init();
+    </script>

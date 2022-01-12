@@ -1,0 +1,372 @@
+﻿@using PTE_Web.Models;
+@model UPHTrend_Table
+
+
+@{
+    ViewBag.Title = "RealUPHDailyHomePage";
+    Layout = "~/Views/Shared/_Layout_bootstrap.cshtml";
+}
+
+<h2>廠區產出趨勢</h2>
+
+@{
+
+}
+<!-- 日期選擇物件 Start-->
+<div class="row">
+    <div class="white-box">
+        <div class="col-md-12">
+            <form method="post" name="DateRangeForm" action="@ViewContext.RouteData.Values["action"]" style="width:50%;display: inline;">
+                <div class="input-group">
+
+                    @Html.DropDownList("DropDownList_org", (IEnumerable<SelectListItem>)ViewBag.OrgList, htmlAttributes: new { @style = "height:50px;width:200px;font-size:30px;padding-right:30px;display:inline", @class = "form-control" })
+
+
+                    <input type='submit' class="btn waves-effect waves-light btn-primary" style="font-size:30px;margin-left:15px;text-align:center;" value='Go' />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class=" row">
+    <div class="col-md-6">
+        <div class="white-box" >
+            <h2 class="header-title">Daily Production Trend</h2>
+
+            <div id="chartdiv2" class="col" style="min-width:800px;height:500px;"></div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="white-box" >
+             <h2 class="header-title">Daily UPH Record</h2>
+
+            <div class="table-responsive" style="height:500px">
+                <table  id="TrendTable" class="display table" style="font-size:20px;height:450px">
+                        <thead>
+                            <tr style="text-align: right;">
+                                <th>Link</th>
+                                <th>@Html.DisplayNameFor(model => model.DailyTrendTable.First().date)</th>
+                                <th>@Html.DisplayNameFor(model => model.DailyTrendTable.First().Output)</th>
+                                <th>@Html.DisplayNameFor(model => model.DailyTrendTable.First().totalstation)</th>
+                                <th>@Html.DisplayNameFor(model => model.DailyTrendTable.First().UPHAchieveRate)</th>
+                                <th>@Html.DisplayNameFor(model => model.DailyTrendTable.First().delta)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                             @foreach (var item in Model.DailyTrendTable)
+                            {
+                                <tr>
+                                    <td>@Html.ActionLink("Go DashBoard", "DashBoardByOrg", "DashBoard", new { @org = ViewBag.Org, @startdate = item.date, @enddate = item.date }, new { target = "_blank", @class = "btn-block btn btn-warning"})</td>
+                                    <td>@Html.DisplayFor(modelItem => item.date)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.Output)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.totalstation)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.UPHAchieveRate)</td>
+                                    @if(item.delta > 0)
+                                    {
+                                        <td style="font-size:30px"><span class="label label-success">@Html.DisplayFor(modelItem => item.delta)</span></td>
+                                    }
+
+                                    else
+                                    {
+                                        <td style="font-size:30px"><span class="label label-danger">@Html.DisplayFor(modelItem => item.delta)</span></td>
+                                    }
+                                </tr>
+                            }
+                        </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+       <div class="white-box">
+           <h2 class="header-title">Overall ItemNameType Table </h2>
+
+            <div class="table-responsive" style="height:500px">
+                <table  id="Tbl_ItemNameType" class="display table" style="font-size:20px;height:450px">
+                        <thead>
+                            <tr style="text-align: right;">
+                                <th>@Html.DisplayNameFor(model => model.GroupItemNameTable.First().itemnametype)</th>
+                                <th>@Html.DisplayNameFor(model => model.GroupItemNameTable.First().productname)</th>
+                                <th>@Html.DisplayNameFor(model => model.GroupItemNameTable.First().RealOutput)</th>
+                                <th>@Html.DisplayNameFor(model => model.GroupItemNameTable.First().AvgSpare)</th>
+                                <th>@Html.DisplayNameFor(model => model.GroupItemNameTable.First().UPH)</th>
+                                <th>@Html.DisplayNameFor(model => model.GroupItemNameTable.First().EstimateUPH)</th>
+                                <th>UPHAchievement(%)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                             @foreach (var item in Model.GroupItemNameTable)
+                             {
+
+                                <tr>
+                                    <td>@Html.ActionLink(item.itemnametype.ToString(), "AnalyzeItemNameType", "AnalyzeTool", new { @org = ViewBag.Org, @startdate = ViewBag.Sdate, @enddate = ViewBag.Edate,@itemnametype = item.itemnametype ,@source =""}, new { target = "_blank"})</td>
+                                    <td>@Html.DisplayFor(modelItem => item.productname)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.RealOutput)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.AvgSpare)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.UPH)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.EstimateUPH)</td>
+                                    <td><span style="color:@item.color">@Html.DisplayFor(modelItem => item.GapPercent)</span></td>
+                                </tr>
+                            }
+                        </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="white-box">
+            <h2 class="header-title">Focus UPH Achieve Rate by ItemNameType </h2>
+
+            <div id="chartdiv" style="min-width:800px;height:500px"></div>
+        </div>
+    </div>
+</div>
+<script data-config>
+    var chart = am4core.create("chartdiv", am4charts.XYChart);
+                    var valueAxisX = chart.xAxes.push(new am4charts.ValueAxis());
+                    valueAxisX.renderer.ticks.template.disabled = true;
+                    valueAxisX.renderer.axisFills.template.disabled = true;
+                    var valueAxisY = chart.yAxes.push(new am4charts.ValueAxis());
+                    valueAxisY.renderer.ticks.template.disabled = true;
+                    valueAxisY.renderer.axisFills.template.disabled = true;
+                    valueAxisX.title.text = "UPHAchieveRate (%)";
+                    valueAxisY.title.text = "Estimate UPH (units)";
+                    var series_T1 = chart.series.push(new am4charts.LineSeries());
+                    series_T1.dataFields.valueX = "UPHAchieveRate_ate";
+                    series_T1.dataFields.valueY = "estimate_uph_ate";
+                    series_T1.dataFields.value = "realoutput_ate";
+                    series_T1.dataFields.color = "color"
+                    series_T1.strokeOpacity = 0;
+                    series_T1.sequencedInterpolation = true;
+                    series_T1.tooltip.pointerOrientation = "vertical";
+                    series_T1.name = "ATE Total units: @string.Format("{0:N0}", ViewBag.TotalUnits_ATE).Replace(".00",string.Empty)";
+
+                    var series_T2 = chart.series.push(new am4charts.LineSeries());
+                    series_T2.dataFields.valueX = "UPHAchieveRate_ft";
+                    series_T2.dataFields.valueY = "estimate_uph_ft";
+                    series_T2.dataFields.value = "realoutput_ft";
+                    series_T2.dataFields.color = "color"
+                    series_T2.strokeOpacity = 0;
+                    series_T2.sequencedInterpolation = true;
+                    series_T2.tooltip.pointerOrientation = "vertical";
+                    series_T2.name = "FT Total units: @string.Format("{0:N0}", ViewBag.TotalUnits_FT).Replace(".00",string.Empty)";
+                   
+                    var bullet_T1 = series_T1.bullets.push(new am4charts.CircleBullet());
+                    bullet_T1.propertyFields.fill = "color";
+                    bullet_T1.strokeOpacity = 0;
+                    bullet_T1.strokeWidth = 2;
+                    bullet_T1.fillOpacity = 0.5;
+                    bullet_T1.stroke = am4core.color("#ffffff");
+                    bullet_T1.hiddenState.properties.opacity = 0;
+                    bullet_T1.circle.tooltipText = "{itemnametype}\n[bold]{description}:[/]\nRealOutput: {value.value}\nUPH: {uph}\nEstimate UPH: {valueY.value}\nUPHAchieveRate:{valueX.value}";
+
+                    var bullet_T2 = series_T2.bullets.push(new am4charts.CircleBullet());
+                    bullet_T2.propertyFields.fill = "color";
+                    bullet_T2.strokeOpacity = 0;
+                    bullet_T2.strokeWidth = 2;
+                    bullet_T2.fillOpacity = 0.5;
+                    bullet_T2.stroke = am4core.color("#ffffff");
+                    bullet_T2.hiddenState.properties.opacity = 0;
+                    bullet_T2.circle.tooltipText = "{itemnametype}\n[bold]{description}:[/]\nRealOutput: {value.value}\nUPH: {uph}\nEstimate UPH: {valueY.value}\nUPHAchieveRate:{valueX.value}";
+
+
+                    var hoverState_T1 = bullet_T1.states.create("hover");
+
+                    hoverState_T1.properties.fillOpacity = 1;
+
+                    hoverState_T1.properties.strokeOpacity = 1;
+
+                    series_T1.heatRules.push({ target: bullet_T1.circle, min: 2, max: 60, property: "radius" });
+
+                    bullet_T1.circle.adapter.add("tooltipY", function (tooltipY, target) {
+
+                        return -target.radius;
+
+                    })
+
+                    var hoverState_T2 = bullet_T2.states.create("hover");
+
+                    hoverState_T2.properties.fillOpacity = 1;
+
+                    hoverState_T2.properties.strokeOpacity = 1;
+
+                    series_T2.heatRules.push({ target: bullet_T2.circle, min: 2, max: 60, property: "radius" });
+
+                    bullet_T2.circle.adapter.add("tooltipY", function (tooltipY, target) {
+
+                        return -target.radius;
+
+                    })
+
+
+                    chart.cursor = new am4charts.XYCursor();
+
+                    chart.cursor.behavior = "zoomXY";
+
+                    chart.scrollbarX = new am4core.Scrollbar();
+
+                    chart.scrollbarY = new am4core.Scrollbar();
+
+                    chart.legend = new am4charts.Legend();
+
+                    chart.data = @(new HtmlString(ViewBag.JsonScatter));
+
+</script>
+
+<script>
+
+    // Create chart instance
+    var chart = am4core.create("chartdiv2", am4charts.XYChart);
+    chart.scrollbarX = new am4core.Scrollbar();
+
+    // Add data
+    chart.data = @(new HtmlString(ViewBag.TrendChart));
+
+    
+
+    // Create axes
+    var categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
+    categoryAxis.dataFields.category = "Date";
+    categoryAxis.renderer.grid.template.location = 0;
+    categoryAxis.renderer.minGridDistance = 60;
+    categoryAxis.tooltip.disabled = true;
+    categoryAxis.title.text = "Date";
+
+    var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+    valueAxis.renderer.minWidth = 50;
+    valueAxis.min = 0;
+    valueAxis.cursorTooltipEnabled = false;
+    valueAxis.title.text = "Real Output (units)";
+    // Create series
+    var series = chart.series.push(new am4charts.ColumnSeries());
+    series.sequencedInterpolation = true;
+    series.dataFields.valueY = "RealOutput";
+    series.dataFields.categoryX = "Date";
+    series.tooltipText = "[{categoryX}: bold]{valueY}[/]";
+    series.columns.template.strokeWidth = 0;
+
+    series.tooltip.pointerOrientation = "vertical";
+
+    series.columns.template.column.cornerRadiusTopLeft = 10;
+    series.columns.template.column.cornerRadiusTopRight = 10;
+    series.columns.template.column.fillOpacity = 0.8;
+
+    // on hover, make corner radiuses bigger
+    var hoverState = series.columns.template.column.states.create("hover");
+    hoverState.properties.cornerRadiusTopLeft = 0;
+    hoverState.properties.cornerRadiusTopRight = 0;
+    hoverState.properties.fillOpacity = 1;
+
+    series.columns.template.adapter.add("fill", function(fill, target) {
+      return chart.colors.getIndex(target.dataItem.index);
+    })
+
+
+    var paretoValueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+    paretoValueAxis.renderer.opposite = true;
+    paretoValueAxis.min = 0;
+    paretoValueAxis.max = 100;
+    paretoValueAxis.strictMinMax = true;
+    paretoValueAxis.renderer.grid.template.disabled = true;
+    paretoValueAxis.numberFormatter = new am4core.NumberFormatter();
+    paretoValueAxis.numberFormatter.numberFormat = "#'%'"
+    paretoValueAxis.cursorTooltipEnabled = false;
+    paretoValueAxis.title.text = "UPH Achieve Rate (%)"
+
+    var paretoSeries = chart.series.push(new am4charts.LineSeries())
+    paretoSeries.dataFields.valueY = "UPHAchieveRate";
+    paretoSeries.dataFields.categoryX = "Date";
+    paretoSeries.yAxis = paretoValueAxis;
+    paretoSeries.tooltipText = "UPHAchieveRate: {valueY.formatNumber('#.0')}%[/]";
+    paretoSeries.bullets.push(new am4charts.CircleBullet());
+    paretoSeries.strokeWidth = 2;
+    paretoSeries.stroke = new am4core.InterfaceColorSet().getFor("alternativeBackground");
+    paretoSeries.strokeOpacity = 0.5;
+
+    // Cursor
+    chart.cursor = new am4charts.XYCursor();
+    chart.cursor.behavior = "panX";
+
+</script>
+
+  <script data-config>
+        var id = function (id) {
+            return document.getElementById(id);
+        };
+        var table = id('Tbl_ItemNameType');
+        var totRowIndex = table.getElementsByTagName('tr').length;
+        var tfConfig = {
+            // instruct TableFilter location to import ressources from
+            base_path: '~/Content/TableFilter/',
+            paging: {
+                results_per_page: ['Records: ', [10, 25, 50, 100]]
+            },
+            alternate_rows: true,
+            rows_counter: true,
+            btn_reset: true,
+            loader: true,
+            status_bar: true,
+            //sort: true,
+            //sort_config: {
+            //    sort_types: ['String', 'US', 'US', 'US', 'US']
+            //},
+            mark_active_columns: true,
+            highlight_keywords: true,
+            //no_results_message: true,
+            col_types: [
+                 'number','string', 'number', 'number','number', 'number', 'number'
+            ],
+            col_widths: [
+                '30px', '100px','60px', '60px','50px','60px','30px'
+            ],
+            //extensions: [{ name: 'sort' }]
+
+        };
+
+        var tf = new TableFilter('Tbl_ItemNameType', tfConfig);
+
+        tf.init();
+  </script>
+
+  <script data-config>
+        var id = function (id) {
+            return document.getElementById(id);
+        };
+        var table = id('TrendTable');
+        var totRowIndex = table.getElementsByTagName('tr').length;
+        var tfConfig = {
+            // instruct TableFilter location to import ressources from
+            base_path: '~/Content/TableFilter/',
+            paging: {
+                results_per_page: ['Records: ', [10, 25, 50, 100]]
+            },
+            alternate_rows: true,
+            rows_counter: true,
+            btn_reset: true,
+            loader: true,
+            status_bar: true,
+            //sort: true,
+            //sort_config: {
+            //    sort_types: ['String', 'US', 'US', 'US', 'US']
+            //},
+            mark_active_columns: true,
+            highlight_keywords: true,
+            //no_results_message: true,
+            col_types: [
+                'string','string', 'number', 'number', 'string','string'
+            ],
+            col_widths: [
+               '50px', '100px', '50px', '50px', '50px', '30px'
+            ],
+            //extensions: [{ name: 'sort' }]
+
+        };
+
+        var tf = new TableFilter('TrendTable', tfConfig);
+
+        tf.init();
+  </script>

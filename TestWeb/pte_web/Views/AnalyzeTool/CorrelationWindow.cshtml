@@ -1,0 +1,949 @@
+﻿@using PTE_Web.Models;
+@model FailItemCorrelationPageModels
+
+@{
+    ViewBag.Title = "CorrelationWindow";
+    Layout = "~/Views/Shared/_Layout_Simple.cshtml";
+
+}
+
+<h2>ItemName:@ViewBag.ItemName  Type:  @ViewBag.Type </h2>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="white-box">
+            <div class="table-responsive" style="min-width:640px;height:675px">
+                <table id="example" class="display table" style="font-size:20px;">
+                    <thead>
+                        <tr style="text-align: right;">
+                            @if (ViewBag.Type == "Fixture")
+                            {
+                                <th>@Html.DisplayNameFor(model => model.ThisCorrelationsTable.First().Stationid)</th>
+                                <th>@Html.DisplayNameFor(model => model.ThisCorrelationsTable.First().FailCount)</th>
+                                <th>@Html.DisplayNameFor(model => model.ThisCorrelationsTable.First().TestCount)</th>
+                                <th>@Html.DisplayNameFor(model => model.ThisCorrelationsTable.First().FailRate)</th>
+                                <th>@Html.DisplayNameFor(model => model.ThisCorrelationsTable.First().FailPercent)</th>
+                                <th>Distribution</th>
+
+                            }
+                            @if (ViewBag.Type == "Station")
+                            {
+
+                                <th>@Html.DisplayNameFor(model => model.ThisCorrelationsTable.First().Station)</th>
+                                <th>@Html.DisplayNameFor(model => model.ThisCorrelationsTable.First().FailCount)</th>
+                                <th>@Html.DisplayNameFor(model => model.ThisCorrelationsTable.First().TestCount)</th>
+                                <th>@Html.DisplayNameFor(model => model.ThisCorrelationsTable.First().FailRate)</th>
+                                <th>@Html.DisplayNameFor(model => model.ThisCorrelationsTable.First().FailPercent)</th>
+                                <th>Distribution</th>
+                            }
+                            @if (ViewBag.Type == "SerialNumber")
+                            {
+
+                                <th>@Html.DisplayNameFor(model => model.ThisCorrelationsTable.First().SerialNumber)</th>
+                                <th>@Html.DisplayNameFor(model => model.ThisCorrelationsTable.First().FailCount)</th>
+                                <th>@Html.DisplayNameFor(model => model.ThisCorrelationsTable.First().TestCount)</th>
+                                <th>@Html.DisplayNameFor(model => model.ThisCorrelationsTable.First().FailRate)</th>
+                                <th>@Html.DisplayNameFor(model => model.ThisCorrelationsTable.First().FailPercent)</th>
+                                <th>Distribution</th>
+                            }
+                            @if (ViewBag.Type == "ExeInfo")
+                            {
+
+                                <th>@Html.DisplayNameFor(model => model.ThisCorrelationsTable.First().ExeInfo)</th>
+                                <th>@Html.DisplayNameFor(model => model.ThisCorrelationsTable.First().FailCount)</th>
+                                <th>@Html.DisplayNameFor(model => model.ThisCorrelationsTable.First().TestCount)</th>
+                                <th>@Html.DisplayNameFor(model => model.ThisCorrelationsTable.First().FailRate)</th>
+                                <th>@Html.DisplayNameFor(model => model.ThisCorrelationsTable.First().FailPercent)</th>
+                                <th>Distribution</th>
+                            }
+                            @if (ViewBag.Type == "ProductName")
+                            {
+
+                                <th>@Html.DisplayNameFor(model => model.ThisCorrelationsTable.First().ProductName)</th>
+                                <th>@Html.DisplayNameFor(model => model.ThisCorrelationsTable.First().FailCount)</th>
+                                <th>@Html.DisplayNameFor(model => model.ThisCorrelationsTable.First().TestCount)</th>
+                                <th>@Html.DisplayNameFor(model => model.ThisCorrelationsTable.First().FailRate)</th>
+                                <th>@Html.DisplayNameFor(model => model.ThisCorrelationsTable.First().FailPercent)</th>
+                                <th>Distribution</th>
+                            }
+                            @if (ViewBag.Type == "UserName")
+                            {
+
+                                <th>@Html.DisplayNameFor(model => model.ThisCorrelationsTable.First().UserName)</th>
+                                <th>@Html.DisplayNameFor(model => model.ThisCorrelationsTable.First().FailCount)</th>
+                                <th>@Html.DisplayNameFor(model => model.ThisCorrelationsTable.First().TestCount)</th>
+                                <th>@Html.DisplayNameFor(model => model.ThisCorrelationsTable.First().FailRate)</th>
+                                <th>@Html.DisplayNameFor(model => model.ThisCorrelationsTable.First().FailPercent)</th>
+                                <th>Distribution</th>
+                            }
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.ThisCorrelationsTable)
+                        {
+                            <tr>
+                                @if (ViewBag.Type == "Fixture")
+                                {
+
+                                    @*<td>@Html.DisplayFor(modelItem => item.Station)</td>*@
+                                    <td>@Html.DisplayFor(modelItem => item.Stationid)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.FailCount)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.TestCount)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.FailRate)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.FailPercent)</td>
+                                    <td>
+                                        <button type="button" id="btnAdd" class="btn btn-warning btn-block" style="font-size:20px" onclick="getHistogram('@ViewBag.Org','@ViewBag.itemNameType','@ViewBag.St','@ViewBag.Et','@ViewBag.Source','@ViewBag.FailItem', '@ViewBag.ItemName','@ViewBag.SpecMin','@ViewBag.SpecMax','@item.Stationid')" > Detail</button>
+                                    </td>
+                                }
+                                @if (ViewBag.Type == "Station")
+                                {
+
+                                    <td>@Html.DisplayFor(modelItem => item.Station)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.FailCount)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.TestCount)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.FailRate)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.FailPercent)</td>
+                                    <td>
+                                        <button type="button" id="btnAdd" class="btn btn-warning btn-block" style="font-size:20px" onclick="getHistogram('@ViewBag.Org','@ViewBag.itemNameType','@ViewBag.St','@ViewBag.Et','@ViewBag.Source','@ViewBag.FailItem', '@ViewBag.ItemName','@ViewBag.SpecMin','@ViewBag.SpecMax','@item.Station')" > Detail</button>
+                                    </td>
+
+                                }
+                                @if (ViewBag.Type == "SerialNumber")
+                                {
+
+                                    <td>@Html.DisplayFor(modelItem => item.SerialNumber)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.FailCount)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.TestCount)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.FailRate)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.FailPercent)</td>
+                                    <td>
+                                        <button type="button" id="btnAdd" class="btn btn-warning btn-block" style="font-size:20px" onclick="getHistogram('@ViewBag.Org','@ViewBag.itemNameType','@ViewBag.St','@ViewBag.Et','@ViewBag.Source','@ViewBag.FailItem', '@ViewBag.ItemName','@ViewBag.SpecMin','@ViewBag.SpecMax','@item.SerialNumber')" > Detail</button>
+                                    </td>
+                                }
+                                @if (ViewBag.Type == "ExeInfo")
+                                {
+
+                                    <td>@Html.DisplayFor(modelItem => item.ExeInfo)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.FailCount)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.TestCount)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.FailRate)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.FailPercent)</td>
+                                    <td>
+                                        <button type="button" id="btnAdd" class="btn btn-warning btn-block" style="font-size:20px" onclick="getHistogram('@ViewBag.Org','@ViewBag.itemNameType','@ViewBag.St','@ViewBag.Et','@ViewBag.Source','@ViewBag.FailItem', '@ViewBag.ItemName','@ViewBag.SpecMin','@ViewBag.SpecMax','@item.ExeInfo')" >Detail</button>
+                                    </td>
+                                }
+                                @if (ViewBag.Type == "ProductName")
+                                {
+
+                                    <td>@Html.DisplayFor(modelItem => item.ProductName)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.FailCount)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.TestCount)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.FailRate)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.FailPercent)</td>
+                                    <td>
+                                        <button type="button" id="btnAdd" class="btn btn-warning btn-block" style="font-size:20px" onclick="getHistogram('@ViewBag.Org','@ViewBag.itemNameType','@ViewBag.St','@ViewBag.Et','@ViewBag.Source','@ViewBag.FailItem', '@ViewBag.ItemName','@ViewBag.SpecMin','@ViewBag.SpecMax','@item.ProductName')" >Detail</button>
+                                    </td>
+
+                                }
+                                @if (ViewBag.Type == "UserName")
+                                {
+
+                                    <td>@Html.DisplayFor(modelItem => item.UserName)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.FailCount)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.TestCount)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.FailRate)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.FailPercent)</td>
+                                    <td>
+                                        <button type="button" id="btnAdd" class="btn btn-warning btn-block" style="font-size:20px" onclick="getHistogram('@ViewBag.Org','@ViewBag.itemNameType','@ViewBag.St','@ViewBag.Et','@ViewBag.Source','@ViewBag.FailItem', '@ViewBag.ItemName','@ViewBag.SpecMin','@ViewBag.SpecMax','@item.UserName')" >Detail</button>
+                                    </td>
+                                }
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+                <script data-config>
+                    var id = function (id) {
+                        return document.getElementById(id);
+                    };
+                    var table = id('example');
+                    var totRowIndex = table.getElementsByTagName('tr').length;
+                    var tfConfig = {
+                        // instruct TableFilter location to import ressources from
+                        base_path: '~/Content/TableFilter/',
+                        paging: {
+                            results_per_page: ['Records: ', [10, 25, 50, 100]]
+                        },
+                        col_0: 'select',
+                        alternate_rows: true,
+                        rows_counter: true,
+                        btn_reset: true,
+                        loader: true,
+                        status_bar: true,
+                        //sort: true,
+                        //sort_config: {
+                        //    sort_types: ['String', 'US', 'US', 'US', 'US']
+                        //},
+                        mark_active_columns: true,
+                        highlight_keywords: true,
+                        //no_results_message: true,
+                        col_types: [
+                            'string', 'number', 'number',
+                            'number', 'number' ,'string'
+                        ],
+                        col_widths: [
+                            '200px', '100px', '100px',
+                            '100px', '100px','130px'
+                        ],
+                        //extensions: [{ name: 'sort' }]
+
+                    };
+
+                    var tf = new TableFilter('example', tfConfig);
+
+                    tf.init();
+                </script>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="white-box">
+            <div id="chartdiv" style="min-width:640px;height:675px"></div>
+            @Scripts.Render("~/bundles/highCharts")
+
+            <script>
+
+                var chart = am4core.create("chartdiv", am4charts.PieChart3D);
+
+                chart.data = @(new HtmlString(ViewBag.PieDataList));
+                var title = chart.titles.create();
+                title.text = "[bold font-size: 20]Fail Correlation [/]\n Top 10";
+                title.textAlign = "middle";
+                chart.innerRadius = am4core.percent(40);
+                chart.depth = 90;
+
+                chart.legend = new am4charts.Legend();
+                chart.legend.position = "right";
+
+                var series = chart.series.push(new am4charts.PieSeries3D());
+                series.dataFields.value = "value";
+                series.dataFields.depthValue = "value";
+                series.dataFields.category = "category";
+            </script>
+        </div>
+    </div>
+</div>
+
+<div class="white-box">
+    <div class="row">
+        <div class="col-md-12">
+            @Html.ActionLink("Export Raw Data", "CorrelationRawDataExport", "AnalyzeTool", new { }, new { target = "_blank", @class = "btn btn-warning btn-block" ,@style = "font-size:36px"})
+        </div>
+     </div>
+</div>
+
+
+<script>
+     var FailItemRawDataUrl = "";
+    function getHistogram(Org, ItemNameType, St, Et, Source, dbIndex, itemDesc,specMin,specMax,groupstring) {
+        $.ajax({
+            url: "@Url.Action("CorrelationRawData", "AnalyzeTool")",
+            method: "post",
+            contentType: 'application/json',
+            async: false,
+            data: JSON.stringify({ org: Org, itemnametype: ItemNameType, startdate: St, enddate: Et, source: Source, itemDescription: itemDesc, DbIndex: dbIndex, specMin: specMin, specMax: specMax ,GroupString:groupstring}),
+            success: function (data) {
+                $('#CorrDataPage').modal('show');
+                FailItemRawDataUrl = JSON.stringify({ org: Org, itemnametype: ItemNameType, startdate: St, enddate: Et, source: Source, DbIndex: dbIndex, specMin: specMin, specMax: specMax });
+                //getCpkTbl(itemDesc, specMin + '-' + specMax, total, failcount, St + ' ~ ' + Et, 0, data.CpkTable[0].Cpk)
+                passStr = data.CpkTable[0].PassStr;
+                failStr = data.CpkTable[0].FailStr;
+                $('#txt_min').val(specMin);
+                $('#txt_max').val(specMax);
+                $('#txt_cpk').val(data.CpkTable[0].Cpk);
+                $('#ftxt_min').val("");
+                $('#ftxt_max').val("");
+                $('#ftxt_min').prop("disabled", false);
+                $('#ftxt_max').prop("disabled", false);
+                $('#filterBtn').prop("disabled", false);
+                $('#txt_min').prop("disabled", true);
+                $('#txt_max').prop("disabled", true);
+                $('#calCPKBtn').prop("disabled", true);
+                histogram_Passdata = JSON.parse(passStr);
+                histogram_Faildata = JSON.parse(failStr);
+                CPK_SD = data.CpkTable[0].SD;
+                AVG = data.CpkTable[0].AVG;
+                DBIndex = dbIndex;
+                DataMin = parseFloat(data.CpkTable[0].dataMin);
+                DataMax = parseFloat(data.CpkTable[0].dataMax);
+                var Datalsl = parseFloat(specMin);
+                var Datausl = parseFloat(specMax);
+                var ChartSeries;
+                if (histogram_Faildata.length > 0) {
+                    ChartSeries = [{
+                        name: 'Pass',
+                        type: 'histogram',
+                        xAxis: 1,
+                        yAxis: 1,
+                        baseSeries: 's1',
+                        zIndex: -1
+                    }, {
+                        name: 'Data(Pass)',
+                        type: 'scatter',
+                        visible: false,
+                        data: histogram_Passdata,
+                        id: 's1',
+                        marker: {
+                            radius: 1.5
+                        }
+                    }, {
+                        name: 'Fail',
+                        type: 'histogram',
+                        xAxis: 1,
+                        yAxis: 1,
+                        baseSeries: 's2',
+                        zIndex: -1
+                    }, {
+                        name: 'Data(Fail)',
+                        type: 'scatter',
+                        visible: false,
+                        data: histogram_Faildata,
+                        id: 's2',
+                        marker: {
+                            radius: 1.5
+                        }
+                    }]
+                } else {
+                    ChartSeries = [{
+                        name: 'Pass',
+                        type: 'histogram',
+                        xAxis: 1,
+                        yAxis: 1,
+                        baseSeries: 's1',
+                        zIndex: -1
+                    }, {
+                        name: 'Data(Pass)',
+                        type: 'scatter',
+                        visible: false,
+                        data: histogram_Passdata,
+                        id: 's1',
+                        marker: {
+                            radius: 1.5
+                        }                        
+                    }]
+                }
+                OriginTitle = itemDesc + '\'s Histogram<br />平均數μ:' + data.CpkTable[0].AVG.toFixed(2) + '/ 標準差σ:' + data.CpkTable[0].SD.toFixed(2) + '/ 製程能力Cpk: ' + data.CpkTable[0].Cpk.toFixed(2)
+                chart = Highcharts.chart('chart_div', {
+                    chart: {
+                        zoomType: 'x'
+                    },
+                    title: {
+                        text: OriginTitle
+                    },
+                    xAxis: [{
+                        title: { text: 'Data' },
+                        alignTicks: false,
+                        visible: false
+                    }, {
+                        title: { text: 'Histogram' },
+                        alignTicks: false,
+                        opposite: true,
+                        max: DataMax,
+                        min: DataMin,
+                        plotLines: [{
+                            value: Datalsl,
+                            width: 2,
+                            color: 'red',
+                            zIndex: 100,
+                            dashStyle: 'dash',
+                            id: 's3',
+                            label: {
+                                text: '    LSL: ' + Datalsl,
+                                align: 'center',
+                                y: 12,
+                                x: 0,
+                                style: {
+                                    fontWeight: 'bold',
+                                    fontSize: 20
+                                }
+                            }
+                        },
+                        {
+                            value: data.CpkTable[0].AVG,
+                            width: 2,
+                            color: 'blue',
+                            zIndex: 100,
+                            dashStyle: 'dash',
+                            id: 's4',
+                            label: {
+                                text: ' AVG',
+                                align: 'center',
+                                y: 12,
+                                x: 0,
+                                style: {
+                                    fontWeight: 'bold',
+                                    fontSize: 20
+                                }
+                            }
+                        },
+
+                        {
+                            value: Datausl,
+                            width: 2,
+                            color: 'red',
+                            zIndex: 100,
+                            dashStyle: 'dash',
+                            id: 's5',
+                            label: {
+                                text: '    USL: ' + Datausl,
+                                align: 'center',
+                                y: 12,
+                                x: 0,
+                                style: {
+                                    fontWeight: 'bold',
+                                    fontSize: 20
+                                }
+                            }
+                        }],
+                    }],
+                    yAxis: [{
+                        title: { text: 'Data' }
+                    }, {
+                        title: { text: 'Count' },
+                        opposite: true
+                    }],
+                    series: ChartSeries,
+                    plotOptions: {
+                        series: {
+                            events: {
+                                afterAnimate: function () {
+                                    chart.hideLoading();
+                                }
+                            }
+                        }
+                    },
+                });
+                $('#bintext').val(chart.series[0].binWidth.toFixed(4))
+
+                ChartClone = { histogram_Passdata: histogram_Passdata, histogram_Faildata: histogram_Faildata, Min: DataMin, Max: DataMax, LSL: Datalsl, USL: Datausl, ChartSeries: ChartSeries, AVG: data.CpkTable[0].AVG };
+            }, error: function (e) {
+                debugger;
+
+            }
+        });
+    }
+</script>
+
+<style>
+    .modal-lg {
+        min-width: 80% !important;
+    }
+</style>
+<link href="~/Content/tooltip.css" rel="stylesheet" />
+<div class="modal fade" id="CorrDataPage" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Distribution</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <fieldset>
+                                        <legend>Cpk Calculator</legend>
+                                        <div class="row">
+                                            <div class="col-xs-3">
+                                                <div class="form-group">
+                                                    @Html.Label("ftxt_min", HttpUtility.HtmlDecode("&nbsp;"), new { @class = "control-label" })
+                                                    @Html.TextBox("ftxt_min", "", new { id = "ftxt_min", @class = "form-control input-lg", style = "font-size: 25px", placeholder = "篩選Min" })
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-3">
+                                                <div class="form-group">
+                                                    @Html.Label("ftxt_max", HttpUtility.HtmlDecode("&nbsp;"), new { @class = "control-label" })
+                                                    @Html.TextBox("ftxt_max", "", new { id = "ftxt_max", @class = "form-control input-lg", style = "font-size: 25px", placeholder = "篩選Max" })
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-2">
+                                                @Html.Label("", HttpUtility.HtmlDecode("&nbsp;"), new { @class = "control-label" })
+                                                <div class="form-group">
+                                                    <button id="filterBtn" class="btn btn-primary btn-lg" onclick="FinFilter()">資料篩選</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xs-3">
+                                                <div class="form-group">
+
+                                                    @Html.Label("txt_min", HttpUtility.HtmlDecode("&nbsp;"), new { @class = "control-label" })
+                                                    @Html.TextBox("txt_min", "MIN", new { id = "txt_min", @disabled = "disabled", @class = "form-control input-lg", style = "font-size: 25px", placeholder = "MIN" })
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-3">
+                                                <div class="form-group">
+                                                    @Html.Label("txt_max", HttpUtility.HtmlDecode("&nbsp;"), new { @class = "control-label" })
+                                                    @Html.TextBox("txt_max", "MAX", new { id = "txt_max", @disabled = "disabled", @class = "form-control input-lg", style = "font-size: 25px", placeholder = "MAX" })
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-3">
+                                                <div class="form-group">
+                                                    @Html.Label("txt_cpk", "Value", new { @class = "control-label" })
+
+                                                    @Html.TextBox("txt_cpk", "", new { id = "txt_cpk", @class = "form-control input-lg", style = "font-size: 25px;border-width: 2px; border-color: #ff6a00;", @disabled = "disabled", placeholder = "CPK" })
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-2">
+                                                @Html.Label("", HttpUtility.HtmlDecode("&nbsp;"), new { @class = "control-label" })
+                                                <div class="form-group">
+                                                    <button id="calCPKBtn" type="submit" class="btn btn-primary btn-lg" onclick="calNewSpec()" disabled>Cal</button>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="help-tip">
+                                                        <p>
+                                                            Cp=T/(6σ)，T=規格上限(USL) – 規格下限(LSL)<br />
+                                                            a = M - X：	代表規格中心(也就是製程之期望中心)與實際製造出來之群體中心的距離。<br />
+                                                            M：產品中心位置（規格中心）<br />
+                                                            X：群體的中心（平均值）<br />
+                                                            b = T / 2：	代表規格的一半。<br />
+                                                            T：規格寬度（規格上限 - 規格下限）<br />
+                                                            Ck=a/b=(M-X)/(T/2)<br />
+                                                            CPK=(1 - Ck) * Cp<br />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <fieldset>
+                                <legend>Controller Tool</legend>
+
+                                <div id="BinButton"></div>
+                                <br />
+
+                                <div class="col-xs-3">
+
+                                    <div class="form-group">
+                                        @Html.TextBox("Bin_Text", "", new { id = "Bin_Text", onfocus = "$(this).val('');'';", onblur = "if(!binFlag){this.placeholder = 'Bin_Width';}else{this.placeholder='Bin_Number'}", @class = "form-control input-lg", style = "font-size: 25px;", placeholder = "Bin_Width" })
+                                    </div>
+                                </div>
+                                <div class="col-xs-1">
+
+                                    <div class="form-group">
+
+                                        <button type="submit" class="btn btn-primary btn-lg" onclick="calNewBin()">Cal</button>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div id="chart_div"></div>
+                                </div>
+                                <div class="col-xs-11">
+                                    <div>
+                                        <button id="ResetButton" type="button" class="btn btn-danger" onclick="resetChart()"><i class="fa fa-refresh" style="font-size:24px">Reset</i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <script>
+			var chart;
+
+			var histogram_Passdata;
+			var histogram_Faildata;
+			var CPK_SD;
+			var AVG;
+			var DBIndex;
+			var DataMin;
+			var DataMax;
+			var passStr;
+			var failStr;
+            var OriginTitle;
+        function calNewRange() {
+            if ($('#ftxt_min').val() != '' || $('#ftxt_max').val() != '') {
+                chart.showLoading();
+                removeAllseries();
+                $.ajax({
+                    url: "@Url.Action("GetNewRangeData", "AnalyzeTool")",
+                    method: "post",
+                    contentType: 'application/json',
+                    data: JSON.stringify({ PassStr: passStr, FailStr: failStr, Min: $('#ftxt_min').val(), Max: $('#ftxt_max').val() }),
+                    success: function (data) {
+                        histogram_Faildata = data.FailDatas;
+                        histogram_Passdata = data.PassDatas;
+                        var lsl = parseFloat($('#ftxt_min').val())
+                        var usl = parseFloat($('#ftxt_max').val())
+                        if (data.PassDatas.length > 0) {
+                            ChartSeries = [{
+                                name: 'Pass',
+                                type: 'histogram',
+                                xAxis: 1,
+                                yAxis: 1,
+                                baseSeries: 's1',
+                                zIndex: -1
+                            }, {
+                                name: 'Data',
+                                type: 'scatter',
+                                visible: false,
+                                data: histogram_Passdata,
+                                id: 's1',
+                                marker: {
+                                    radius: 1.5
+                                }
+                            }]
+                        } else {
+                            alert('Range 選擇錯誤，此段Range無任何測試資料');
+                            return 0;
+                        }
+                        for (var i = 0; i < ChartSeries.length; i++) {
+                            chart.addSeries(ChartSeries[i]);
+                        }
+                        chart.xAxis[1].update({
+                            min: data.lsl,
+                            max: data.usl,
+                            series: ChartSeries
+
+                        });
+                    }
+                });
+            }
+		}
+			var newHistogramData
+            function FinFilter() {
+                calNewRange();
+                $('#ftxt_min').prop("disabled", true);
+                $('#ftxt_max').prop("disabled", true);
+                $('#filterBtn').prop("disabled", true);
+
+                $('#txt_min').prop("disabled", false);
+                $('#txt_max').prop("disabled", false);
+                $('#calCPKBtn').prop("disabled", false);
+
+            }
+    function calNewSpec() {
+                $('#ftxt_min').prop("disabled", false);
+                $('#ftxt_max').prop("disabled", false);
+                $('#filterBtn').prop("disabled", false);
+                $('#txt_min').prop("disabled", true);
+                $('#txt_max').prop("disabled", true);
+                $('#calCPKBtn').prop("disabled", true);
+				var min_value = $('#ftxt_min').val();//filter min
+                var max_value = $('#ftxt_max').val();//filter max
+                var lsl_value= $('#txt_min').val();
+                var usl_value = $('#txt_max').val();
+				$.ajax({
+					url: "@Url.Action("GetNewSpecData", "AnalyzeTool")",
+					method: "post",
+					contentType: 'application/json',
+					data: JSON.stringify({ PassStr: passStr, FailStr: failStr, Low: lsl_value, Upper: usl_value,fmin:min_value,fmax:max_value }),
+					success: function (data) {
+                var Cp = (parseFloat(usl_value) - parseFloat(lsl_value)) / (6 * data.STD);
+                var M = (parseFloat(usl_value) + parseFloat(lsl_value)) / 2;
+                var X = data.AVG;
+				var T = (parseFloat(usl_value) - parseFloat(lsl_value));
+				var Ck = (M - X) / (T / 2);                             //Ck=a/b=(M-X)/(T/2)
+                var Cpk = Math.round((1 - Ck) * Cp * 100) / 100;
+                $('#txt_cpk').val(Cpk);
+				$('#txt_cpk').css({ 'background-color': '#FFE4C4' });
+						var ChartSeries;
+						var PlotLine;
+						newHistogramData = data.PassDatas;
+						var lsl = parseFloat(lsl_value) < parseFloat(DataMin) ? parseFloat(lsl_value) : parseFloat(DataMin)
+						var usl = parseFloat(usl_value) > parseFloat(DataMax) ? parseFloat(usl_value) : parseFloat(DataMax)
+						if (data.PassDatas.length > 0) {
+							PlotLine = [{
+								value: lsl_value,
+								width: 2,
+								color: 'green',
+								zIndex: 100,
+								dashStyle: 'dash',
+								id:'p3',
+								label: {
+									text: '    LSL(new): ' + lsl_value,
+									align: 'center',
+									y: 12,
+									x: 0,
+									style: {
+										fontWeight: 'bold',
+										fontSize: 20
+									}
+								}
+                            },
+                                {
+								value: data.AVG,
+								width: 2,
+								color: 'blue',
+								zIndex: 100,
+								dashStyle: 'dash',
+								id:'p4',
+								label: {
+									text: ' AVG(new)',
+									align: 'center',
+									y: 12,
+									x: 0,
+									style: {
+										fontWeight: 'bold',
+										fontSize: 20
+									}
+								}
+							},
+                                {
+								value: usl_value,
+								width: 2,
+								color: 'green',
+								zIndex: 100,
+							    dashStyle: 'dash',
+							    id: 'p5',
+								label: {
+									text: '    USL(new): ' + usl_value,
+									align: 'center',
+									y: 12,
+									x: 0,
+									style: {
+										fontWeight: 'bold',
+										fontSize: 20
+									}
+								}
+							}
+							]
+						} else {
+							alert('Range 選擇錯誤，此段Range無任何測試資料');
+							return 0;
+						}
+                        chart.xAxis[1].removePlotLine('s3');
+                        chart.xAxis[1].removePlotLine('s4');
+                        chart.xAxis[1].removePlotLine('s5');
+					    chart.xAxis[1].removePlotLine('p3');
+                        chart.xAxis[1].removePlotLine('p4');
+                        chart.xAxis[1].removePlotLine('p5');
+                        for (var i = 0; i < 3; i++) {
+                            chart.xAxis[1].addPlotLine(PlotLine[i]);
+                        }
+                        chart.setTitle({ text: OriginTitle + '<br />平均數μ(new):' + data.AVG.toFixed(2) + ' / 標準差σ(new):' + data.STD.toFixed(2) + '/ 製程能力Cpk(new):' + Cpk });
+					}
+                });
+			}
+			function removeAllseries() {
+				var seriesLength = chart.series.length;
+				for (var i = seriesLength - 1; i > -1; i--) {
+					chart.series[i].remove();
+				}
+			}
+			var binFlag = false;
+			function calNewBin() {
+				var BinWidth = "";
+				var BinNumber = "";
+
+				if (isNaN($('#Bin_Text').val()) || $('#Bin_Text').val()=="") {   //兩邊都空白圖不變
+					BinWidth = chart.series[0].binWidth
+					BinNumber = parseInt(Math.sqrt(histogram_Passdata.length + histogram_Faildata.length));
+				}
+
+				else if (binFlag) {
+					BinWidth = null;
+					BinNumber = parseInt ($('#Bin_Text').val());
+				}
+				else if (!binFlag) {
+					BinWidth = parseFloat($('#Bin_Text').val())
+					BinNumber = parseInt(Math.sqrt(histogram_Passdata.length + histogram_Faildata.length));
+
+				}
+
+				if (histogram_Passdata.length > 0 && histogram_Faildata.length > 0) {
+					chart.update({
+						series: [{
+							name: 'Pass',
+							type: 'histogram',
+							xAxis: 1,
+							yAxis: 1,
+							baseSeries: 's1',
+							zIndex: -1,
+							binWidth: BinWidth,
+							binsNumber: BinNumber
+						}, {
+							name: 'Data(Pass)',
+							type: 'scatter',
+							visible: false,
+							data: histogram_Passdata,
+							id: 's1',
+							marker: {
+								radius: 1.5
+							}
+						}, {
+							name: 'Fail',
+							type: 'histogram',
+							xAxis: 1,
+							yAxis: 1,
+							baseSeries: 's2',
+							zIndex: -1,
+							binWidth: BinWidth,
+							binsNumber:   BinNumber
+						}, {
+							name: 'Data(Fail)',
+							type: 'scatter',
+							visible: false,
+							data: histogram_Faildata,
+							id: 's2',
+							marker: {
+								radius: 1.5
+							}
+						}]
+					});
+				}
+				else if (histogram_Passdata.length > 0 && histogram_Faildata.length == 0) {
+					chart.update({
+						series: [{
+							name: 'Pass',
+							type: 'histogram',
+							xAxis: 1,
+							yAxis: 1,
+							baseSeries: 's1',
+							zIndex: -1,
+							binWidth: BinWidth,
+							binsNumber:  BinNumber
+						}, {
+							name: 'Data(Pass)',
+							type: 'scatter',
+							visible: false,
+							data: histogram_Passdata,
+							id: 's1',
+							marker: {
+								radius: 1.5
+							}
+						}]
+					});
+				}
+				else if (histogram_Passdata.length == 0 && histogram_Faildata.length > 0) {
+					chart.update({
+						series: [{
+							name: 'Fail',
+							type: 'histogram',
+							xAxis: 1,
+							yAxis: 1,
+							baseSeries: 's2',
+							zIndex: -1,
+							binWidth: BinWidth,
+							binsNumber: BinNumber
+						}, {
+							name: 'Data(Fail)',
+							type: 'scatter',
+							visible: false,
+							data: histogram_Faildata,
+							id: 's2',
+							marker: {
+								radius: 1.5
+							}
+						}]
+					});
+				} else {
+					alert('Range 設定錯誤，Bin調整功能無效')
+				}
+			}
+			var ChartClone;
+
+			function resetChart() {
+
+				removeAllseries();
+				histogram_Faildata = ChartClone.histogram_Faildata
+				histogram_Passdata = ChartClone.histogram_Passdata
+
+				chart.update({
+					xAxis: [{
+						title: { text: 'Data' },
+						alignTicks: false,
+						visible: false
+					}, {
+						title: { text: 'Histogram' },
+						alignTicks: false,
+							opposite: true,
+							max: ChartClone.Max,
+							min: ChartClone.Min,
+							plotLines: [{
+								value: ChartClone.LSL,
+							width: 2,
+							color: 'red',
+							zIndex: 100,
+							dashStyle: 'dash',
+							label: {
+								text: '    LSL: ' + ChartClone.LSL,
+								align: 'center',
+								y: 12,
+								x: 0,
+								style: {
+									fontWeight: 'bold',
+									fontSize: 20
+								}
+							}
+                            },
+                                {
+								value: ChartClone.AVG,
+								width: 2,
+								color: 'blue',
+								zIndex: 100,
+								dashStyle: 'dash',
+								id:'p4',
+								label: {
+									text: ' AVG',
+									align: 'center',
+									y: 12,
+									x: 0,
+									style: {
+										fontWeight: 'bold',
+										fontSize: 20
+									}
+								}
+							},
+
+                                {
+									value: ChartClone.USL,
+							width: 2,
+							color: 'red',
+							zIndex: 100,
+							dashStyle: 'dash',
+							label: {
+								text: '    USL: ' + ChartClone.USL,
+								align: 'center',
+								y: 12,
+								x: 0,
+								style: {
+									fontWeight: 'bold',
+									fontSize: 20
+								}
+							}
+						}],
+					}],
+					yAxis: [{
+						title: { text: 'Data' }
+					}, {
+						title: { text: 'Count' },
+						opposite: true
+						}],
+
+				});
+				for (var i = 0; i < ChartClone.ChartSeries.length; i++) {
+					chart.addSeries(ChartClone.ChartSeries[i]);
+				}
+				chart.zoomOut();
+                chart.setTitle({ text: 'OriginTitle' });
+    }    
+    </script>

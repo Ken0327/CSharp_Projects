@@ -1,0 +1,76 @@
+﻿
+@{
+    ViewBag.Title = "HomePlayGround";
+    Layout = "~/Views/Shared/_Layout_bootstrap.cshtml";
+}
+
+<script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+<div class="row" id="gender">
+    <form id ="ReplyForm" class="form-horizontal" disabled = 'disabled' enctype="multipart/form-data" action="@Url.Action("HomePlayGround", "PTEWebDataBaseBrowser")" method="post" onsubmit="true">
+
+    <div class="col-md-6">
+        <div class="white-box" style="height:300px;">
+                <h3> <span style="font-weight:bold">DataBase Group</span></h3>
+                    <div class="form-group"  >
+                         <div class="col-sm-9">
+                            <select name="DropDownList_DataBaseGroup" v-model="selectName" style = "font-size:25px;height:auto" class = "form-control">
+                                <option v-for="list in lists" :value="list.item" style = "font-size:25px;height:auto" class = "form-control" >{{list.item}}</option>
+                            </select>
+                     </div>
+                </div>
+                @*<div class="form-group">
+                     <div class="col-sm-9">
+                        @Html.DropDownList("DropDownList_DataBaseGroup", (IEnumerable<SelectListItem>)ViewBag.DataBaseGroup, htmlAttributes: new { @style = "font-size:25px;height:auto", @class = "form-control" })                        
+                    </div>
+                </div>*@
+                <h3> <span style="font-weight:bold">DataDate Range</span>   (yyyy-mm-dd)</h3>
+                <div class="form-group">
+                     <div class="col-sm-9">
+                        <input class="col-sm-5" style="font-size:20px;padding-right:30px" type="date" placeholder="From:" name="startdate"  v-model="sDate">
+                        <input class="col-sm-5" type="date" align="middle" style="color:green;margin-left:30px;font-size:20px" placeholder="To:"  name="enddate" v-model="eDate">
+                     </div>                     
+                </div>
+                <div class="col-sm-12">
+                    <input id="ReplySubmitBtn" type='submit' class="btn btn-success round btn-block"  style="font-size:30px;" value='Execute SQL Script'   onclick='processFormData();' />
+                </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="white-box" style="height:300px;">
+            <h3><span style="font-weight:bold">SQL Script: </span></h3>
+            <input name="sqlscript_Head"  class="form-control" style="background-color:whitesmoke;height:50px;font-size:15px;font-weight:bold" v-model="HeadString "/>               
+            <a name="sqlscript_Body"  class="form-control" style="height:50px;font-size:15px;font-weight:bold;color:darkcyan"> from {{ selectName }} as FinalTable where date between '{{sDate}}' and '{{eDate}}' </a>
+            <input name="sqlscript_Tail"  class="form-control" style="background-color:whitesmoke;height:50px;font-size:15px;font-weight:bold" v-model="TailString "/>                 
+            <textarea class="form-control" id="val-suggestions" name="sqlscript" style="height:200px;font-size:15px;visibility:hidden"  placeholder="Please Enter the SQL script...">{{HeadString}} from {{ selectName }} as FinalTable where date between '{{sDate}}' and '{{eDate}}' {{TailString}}</textarea>
+        </div>
+    </div>
+    </form>
+</div>
+
+
+
+                
+<script>
+
+    let genderData = {
+        selectName: '@ViewBag.ChooseTable',
+        sDate: '@ViewBag.Sdate',
+        eDate: '@ViewBag.Edate',
+        TailString: '@ViewBag.TailScriptString',
+        HeadString:'@ViewBag.HeadScriptString',
+    lists : [
+         {val:"1",item:'#Daily_FYR_Output_Group1',selected:'selected'},
+         { val: "2", item: '#Daily_Item_Fail_Spare_Group2',selected:'' },
+         {val:"12",item:'#Daily_Basic_Item_All_Group_1_2',selected:''}
+    ]
+}
+
+let gender = new Vue({
+    el:'#gender',
+    data:genderData,
+})
+
+
+</script>
+
+@Html.Partial("_HomePalyGroundTable")

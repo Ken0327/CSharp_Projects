@@ -1,0 +1,875 @@
+﻿@model IEnumerable<PTE_Web.Models.PTEWEB_ItemNameType_ByDaily>
+@{
+    ViewBag.Title = "DashBoard";
+    Layout = "~/Views/Shared/_Layout_bootstrap.cshtml";
+}
+
+@*@Html.Partial("_Partial_DateTimePicker")*@
+<style>
+    .ui-iggrid-header {
+        text-align: center !important;
+    }
+
+    .modal-lg {
+        min-width: 50% !important;
+    }
+
+    option {
+        text-align: center;
+        font-size: 20px;
+    }
+
+    label {
+        font-size: 20px;
+        text-align: center;
+    }
+
+    .nav-tabs > li > a,
+    .nav-tabs > li > a:hover,
+    .nav-tabs > li > a:focus {
+        color: #3c763d;
+    }
+
+        .nav-tabs > .open > a,
+        .nav-tabs > .open > a:hover,
+        .nav-tabs > .open > a:focus,
+        .nav-tabs > li > a:hover,
+        .nav-tabs > li > a:focus {
+            color: #3c763d;
+            background-color: #d6e9c6;
+        }
+
+    .nav-tabs > li.active > a,
+    .nav-tabs > li.active > a:hover,
+    .nav-tabs > li.active > a:focus {
+        color: #3c763d;
+        background-color: #d6e9c6;
+        border-color: #d6e9c6;
+        border-bottom-color: #d6e9c6;
+    }
+</style>
+<div class="row">
+    <div class="col-md-3">
+        <div class="panel panel-info">
+            <div class="panel-heading"><h4 style="font-size:40px;font-weight:bold;font-style:italic">T1 Performance</h4></div>
+            <div class="panel-body">
+                <div class="progress-main">
+                    <span class="progress-text" style="font-size:30px;">ATE FYR </span>
+                    <span class="progress-stats" style="font-size:30px">@ViewBag.OrgPerformanceList["T1ATE"]</span>
+                    <div class="progress progress-sm">
+                        <div style="width: @ViewBag.OrgPerformanceList["T1ATE"];" class="progress-bar"></div>
+                    </div>
+                    <br>
+                    <span style="font-size:20px;">High: @ViewBag.OrgPerformanceHL["T1ATE"][0]    </span>
+                    <span style="font-size:20px;">Low: @ViewBag.OrgPerformanceHL["T1ATE"][1]</span>
+                </div>
+                <div class="progress-main">
+                    <span class="progress-text" style="font-size:30px;">FT FYR</span>
+                    <span class="progress-stats" style="font-size:30px">@ViewBag.OrgPerformanceList["T1FT"]</span>
+                    <div class="progress progress-sm">
+                        <div style="width: @ViewBag.OrgPerformanceList["T1FT"];" class="progress-bar progress-bar-success"></div>
+                    </div>
+                    <br>
+                    <span style="font-size:20px;">High: @ViewBag.OrgPerformanceHL["T1FT"][0]    </span>
+                    <span style="font-size:20px;">Low: @ViewBag.OrgPerformanceHL["T1FT"][1]</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="panel panel-warning">
+            <div class="panel-heading"><h4 style="font-size:40px;font-weight:bold;font-style:italic">T2 Performance</h4></div>
+            <div class="panel-body">
+                <div class="progress-main">
+                    <span class="progress-text" style="font-size:30px;">ATE FYR </span>
+                    <span class="progress-stats" style="font-size:30px">@ViewBag.OrgPerformanceList["T2ATE"]</span>
+                    <div class="progress progress-sm">
+                        <div style="width: @ViewBag.OrgPerformanceList["T2ATE"];" class="progress-bar"></div>
+                    </div>
+                    <br>
+                    <span style="font-size:20px;">High: @ViewBag.OrgPerformanceHL["T2ATE"][0]    </span>
+                    <span style="font-size:20px;">Low: @ViewBag.OrgPerformanceHL["T2ATE"][1]</span>
+                </div>
+                <div class="progress-main">
+                    <span class="progress-text" style="font-size:30px;">FT FYR</span>
+                    <span class="progress-stats" style="font-size:30px">@ViewBag.OrgPerformanceList["T2FT"]</span>
+                    <div class="progress progress-sm">
+                        <div style="width: @ViewBag.OrgPerformanceList["T2FT"];" class="progress-bar progress-bar-success"></div>
+                    </div>
+                    <br>
+                    <span style="font-size:20px;">High: @ViewBag.OrgPerformanceHL["T2FT"][0]    </span>
+                    <span style="font-size:20px;">Low: @ViewBag.OrgPerformanceHL["T2FT"][1]</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="panel panel-danger">
+            <div class="panel-heading"><h4 style="font-size:40px;font-weight:bold;font-style:italic">T3 Performance</h4></div>
+            <div class="panel-body">
+                <div class="progress-main">
+                    <span class="progress-text" style="font-size:30px;">ATE FYR </span>
+                    <span class="progress-stats" style="font-size:30px">@ViewBag.OrgPerformanceList["T3ATE"]</span>
+                    <div class="progress progress-sm">
+                        <div style="width: @ViewBag.OrgPerformanceList["T3ATE"];" class="progress-bar"></div>
+                    </div>
+                    <br>
+                    <span style="font-size:20px;">High: @ViewBag.OrgPerformanceHL["T3ATE"][0]    </span>
+                    <span style="font-size:20px;">Low: @ViewBag.OrgPerformanceHL["T3ATE"][1]</span>
+                </div>
+                <div class="progress-main">
+                    <span class="progress-text" style="font-size:30px;">FT FYR</span>
+                    <span class="progress-stats" style="font-size:30px">@ViewBag.OrgPerformanceList["T3FT"]</span>
+                    <div class="progress progress-sm">
+                        <div style="width: @ViewBag.OrgPerformanceList["T3FT"];" class="progress-bar progress-bar-success"></div>
+                    </div>
+                    <br>
+                    <span style="font-size:20px;">High: @ViewBag.OrgPerformanceHL["T3FT"][0]    </span>
+                    <span style="font-size:20px;">Low: @ViewBag.OrgPerformanceHL["T3FT"][1]</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="panel panel-success">
+            <div class="panel-heading"><h4 style="font-size:40px;font-weight:bold;font-style:italic">T5 Performance</h4></div>
+            <div class="panel-body">
+                <div class="progress-main">
+                    <span class="progress-text" style="font-size:30px;">ATE FYR </span>
+                    <span class="progress-stats" style="font-size:30px">@ViewBag.OrgPerformanceList["T5ATE"]</span>
+                    <div class="progress progress-sm">
+                        <div style="width: @ViewBag.OrgPerformanceList["T5ATE"];" class="progress-bar"></div>
+                    </div>
+                    <br>
+                    <span style="font-size:20px;">High: @ViewBag.OrgPerformanceHL["T5ATE"][0]    </span>
+                    <span style="font-size:20px;">Low: @ViewBag.OrgPerformanceHL["T5ATE"][1]</span>
+                </div>
+                <div class="progress-main">
+                    <span class="progress-text" style="font-size:30px;">FT FYR</span>
+                    <span class="progress-stats" style="font-size:30px">@ViewBag.OrgPerformanceList["T5FT"]</span>
+                    <div class="progress progress-sm">
+                        <div style="width: @ViewBag.OrgPerformanceList["T5FT"];" class="progress-bar progress-bar-success"></div>
+                    </div>
+                    <br>
+                    <span style="font-size:20px;">High: @ViewBag.OrgPerformanceHL["T5FT"][0]    </span>
+                    <span style="font-size:20px;">Low: @ViewBag.OrgPerformanceHL["T5FT"][1]</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class=" col-md-3">
+        <div class="white-box" style="height:650px">
+            <div class="panel with-nav-tabs panel-success" style="height:600px">
+                <ul class="nav nav-tabs">
+                    <li class="active">
+                        <a class="nav-link fade in active" data-toggle="tab" href="#Category_Container" style="font-size:15px;font-weight:bold;font-style:italic" role="tab">Category</a>
+                    </li>
+                    <li>
+                        <a class="nav-link" id="profile-tab" data-toggle="tab" href="#ItemNameType_Container" style="font-size:15px;font-weight:bold;font-style:italic" role="tab">ItemNameType</a>
+                    </li>
+                </ul>
+                <div class="tab-content" id="TrendTabContents">
+                    <div class="tab-pane active" role="tabpanel" id="Category_Container">
+                        <form class="form-horizontal">
+                            <div class="form-group" style="margin-bottom:20px">
+                                <div class="col-md-3" style="margin-top:5px">
+                                    <label>Org: </label>
+                                </div>
+                                <div class="col-sm-9">
+                                    <select id="trend_org" class="form-control" style="border: 2px solid grey;border-radius: 20px;font-size:15px;">
+                                        <option>ALL</option>
+                                        @for (int i = 0; i < ViewBag.OrgList.Count; i++)
+                                        {
+                                            <option>@ViewBag.OrgList[i]</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group" style="margin-bottom:20px">
+                                <div class="col-md-3" style="margin-top:5px">
+                                    <label>Station: </label>
+                                </div>
+                                <div class="col-sm-9">
+                                    <select id="trend_station" class="form-control" style="border: 2px solid grey;border-radius: 20px;font-size:15px;">
+                                        <option>ALL</option>
+                                        @for (int i = 0; i < ViewBag.StationList.Count; i++)
+                                        {
+                                            <option>@ViewBag.StationList[i]</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group" style="margin-bottom:20px">
+                                <div class="col-md-3" style="margin-top:5px">
+                                    <label>Group: </label>
+                                </div>
+                                <div class="col-sm-9">
+                                    <select id="trend_group" class="form-control" style="border: 2px solid grey;border-radius: 20px;font-size:15px;">
+                                        <option>ALL</option>
+                                        @for (int i = 0; i < ViewBag.GroupList.Count; i++)
+                                        {
+                                            <option>@ViewBag.GroupList[i]</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group" style="margin-bottom:20px">
+                                <div class="col-sm-12">
+                                    <input type="text" style="border: 2px solid grey;border-radius: 20px; padding: 12px 10px;  text-align: center;font-size:18px" class="flatpickr col-sm-12" id="rangeDate" placeholder="Please select Date Range" data-input>
+                                    <script>
+                                        $("#rangeDate").flatpickr({
+                                            mode: "range",
+                                            minDate: "today",
+                                            dateFormat: "Y-m-d",
+                                            inline: true,
+                                            disable: [
+                                                function (date) {
+                                                    return !(date.getDate() % 8);
+                                                }
+                                            ]
+                                        });
+                                    </script>
+                                </div>
+                            </div>
+                            <button type="button" id="btnAdd" class="btn waves-effect waves-light btn-primary col-sm-12" style="font-size:30px;text-align:center;margin-top:30px" onclick="getHistogram_Category()">Get Trend</button>
+                        </form>
+                    </div>
+                    <div class="tab-pane" role="tabpanel" id="ItemNameType_Container">
+                        <form class="form-horizontal">
+                            <div class="form-group" style="margin-bottom:20px">
+                                <div class="col-md-3" style="margin-top:5px">
+                                    <label>Org: </label>
+                                </div>
+                                <div class="col-sm-9">
+                                    <select id="trend_org_ItemNameType" class="form-control" style="border: 2px solid grey;border-radius: 20px;font-size:15px;">
+                                        <option>ALL</option>
+                                        @for (int i = 0; i < ViewBag.OrgList.Count; i++)
+                                        {
+                                            <option>@ViewBag.OrgList[i]</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group" style="margin-bottom:20px">
+                                <div class="col-md-12" style="margin-top:5px;text-align:left">
+                                    <label>ItemNameType: </label>
+                                </div>
+                                <div class="col-sm-12" style="margin-top:10px">
+                                    <select id="trend_ItemNameType" class="form-control" style="border: 2px solid grey;border-radius: 20px;font-size:15px;text-align:center">
+                                        @for (int i = 0; i < ViewBag.ItemNameTypeList.Count; i++)
+                                        {
+                                            <option>@ViewBag.ItemNameTypeList[i]</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group" style="margin-bottom:20px">
+                                <div class="col-sm-12">
+                                    <input type="text" style="border: 2px solid grey;border-radius: 20px; padding: 12px 10px;  text-align: center;font-size:18px" class="flatpickr col-sm-12" id="rangeDate_item" placeholder="Please select Date Range" data-input>
+                                    <script>
+                                        $("#rangeDate").flatpickr({
+                                            mode: "range",
+                                            minDate: "today",
+                                            dateFormat: "Y-m-d",
+                                            inline: true,
+                                            disable: [
+                                                function (date) {
+                                                    return !(date.getDate() % 8);
+                                                }
+                                            ]
+                                        });
+                                    </script>
+                                </div>
+                            </div>
+                            <button type="button" id="btnAdd" class="btn waves-effect waves-light btn-primary col-sm-12" style="font-size:30px;text-align:center;margin-top:30px" onclick="getHistogram_ItemNameType()">Get Trend</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="divContainer">
+        @*@Html.Partial("GetSOStationData", ViewData)*@
+        @*<img id="loading" src="~/Content/ajax-loader.gif" alt="" />*@
+        @Html.Partial("_DashBoard_Trend")
+    </div>
+</div>
+<script data-config>
+    function getHistogram_Category() {
+        //$.blockUI({
+        //    css: {
+        //        border: 'none',
+        //        padding: '15px',
+        //        backgroundColor: '#000',
+        //        opacity: .6
+        //    }
+        //});
+        var _org = $("#trend_org option:selected").val();
+        var _station = $("#trend_station option:selected").val();
+        var _group = $("#trend_group option:selected").val();
+        var _daterange = $("#rangeDate").val();
+        $.ajax({
+            type: "POST",
+            url: "../PTE_WEB/DashBoard/_DashBoard_Trend_Category",
+            //debug Need,
+            //url: "../DashBoard/_DashBoard_Trend_Category",
+            data: { "org": _org, "station": _station, "group": _group, "daterange": _daterange },
+            success: function (data) {
+                $("#divContainer").html(data);
+                //$.unblockUI();
+
+            },
+            error: function () {
+                alert("Something went wrong in controller.");
+                //$.unblockUI();
+            }
+        });
+    }
+
+    function getHistogram_ItemNameType() {
+        //$.blockUI({
+        //    css: {
+        //        border: 'none',
+        //        padding: '15px',
+        //        backgroundColor: '#000',
+        //        opacity: .6
+        //    }
+        //});
+        var _itemnametype = $("#trend_ItemNameType option:selected").val();
+        var _daterange = $("#rangeDate_item").val();
+        var _org_itemnametype = $("#trend_org_ItemNameType option:selected").val();
+        $.ajax({
+            type: "POST",
+            url: "../PTE_WEB/DashBoard/_DashBoard_Trend_ItemNameType",
+            //debug Need,
+            //url: "../DashBoard/_DashBoard_Trend_ItemNameType",
+            data: { "itemnametype": _itemnametype, "org": _org_itemnametype, "daterange": _daterange },
+            success: function (data) {
+                $("#divContainer").html(data);
+                //$.unblockUI();
+
+            },
+            error: function () {
+                alert("Something went wrong in controller.");
+                //$.unblockUI();
+            }
+        });
+    }
+</script>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="white-box" style="text-align:center;">
+            <a id="export" title="Export to Excel" href="@Url.Action("ExportIssueReport", "DashBoard" )" target="_blank" style="float:right;">
+                <img src="~/Content/Excel.png" border="0">
+            </a>
+            <div class="panel with-nav-tabs panel-success">
+                <div>
+                    <ul class="nav nav-tabs">
+                        <li class="nav-item active">
+                            <a class="nav-link fade in active" data-toggle="tab" href="#Issue_tab_containers" style="font-size:25px;font-weight:bold;font-style:italic" role="tab" aria-expanded="true">ITMXP</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="profile-tab" data-toggle="tab" href="#Issue_nonITMXP_container" style="font-size:25px;font-weight:bold;font-style:italic" role="tab" aria-expanded="false">Non ITMXP</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="tab-content" id="myTabContents">
+                    <div class="tab-pane active" id="Issue_tab_containers" role="tabpanel">
+                        <div id="Issue_containers">
+                            <table id="grid-mrl"></table>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="Issue_nonITMXP_container" role="tabpanel">
+                        <div id="Issue_containers_nonITM">
+                            <table id="grid-mrl_nonITM"></table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/Scripts/modernizr-2.8.3.js"></script>
+    <script src="~/Scripts/jquery-1.9.1.min.js"></script>
+    <script src="~/Scripts/jquery-ui.min.js"></script>
+    <script src="~/Scripts/infragistics.core.js"></script>
+    <script src="~/Scripts/infragistics.lob.js"></script>
+    <script>
+        var MonthReportModel = @Html.Raw(Json.Encode(ViewBag.IssueMonthlyReport));
+        var MonthReportModel_nonITM=@Html.Raw(Json.Encode(ViewBag.IssueMonthlyReport_NonITM));
+                $("#grid-mrl").igGrid({
+                dataSource: MonthReportModel,
+                autoCommit: true,
+                width: "100%",
+                caption:"Monthly Report",
+                autoGenerateColumns: false,
+                primaryKey: "ItemNameType",
+                columns: [
+                { headerText: "測站<br />編號", key: "ItemNameType", template:"<a href=\"./IssueIndex/Index?ItemNameType=${ItemNameType}&Org=${Org}\" style=\"color: #cc0000\" target=\"_blank\">${ItemNameType}</a>", dataType: "string", rowIndex: 0, columnIndex: 0, rowSpan: 3, width: "8%" },
+                { headerText: "狀態", key: "LinkImg", dataType: "string" , template: "<img src=\"./Content/fancyGrid/images/${LinkImg}.png\"></img>"  , rowIndex: 0, columnIndex: 1, rowSpan: 3, width: "7%" },
+                { headerText: "Org", key: "Org", dataType: "string", rowIndex: 0, columnIndex: 2, rowSpan: 3, width: "7%" },
+                { headerText: "Description", key: "Description", dataType: "string", rowIndex: 0, columnIndex: 3, width: "20%", rowSpan: 3 },
+                { headerText: "Top Fail Item 1", key: "F1", dataType: "string", rowIndex: 0, columnIndex: 4, width: "20%" },
+                { headerText: "Top Fail Item 2", key: "F2", dataType: "string", rowIndex: 1, columnIndex: 4, width: "20%" },
+                { headerText: "Top Fail Item 3", key: "F3", dataType: "string", rowIndex: 2, columnIndex: 4, width: "20%" },
+                { headerText:  'FYR<br />' + MonthReportModel[0].LastDateString, key: "FYR_Old", dataType: "string", rowIndex: 0, columnIndex: 5, width: "12%", rowSpan: 3 },
+                { headerText: 'FYR<br>' + MonthReportModel[0].CurrentDateString, key: "FYR_New", dataType: "string", rowIndex: 0, columnIndex: 6, rowSpan: 3 , width: "12%"},
+                { headerText: "Fail With Action 1", key: "Fail_Item_Action1", dataType: "string", rowIndex: 0, columnIndex: 7 },
+                { headerText: "Fail With Action 2", key: "Fail_Item_Action2", dataType: "string", rowIndex: 1, columnIndex: 7 },
+                { headerText: "Fail With Action 3", key: "Fail_Item_Action3", dataType: "string", rowIndex: 2, columnIndex: 7 },
+                    { headerText: 'Fail_Rate1<br />' + MonthReportModel[0].LastDateString, key: "Fail_Rate_Old1", dataType: "string", rowIndex: 0, columnIndex: 8, width: "10%" },
+                    { headerText: 'Fail_Rate2<br />' + MonthReportModel[0].LastDateString, key: "Fail_Rate_Old2", dataType: "string", rowIndex: 1, columnIndex: 8, width: "10%" },
+                    { headerText: 'Fail_Rate3<br />' + MonthReportModel[0].LastDateString, key: "Fail_Rate_Old3", dataType: "string", rowIndex: 2, columnIndex: 8, width: "10%" },
+                    { headerText: 'Fail_Rate1<br />' + MonthReportModel[0].CurrentDateString, key: "Fail_Rate_New1", dataType: "string", rowIndex: 0, columnIndex: 9, width: "12%" },
+                    { headerText: 'Fail_Rate2<br />' + MonthReportModel[0].CurrentDateString, key: "Fail_Rate_New2", dataType: "string", rowIndex: 1, columnIndex: 9, width: "12%" },
+                    { headerText: 'Fail_Rate3<br />' + MonthReportModel[0].CurrentDateString, key: "Fail_Rate_New3", dataType: "string", rowIndex: 2, columnIndex: 9, width: "12%" },
+                    { headerText: 'UPH<br />' + MonthReportModel[0].LastDateString, key: "LastUPH", dataType: "string", rowIndex: 0, columnIndex: 10, width: "12%", rowSpan: 3 },
+                    { headerText: 'UPH<br>' + MonthReportModel[0].CurrentDateString, key: "NextUPH", dataType: "string", rowIndex: 0, columnIndex: 11, width: "12%", rowSpan: 3 }
+                ],
+                autofitLastColumn: false,
+                features: [
+                { name: "Paging", pageSize: 5,pageSizeDropDownLocation : "inpager" },{ name: "Filtering",
+                    mode: "advanced"}
+                ]
+                });
+
+        $("#grid-mrl_nonITM").igGrid({
+            dataSource: MonthReportModel_nonITM,
+            autoCommit: true,
+            width: "100%",
+            caption: "Monthly Report non ITMXP",
+            autoGenerateColumns: false,
+            primaryKey: "ItemNameType",
+            columns: [
+                { headerText: "產品<br />編號", key: "ItemNameType", template: "<a href=\"./IssueIndex/Index?ItemNameType=${ItemNameType}&Org=${Org}\" style=\"color: #cc0000\" target=\"_blank\">${ItemNameType}</a>", dataType: "string", rowIndex: 0, columnIndex: 0, width: "12%" },
+                { headerText: "狀態", key: "LinkImg", dataType: "string", template: "<img src=\"./Content/fancyGrid/images/${LinkImg}.png\"></img>", rowIndex: 0, columnIndex: 1, width: "5%" },
+                { headerText: "Org", key: "Org", dataType: "string", rowIndex: 0, columnIndex: 2,width: "5%" },
+                { headerText: "Description", key: "Description", dataType: "string", rowIndex: 0, columnIndex: 3, width: "20%" },
+                { headerText: 'FYR<br />' + MonthReportModel_nonITM[0].LastDateString, key: "FYR_Old", dataType: "string", rowIndex: 0, columnIndex: 4, width: "8%" },
+                { headerText: 'FYR<br>' + MonthReportModel_nonITM[0].CurrentDateString, key: "FYR_New", dataType: "string", rowIndex: 0, columnIndex: 5, width: "8%" },
+                { headerText: 'UPH<br />' + MonthReportModel_nonITM[0].LastDateString, key: "LastUPH", dataType: "string", rowIndex: 0, columnIndex: 6, width: "8%" },
+                { headerText: 'UPH<br>' + MonthReportModel_nonITM[0].CurrentDateString, key: "NextUPH", dataType: "string", rowIndex: 0, columnIndex: 7, width: "8%" }
+            ],
+            autofitLastColumn: false,
+            features: [
+                { name: "Paging", pageSize: 5, pageSizeDropDownLocation: "inpager" }, {
+                    name: "Filtering",
+                    mode: "advanced"
+                }
+            ]
+        });
+    </script>
+
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="white-box" style="text-align:center;">
+            <div class="panel with-nav-tabs panel-success" ">
+                <ul class="nav nav-tabs">
+                    <li class="nav-item active">
+                        <a class="nav-link fade in active" data-toggle="tab" href="#tab_containers" style="font-size:25px;font-weight:bold;font-style:italic" role="tab">ITMXP</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="profile-tab" data-toggle="tab" href="#nonITMXP_tab_container" style="font-size:25px;font-weight:bold;font-style:italic" role="tab">Non ITMXP</a>
+                    </li>
+                </ul>
+                <div class="tab-content" id="myTabContents">
+                    <div class="tab-pane active" id="tab_containers" role="tabpanel">
+                        <div class="table-responsive">
+                            <div id="containers"></div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="nonITMXP_tab_container" role="tabpanel">
+                        <div class="table-responsive">
+                            <div id="nonITMXP_container"></div>
+                        </div>
+                    </div>
+                    <div id="myModal" class="modal fade" role="dialog">
+                        <div class="modal-dialog modal-lg">
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">Non-ITM Chart</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div id="DailyUsage"><canvas id="Canvs" height="300vw" width="1000vw"></canvas></div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script data-config>
+                    var model = @Html.Raw(Json.Encode(Model));
+                    $('#containers').FancyGrid({
+                        title: 'Top Focus',
+                        renderTo: 'container',
+                        height: 'fit',
+                        width: 'fit',
+                        data: model,
+                        theme: 'gray',
+                        resizable: true,
+                        defaults: {
+                            type: 'string',
+                            width: 120,
+                            sortable: true,
+                            ellipsis: true,
+                            resizable: true,
+                            filter: {
+                                header: true,
+                                emptyText: 'Search'
+                            }
+                        },
+                        paging: {
+                            pageSize: 10,
+                            pageSizeData: [5, 10, 20, 50, 500, 1000]
+                        },
+                        exporter: true,
+                        tbar: [{
+                            text: 'Export to Excel',
+                            handler: function () {
+                                var thispageSize = this.getPageSize();
+                                this.setPageSize(this.getTotal());
+                                this.exportToExcel({
+                                    fileName: 'All_FYRTable_Excel',
+                                    header: true
+                                });
+                                this.setPageSize(thispageSize);
+                            }
+                        }, {
+                            text: 'Export to CSV',
+                            handler: function () {
+                                var thispageSize = this.getPageSize();
+                                this.setPageSize(this.getTotal());
+                                this.exportToCSV({
+                                    fileName: 'All_FYRTable_CSV.csv',
+                                    header: true
+                                });
+                                this.setPageSize(thispageSize);
+                            }
+                        }],
+                        columns: [{
+                            index: 'ItemNameType',
+                            locked: true,
+                            title: 'ItemNameType',
+                            width: 120,
+                            type: 'number'
+
+                        }, {
+                            index: 'Org',
+                            title: 'Org',
+                            type: 'combo',
+                            width: 80,
+                            itemCheckBox: true,
+                            multiSelect: true,
+                            data: ['T1', 'T2', 'T3','T5']
+
+                        }, {
+                            index: 'TestStation',
+                            title: 'TestStation',
+                            type: 'combo',
+                            itemCheckBox: true,
+                            multiSelect: true,
+                                data: ['ATE', 'BT', 'FT', 'Sound', 'CTHT', 'Engineer', 'Pairing', 'IQC', 'QALab', 'NOH', 'VT', 'RTESN', 'SNRCalibration', 'UK_RL', 'US_RL', 'CleanRoom', 'Outsources', 'Baro', 'uTube', 'G-Sensor', 'E-Compass', 'Airtight', 'Sensor', 'PackIntegrated']
+                            }, {
+                                index: 'StationType',
+                                title: 'StationType',
+                                type: 'combo',
+                                itemCheckBox: true,
+                                multiSelect: true,
+                                data: ['AOEM', 'Camera', 'Hand_Held', 'In_the_Air', 'On_The_Trail', 'On_the_Water', 'Onto_Fitness', 'Others', 'PND']
+                            },{
+                            index: 'TestType',
+                            title: 'TestType',
+                            width: 80
+                        }, {
+                            index: 'TestType2',
+                            title: 'TestType2'
+
+                        }, {
+                            index: 'Description',
+                            title: 'Description',
+                            width: 200
+
+                        }, {
+                            index: 'FYR',
+                            title: 'FYR',
+                            type: 'number'
+                        }, {
+                            index: 'Avg_Pass_Time',
+                            title: 'Avg_Pass_Time',
+                            type: 'number'
+                        }, {
+                            index: 'Pass',
+                            title: 'Pass',
+                            type: 'number'
+                        }, {
+                            index: 'Fail',
+                            title: 'Fail',
+                            type: 'number'
+                        }, {
+                            index: 'Total',
+                            title: 'Total',
+                            type: 'number'
+                        }, {
+                            index: 'D_Pass',
+                            title: 'D_Pass',
+                            type: 'number'
+                        }, {
+                            index: 'D_Fail',
+                            title: 'D_Fail',
+                            type: 'number'
+                        }, {
+                            index: 'D_Total',
+                            title: 'D_Total',
+                            type: 'number'
+                        },
+                        {
+                            title: 'Details',
+                            type: 'action',
+                            width: 60,
+                            items: [{
+                                text: 'Details',
+                                cls: 'btn btn-success',
+                                handler: function (grid, o) {
+                                    window.open("@Url.Action("AnalyzeItemNameType", "AnalyzeTool")" + "?itemnametype=" + o.value.ItemNameType + "&org=" + o.value.Org+"&startdate=@TempData["StartDate"]&enddate=@TempData["EndDate"]", '_blank');
+                                }
+                            }]
+                        },
+                        {
+                            title: 'Spare',
+                            type: 'action',
+                            width: 60,
+                            items: [{
+                                text: 'Spare',
+                                cls: 'btn btn-info',
+                                handler: function (grid, o) {
+                                    window.open("@Url.Action("Index", "SpareTool")" + "?itemnametype=" + o.value.ItemNameType + "&org=" + o.value.Org+"&startdate=@TempData["StartDate"]&enddate=@TempData["EndDate"]", '_blank');
+                                }
+                            }]
+                        }
+                        ]
+                    });
+    </script>
+    <script>
+        var NonITMmodel = @Html.Raw(Json.Encode( ViewBag.nonITMData));
+
+        $('#nonITMXP_container').FancyGrid({
+            title: 'Top Focus',
+            renderTo: 'container_nonITM',
+            height: 'fit',
+            width: 'fit',
+            data: NonITMmodel,
+            theme: 'gray',
+            resizable: true,
+            defaults: {
+                type: 'string',
+                width: 120,
+                sortable: true,
+                ellipsis: true,
+                resizable: true,
+                filter: {
+                    header: true,
+                    emptyText: 'Search'
+                }
+            },
+            paging: {
+                pageSize: 10,
+                pageSizeData: [5, 10, 20, 50, 500, 1000]
+            },
+            exporter: true,
+            tbar: [{
+                text: 'Export to Excel',
+                handler: function () {
+                    var thispageSize = this.getPageSize();
+                    this.setPageSize(this.getTotal());
+                    this.exportToExcel({
+                        fileName: 'All_FYRTable_Excel',
+                        header: true
+                    });
+                    this.setPageSize(thispageSize);
+                }
+            }, {
+                text: 'Export to CSV',
+                handler: function () {
+                    var thispageSize = this.getPageSize();
+                    this.setPageSize(this.getTotal());
+                    this.exportToCSV({
+                        fileName: 'All_FYRTable_CSV.csv',
+                        header: true
+                    });
+                    this.setPageSize(thispageSize);
+                }
+            }],
+            columns: [{
+                index: 'ItemNameType',
+                locked: true,
+                title: 'ItemNameType',
+                width: 120
+            }, {
+                index: 'Org',
+                title: 'Org',
+                type: 'combo',
+                width: 80,
+                itemCheckBox: true,
+                multiSelect: true,
+                data: ['T1', 'T2', 'T3','T5']
+            }, {
+                index: 'TestStation',
+                    title: 'TestStation',
+                    type: 'combo',
+                    width: 100,
+                    itemCheckBox: true,
+                    multiSelect: true,
+                    data: ['Airtight', 'Baro', 'G-Sensor', 'E-Compass']
+
+            }, {
+                index: 'TestType',
+                title: 'TestType',
+                width: 80
+            }, {
+                index: 'TestType2',
+                title: 'TestType2'
+
+            }, {
+                index: 'Description',
+                title: 'Description',
+                width: 200
+
+            }, {
+                index: 'FYR',
+                title: 'FYR'
+            }, {
+                index: 'Avg_Pass_Time',
+                title: 'Avg_Pass_Time'
+            }, {
+                index: 'Pass',
+                title: 'Pass'
+            }, {
+                index: 'Fail',
+                title: 'Fail'
+            }, {
+                index: 'Total',
+                title: 'Total'
+            }, {
+                index: 'D_Pass',
+                title: 'D_Pass'
+            }, {
+                index: 'D_Fail',
+                title: 'D_Fail'
+            }, {
+                index: 'D_Total',
+                title: 'D_Total'
+            }, {
+                title: 'Detail',
+                type:'text',
+                width: 60,
+                render: function(o) {
+                o.value = '<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal"  onclick="GetNonITMFYRTrend(\''+o.value.Org+'\',\''+o.value.Description+'\')">Trend</button>';
+               return o;
+               }
+               }]
+           });
+        function GetNonITMFYRTrend(org, description) {
+            var st =@Html.Raw(Json.Encode(TempData["StartDate"]));
+            var et =@Html.Raw(Json.Encode(TempData["EndDate"]));
+            var dataString = 'st=' + encodeURIComponent(st) + "&et=" + encodeURIComponent(et) + "&org=" + org + "&des=" + encodeURIComponent(description);
+            $.ajax({
+                url: "Dashboard/SearchNonITMFYR",
+                data: dataString,
+                type: "POST",
+                success: function (data) {
+                    //init chart 為了防止chart 重疊
+                    $('#Canvs').replaceWith('<canvas id = "Canvs" height = "300vw" width = "1000vw"></canvas>');
+                    var totalData = [];
+                    var FYR = [];
+                    var date = [];
+                    var uph = []
+                    var uphMax = 0;
+                    for (var i = 0; i < data.length; i++){
+                        totalData.push(data[i].Total);
+                        FYR.push(data[i].FYR);
+                        date.push(data[i].Date);
+                        uph.push(data[i].UPH_Achievement);
+                        if (data[i].UPH_Achievement > 100) {
+                            uphMax = uphMax > data[i].UPH_Achievement ? uphMax : data[i].UPH_Achievement
+                        }
+                    }
+                    var color = Chart.helpers.color;
+                     var lineChartData = {
+                            labels: date,
+                            datasets: [{
+                                label: "Total",
+                               type:"bar",
+                                backgroundColor: color(window.chartColors.red).alpha(0.5).rgbString(),
+			                	borderColor: window.chartColors.red,
+                                fill: false,
+                                data: totalData,
+                                yAxisID: "y-axis-1",
+                            }, {
+                                label: "FYR",
+                                borderColor: window.chartColors.blue,
+                                backgroundColor: window.chartColors.blue,
+                                fill: false,
+                                data:FYR,
+                                yAxisID: "y-axis-2"
+                                },
+                                {
+                                    label: "UPH",
+                                    borderColor: window.chartColors.orange,
+                                    backgroundColor: window.chartColors.orange,
+                                    fill: false,
+                                    data: uph,
+                                    yAxisID: "y-axis-2"
+                                }
+                            ]
+                    };
+                    var ctx = document.getElementById("Canvs").getContext("2d");
+                    var options= {
+                        responsive: true,
+                        hoverMode: 'index',
+                        stacked: false,
+                        title: {
+                            display: true,
+                            text: description
+                        },
+                        scales: {
+                            yAxes: [{
+                                type: "linear", // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
+                                display: true,
+                                position: "left",
+                                id: "y-axis-1",
+                            }, {
+                                type: "linear", // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
+                                display: true,
+                                position: "right",
+                                id: "y-axis-2",
+                                gridLines: {
+                                    drawOnChartArea: false, // only want the grid lines for one axis to show up
+                                }, ticks: {
+                                    max: uphMax > 100 ? uphMax:100,
+                                    min: 0,
+                                    stepSize: 10
+                                }
+                            }],
+                        }
+                    }
+                    var nonITMXPChart = new Chart(ctx, { type: 'line', data: lineChartData, options: options });
+                }
+            });
+        }
+    </script>
+</div>

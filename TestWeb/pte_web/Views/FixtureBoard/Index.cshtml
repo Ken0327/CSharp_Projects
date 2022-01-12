@@ -1,0 +1,191 @@
+﻿@model IEnumerable<PTE_Web.Models.DataPoint>
+@using System.Data
+@{
+    ViewBag.Title = "Home Page";
+}
+
+@{
+    ViewBag.Title = "ErrDevBar";
+    var jsonLabels = Json.Encode(ViewBag.Label);//將Controller傳來轉型成json
+    var jsonErrDev = Json.Encode(Model);//將透過Model讀取的資料轉成json
+    var dt_org = ViewBag.DT_org as DataTable;
+    var dt_os = ViewBag.DT_os as DataTable;
+
+}
+<script src="~/Scripts/Chart.js"></script>
+<link href="~/Content/assets/css/datatables/jquery.datatables.min.css" rel="stylesheet" />
+<script>
+
+    setTimeout(function () {
+        window.location.reload(1);
+    }, 3600*2*1000);
+
+    window.onload = function () {
+        var jsErrDev =@Html.Raw(jsonErrDev);//顯示json原始資料
+        var chartIDs = ["chart_top20", "oschart_top20"]
+        var labels=@Html.Raw(jsonLabels);
+        for (var i = 0; i < chartIDs.length; i++) {
+            var ctx = document.getElementById(chartIDs[i]);
+
+            var chart = new Chart(ctx, {
+                type: 'horizontalBar',
+                data: {
+                    labels:labels[i],
+                    datasets: [{
+                        label: jsErrDev[i].Fixture,
+                        data: jsErrDev[i].FailCount,
+                        backgroundColor: [
+                            'rgba(255,199,132,0.2)',
+                            'rgba(255,99,32,0.2)',
+                            'rgba(255,99,13,0.2)',
+                            'rgba(25,99,132,0.2)',
+                            'rgba(25,99,232,0.2)',
+                            'rgba(155,199,132,0.2)',
+                            'rgba(55,99,232,0.2)',
+                            'rgba(90,9,32,0.2)',
+                            'rgba(255,9,32,0.2)',
+                            'rgba(125,89,232,0.2)',
+                            'rgba(70,199,32,0.2)',
+                            'rgba(120,36,88,0.2)',
+                            'rgba(255,137,88,0.2)',
+                            'rgba(78,27,34,0.2)',
+                            'rgba(188,66,188,0.2)',
+                            'rgba(25,66,68,0.2)',
+                            'rgba(135,16,98,0.2)',
+                            'rgba(225,166,8,0.2)',
+                            'rgba(170,76,28,0.2)',
+                            'rgba(55,116,188,0.2)'
+                        ]
+                    }]
+                }, options: {
+                    legend: {
+                        display: false
+
+                    },
+                    tooltips: {
+                        callbacks: {
+                            label: function (tooltipItem, index, values) {
+
+                                var i = 0;
+                                if (index.datasets[0].label == "外包治具")
+                                    i = 1;
+                                return jsErrDev[i].Fixture_ID[tooltipItem.index] + "號治具，數量："+tooltipItem.value;
+                            }
+                        }
+                    },
+                    scales: {
+
+                        yAxes: [{
+                            display: true,
+                            ticks: {
+                                suggestedMin: 0,    // minimum will be 0, unless there is a lower value.
+                                // OR //
+                                beginAtZero: true   // minimum value will be 0.
+                            }
+                        }]
+                    }
+                }
+            })
+        }
+
+        $('#tb_org').DataTable({
+            "bFilter": false,
+            "bLengthChange": false,
+            "order": [[4, "desc"]],
+            "info": false
+
+        });
+
+        $('#tb_os').DataTable({
+            "bFilter": false,
+            "bLengthChange": false,
+            "order": [[4, "desc"]],
+            "info": false
+        });
+
+    }
+</script>
+<h1>@ViewBag.org 治具資訊看板</h1>
+
+<div class="alert alert-success" role="alert">
+    資料更新時間：@DateTime.Now.Year/@DateTime.Now.Month/@DateTime.Now.Day @DateTime.Now.AddHours(-2).ToString("yyyy-MM-dd HH:mm:ss") (每兩小時更新一次)
+</div>
+
+@Html.DropDownList("Org", new List<SelectListItem>
+   {new SelectListItem{Text="請選擇廠區", Value="0" ,  Selected = true},
+    new SelectListItem{Text="T1", Value="T1"},
+     new SelectListItem{Text="T2", Value="T2"},
+     new SelectListItem{Text="T3", Value="T3"},
+     new SelectListItem{Text="T5", Value="T5"},
+   }, new
+{
+@class = "form-control",
+style = "width:10%",
+       onchange = "document.location.href = '?Org=' + this.options[this.selectedIndex].value;"
+   })
+<div class="row">
+    <div class="col-md-6">
+        <h2 style="text-align:center;">廠內治具Top20 圖表</h2>
+
+        <canvas id="chart_top20" style="margin-top:40px;"></canvas>
+    </div>
+    <div class="col-md-6">
+        <h2 style="text-align:center;">廠內治具Top20 表格</h2>
+        <table id="tb_org" class="table table-striped" style="width:100%">
+            <thead>
+                <tr>
+                    <th style="text-align:center">測試站別</th>
+                    <th style="text-align:center">ItemNameType</th>
+                    <th style="text-align:center">FixtureID</th>
+                    <th style="text-align:center">Station</th>
+                    <th style="text-align:center">FailCount</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (DataRow r in dt_org.Rows)
+                {
+                    <tr>
+                        <td>@r["ItemDescription"]</td>
+                        <td>@r["ItemNameType"]</td>
+                        <td>@r["fixtureid2"]</td>
+                        <td>@r["station"]</td>
+                        <td>@r["failCount"]</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <h2 style="text-align:center;">外包治具Top20 圖表</h2>
+
+        <canvas id="oschart_top20" style="margin-top:40px;"></canvas>
+    </div>
+    <div class="col-md-6">
+        <h2 style="text-align:center;">外包治具Top20 表格</h2>
+        <table id="tb_os" class="table table-striped" style="width:100%">
+            <thead>
+                <tr>
+                    <th style="text-align:center">測試站別</th>
+                    <th style="text-align:center">ItemNameType</th>
+                    <th style="text-align:center">FixtureID</th>
+                    <th style="text-align:center">Station</th>
+                    <th style="text-align:center">FailCount</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (DataRow r in dt_os.Rows)
+                {
+                    <tr>
+                        <td>@r["ItemDescription"]</td>
+                        <td>@r["ItemNameType"]</td>
+                        <td>@r["fixtureid2"]</td>
+                        <td>@r["station"]</td>
+                        <td>@r["failCount"]</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

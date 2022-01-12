@@ -1,0 +1,76 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="~/Content/assets/images/title-logo.jpg">
+    <title>Correlation Analyzer</title>
+
+    @Styles.Render("~/bundles/assets/css")
+    @Scripts.Render("~/bundles/amcharts")
+    @Styles.Render("~/bundles/datetimepicker/css")
+    @Styles.Render("~/bundles/bootstrap-switch/css")
+    @Styles.Render("~/bundles/highCharts/css")
+    @Styles.Render("~/CustomCss")
+
+    @*@Scripts.Render("~/bundles/TableFilter")*@
+
+    @RenderSection("css", required: false)
+
+    @Scripts.Render("~/bundles/assets/jquery")
+    @Scripts.Render("~/bundles/highCharts")
+    @Scripts.Render("~/bundles/assets/plugins/datatables")
+    @Scripts.Render("~/bundles/bootstrap-switch")
+    @Scripts.Render("~/CustomJs")
+</head>
+
+<body class="sticky-header">
+    <!--Start left side Menu-->
+    <div class="left-side sticky-left-side">
+        <!--logo-->
+        <div class="logo" style="Top:20px;">
+            <a href="#"><img src="~/Content/assets/images/logo2.png" height="50" width="200"></a>
+        </div>
+        <!--logo-->
+
+        <div class="left-side-inner">
+            <!--Sidebar nav-->
+            <ul class="nav nav-pills nav-stacked custom-nav">
+                <li class="menu-list nav-active">
+                    <a href="#"><i class="icon-home"></i> <span>Correlation </span></a>
+                    <ul class="sub-menu-list">
+                        <li>@Html.ActionLink("Fixture", "CorrelationWindow", new { @pageconfig = ViewBag.PageConfig, @failitem = ViewBag.FailItem, @itemdescript = ViewBag.ItemName, @type = "Fixture",@spec_max = ViewBag.SpecMax,@spec_min=ViewBag.SpecMin })</li>
+                        <li>@Html.ActionLink("Station", "CorrelationWindow", new { @pageconfig = ViewBag.PageConfig, @failitem = ViewBag.FailItem, @itemdescript = ViewBag.ItemName, @type = "Station" ,@spec_max = ViewBag.SpecMax,@spec_min=ViewBag.SpecMin})</li>
+                        <li>@Html.ActionLink("SerialNumber", "CorrelationWindow", new { @pageconfig = ViewBag.PageConfig, @failitem = ViewBag.FailItem, @itemdescript = ViewBag.ItemName, @type = "SerialNumber",@spec_max = ViewBag.SpecMax,@spec_min=ViewBag.SpecMin })</li>
+                        <li>@Html.ActionLink("ExeInfo", "CorrelationWindow", new { @pageconfig = ViewBag.PageConfig, @failitem = ViewBag.FailItem, @itemdescript = ViewBag.ItemName, @type = "ExeInfo" ,@spec_max = ViewBag.SpecMax,@spec_min=ViewBag.SpecMin})</li>
+                        <li>@Html.ActionLink("ProductName", "CorrelationWindow", new {  @pageconfig = ViewBag.PageConfig, @failitem = ViewBag.FailItem, @itemdescript = ViewBag.ItemName, @type = "ProductName" ,@spec_max = ViewBag.SpecMax,@spec_min=ViewBag.SpecMin})</li>
+                        <li>@Html.ActionLink("UserName", "CorrelationWindow", new { @pageconfig = ViewBag.PageConfig, @failitem = ViewBag.FailItem, @itemdescript = ViewBag.ItemName, @type = "UserName" ,@spec_max = ViewBag.SpecMax,@spec_min=ViewBag.SpecMin})</li>
+                    </ul>
+                </li>
+            </ul>
+            <!--End sidebar nav-->
+        </div>
+    </div>
+    <!--End left side menu-->
+    <!-- main content start-->
+
+    <div class="main-content">
+        <!--body wrapper start-->
+        <div class="wrapper">
+            @RenderBody()
+        </div>
+        <!-- End Wrapper-->
+    </div>
+    <!--End main content -->
+
+    @Scripts.Render("~/bundles/assets/plugins")
+
+    @Scripts.Render("~/bundles/datetimepicker/js")
+
+</body>
+@RenderSection("scripts", required: false)
+</html>

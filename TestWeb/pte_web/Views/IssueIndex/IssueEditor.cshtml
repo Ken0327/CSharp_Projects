@@ -1,0 +1,686 @@
+﻿@model IEnumerable<PTE_Web.Models.PTEWEB_Issues_Reply>
+
+@{
+    ViewBag.Title = "IssueEditor";
+    Layout = "~/Views/Shared/_Layout_bootstrap.cshtml";
+}
+
+<link href="~/Content/fancyGrid/fancy.min.css" rel="stylesheet" />
+<script src="~/Scripts/fancyGrid/fancy.full.min.js"></script>
+<link href="~/Content/mab-jquery-taginput.css" rel="stylesheet" />
+<script src="~/Scripts/typeahead.bundle.min.js"></script>
+<script src="~/Scripts/mab-jquery-taginput.js"></script>
+<!-- 日期選擇物件 Start-->
+<div class="row">
+    <div class="col-md-12">
+        <div class="white-box">
+            <form method="post" name="DateRangeForm" action="@ViewContext.RouteData.Values["action"]">
+                <div class="input-group">
+                    <input name="issueid" style="display:none;width:120px;font-size:30px;padding-right:30px" type="text" value=@ViewBag.IssueID>
+                    <input name="org" style="display:none;width:120px;font-size:30px;padding-right:30px" type="text" value=@TempData["Org"]>
+                    <input name="itemnametype" style="display:none;width:120px;font-size:30px;padding-right:30px" type="text" value=@ViewBag.ItemNameType>
+                    <b style="font-size:30px;padding-right:30px"><span style="color:black">  From </span></b>
+                    <input class=flatpickr style="width:200px;font-size:30px;padding-right:30px" type="text" placeholder=@TempData["StartDate"] name="startdate" data-id="rangePlugin">
+                    <b style="padding-right:30px;padding-left:30px;font-size:30px"><span style="color:black">  to   </span></b>
+                    <input type="text" align="middle" style="padding-right:30px;width:200px;font-size:30px" placeholder=@TempData["EndDate"] id="secondRangeInput" name="enddate">
+                    <input type='submit' class="btn waves-effect waves-light btn-primary" style="font-size:30px;margin-top:-20px;margin-left:15px;text-align:center;" value='Go' />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- 日期選擇物件 End-->
+
+@if (ViewBag.IssueID != string.Empty)
+{
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="white-box" style="height:540px">
+                <div id="chartdiv" style="min-width:800px;height:500px"></div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="white-box" style="height:540px">
+                <div class="panel panel-@ViewBag.IssueConfig["PanelType"]" style="height:500px">
+                    <div class="panel-heading"><h4 style="font-size:40px;"><b> @ViewBag.IssueConfig["IssueDescription"]</b></h4></div>
+                    <div class="panel-body">
+                        <div class="progress-main">
+                            <span class="progress-text" style="font-size:30px;">Latest FYR : </span>
+                            <span class="progress-stats" style="font-size:30px"> @ViewBag.IssueConfig["todayFYR"] %</span>
+                            <div class="progress progress-sm">
+                                <div style="width: @ViewBag.IssueConfig["todayFYR"]%;" class="progress-bar"></div>
+                            </div>
+                        </div>
+                        <div class="progress-main">
+                            <span class="progress-text" style="font-size:30px;">Issue Alive Days : </span>
+                            <span class="progress-stats" style="font-size:30px">@ViewBag.IssueConfig["IssueAlive_Dates"]</span>
+                            <div class="progress progress-sm">
+                                <div style="width: 30%" class="progress-bar progress-bar-success"></div>
+                            </div>
+                            <div>
+                                <br>
+                                <span style="margin-top:20px;font-size:25px;">Creation Date: @ViewBag.IssueConfig["IssueCreateDate"]    </span>
+                            </div>
+                            <div>
+                                <br>
+                                <span style="margin-top:20px;font-size:25px;">Creation By: @ViewBag.IssueConfig["IssueType"]    </span>
+                            </div>
+                            <span style="margin-top:50px;width:100%;height:30%;font-size:50px" class="label label-@ViewBag.IssueConfig["PanelType"]">@ViewBag.IssueConfig["IssueStatus"]</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    if (@ViewBag.IssueConfig["IssueStatus"] != "Close")
+    {
+        //Action / Close issue issue iftton
+        <div class="row">
+            <div class="col-md-6">
+                <div class="white-box">
+                    <button type="button" class="btn btn-warning btn-block" style="font-size:36px" onclick="ActionReply()">Action Record</button>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="white-box">
+                    <button type="button" class="btn btn-primary btn-block" onclick="ActionClose()" style="font-size:36px">Close Issue</button>
+                </div>
+            </div>
+        </div>
+    }
+
+    //Show action table
+    <input id="statusTxt" style="display:none;" value="@ViewBag.IssueConfig["IssueStatus"]" />
+    <label>追綜Issue 列表</label>
+    <input type="text" class="tag-input" value="@ViewBag.TracingList" />
+    <div class="row">
+        <div class="col-md-12">
+            <div class="white-box" style="height:620px">
+                <h2> <b>Action Record </b></h2>
+                <div class="table-responsive" style="height:480px">
+                    <table id="example" class="display table" style="font-size:20px;width:100%">
+                        <thead>
+                            <tr style="text-align: right;">
+                                <th>Delete</th>
+                                <th>@Html.DisplayNameFor(model => model.CreateTime)</th>
+                                <th>@Html.DisplayNameFor(model => model.Status)</th>
+                                <th>@Html.DisplayNameFor(model => model.FailItem)</th>
+                                <th>@Html.DisplayNameFor(model => model.UserName)</th>
+                                <th>@Html.DisplayNameFor(model => model.Owner)</th>
+                                <th>@Html.DisplayNameFor(model => model.Cause)</th>
+                                <th>@Html.DisplayNameFor(model => model.CauseCommon)</th>
+                                <th>@Html.DisplayNameFor(model => model.Action)</th>
+                                <th>@Html.DisplayNameFor(model => model.ActionCommon)</th>
+                                <th>@Html.DisplayNameFor(model => model.fileName)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                var IssueMarkdown = !item.IsThisIssue ? "bgcolor=\"pink\"" : string.Empty;
+
+                                <tr>
+                                    @if (!item.IsThisIssue)
+                                    {
+                                        <td></td>
+                                    }
+                                    else
+                                    {
+                                        <td align="center" @IssueMarkdown><a href="@Url.Action("IssueEditor", "IssueIndex",new {ItemNameType= item.ItemNameType,issueid = ViewBag.IssueID, creatime = item.CreateTime})" onclick="CheckDelete();"><img style="display:block" height="60" width="60" src="~/Content/DeleteAction.png" /></a></td>
+                                    }
+                                    <td @IssueMarkdown>@Html.DisplayFor(modelItem => item.CreateTime)</td>
+                                    <td @IssueMarkdown>@Html.DisplayFor(modelItem => item.Status)</td>
+                                    <td @IssueMarkdown>@Html.DisplayFor(modelItem => item.FailItem)</td>
+                                    <td @IssueMarkdown>@Html.DisplayFor(modelItem => item.UserName)</td>
+                                    <td @IssueMarkdown>@Html.DisplayFor(modelItem => item.Owner)</td>
+                                    <td @IssueMarkdown>@Html.DisplayFor(modelItem => item.Cause)</td>
+                                    <td @IssueMarkdown>@Html.DisplayFor(modelItem => item.CauseCommon)</td>
+                                    <td @IssueMarkdown>@Html.DisplayFor(modelItem => item.Action)</td>
+                                    <td @IssueMarkdown>@Html.DisplayFor(modelItem => item.ActionCommon)</td>
+                                    @if (item.fileName == "NaN" || item.fileName == null || item.fileName == "")
+                                    {
+                                        <td @IssueMarkdown></td>
+                                    }
+                                    else
+                                    {
+                                        <td align="center" @IssueMarkdown><a href="@Url.Action("Download", "IssueIndex", new { Title = "Attachment", path = item.fileName})" target="_blank" style="float:right;"> <img src="~/Content/attachment.jpg" height="60" width="60" /></a></td>
+                                    }
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="modal fade" id="IssuesReply" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myIssueLabel">Issue Reply</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="white-box" style="height:950px">
+                                    <form id="ReplyForm" class="form-horizontal" disabled='disabled' enctype="multipart/form-data" action="@Url.Action("IssueEditor", "IssueIndex")" method="post" onsubmit="return IssueReplyCheck();">
+                                        <div class="form-group">
+                                            <label style="font-size:25px;" class="col-md-2 control-label"><b>填寫人</b></label>
+                                            <input name="ItemNameType" style="display:none;" value="@ViewBag.ItemNameType">
+                                            <input name="issueid" style="display:none;" value="@ViewBag.IssueID">
+                                            <input name="org" style="display:none;" value="@TempData["Org"]">
+                                            <input name="closeflag" style="display:none;" value="0">
+                                            <div class="col-sm-4">
+                                                @Html.DropDownList("userid", (IEnumerable<SelectListItem>)ViewBag.EditorList, htmlAttributes: new { @style = "font-size:25px;height:auto", @class = "form-control" })
+                                            </div>
+                                            <label style="font-size:25px;" class="col-md-2 control-label"><b>負責單位</b></label>
+                                            <div class="col-sm-4">
+                                                @Html.DropDownList("ownerid", (IEnumerable<SelectListItem>)ViewBag.OwnerList, htmlAttributes: new { @style = "font-size:25px;height:auto", @class = "form-control" })
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label style="font-size:25px" class="col-md-2 control-label"><b>不良測項</b></label>
+                                            <div class="col-sm-10">
+                                                @if (ViewBag.FailItemList.Count != 0)
+                                                {
+                                                    @Html.DropDownList("failitem", (IEnumerable<SelectListItem>)ViewBag.FailItemList, htmlAttributes: new { @id = "failitem_string", @style = "font-size:25px;height:auto", @class = "form-control" })
+
+                                                }
+                                                else
+                                                {
+                                                    <input id="failitem_string" name="failitem" style="font-size:25px;height:auto" class="form-control" type="text" value="">
+                                                }
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="panel panel-color panel-warning">
+                                                <div class="panel-heading">
+                                                    <h3 class="panel-title" style="font-size:25px;">原因</h3>
+                                                </div>
+                                                <div class="panel-body">
+                                                    <div class="col-sm-12">
+                                                        @Html.DropDownList("causeid", (IEnumerable<SelectListItem>)ViewBag.CauseList, htmlAttributes: new { @style = "font-size:25px;height:auto", @class = "form-control" })
+                                                    </div>
+                                                    <div class="col-sm-12">
+                                                        <textarea id="cause_common" class="form-control" name="cause_common" style="font-size:25px;" rows="5" onFocus="if(this.value==this.defaultValue) this.value=''" onBlur="if(this.value=='') this.value=this.defaultValue">請輸入內容...</textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="panel panel-color panel-warning">
+                                                <div class="panel-heading">
+                                                    <h3 class="panel-title" style="font-size:25px;">處置</h3>
+                                                </div>
+                                                <div class="panel-body">
+                                                    <div class="col-sm-12">
+                                                        @Html.DropDownList("actionid", (IEnumerable<SelectListItem>)ViewBag.ActionList, htmlAttributes: new { @style = "font-size:25px;height:auto", @class = "form-control" })
+                                                    </div>
+                                                    <div class="col-sm-12">
+                                                        <textarea id="action_common" class="form-control" name="action_common" style="font-size:25px;" rows="5" onFocus="if(this.value==this.defaultValue) this.value=''" onBlur="if(this.value=='') this.value=this.defaultValue">請輸入內容...</textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group m-b-1">
+                                            <div class="col-sm-12">
+                                                <input name="file" type="file" multiple />
+                                            </div>
+                                        </div>
+                                        <div class="form-group m-b-1">
+                                            <div class="col-sm-12">
+                                                <input type="hidden" id="trace_flag" name="trace_flag" value="0">
+                                                <input id="ReplySubmitBtn" type='submit' class="btn btn-success round btn-block" style="font-size:30px;" value='送出' />
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="modal fade" id="IssuesClose" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myIssueLabel">Issue Close</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="white-box" style="height:550px">
+                                    <form id="ReplyForm1" class="form-horizontal" disabled='disabled' enctype="multipart/form-data" action="@Url.Action("IssueEditor", "IssueIndex")" method="post" onsubmit="return IssueCloseCheck();">
+                                        <div class="form-group">
+                                            <label style="font-size:25px;" class="col-md-2 control-label"><b>填寫人</b></label>
+                                            <input name="ItemNameType" style="display:none;" value="@ViewBag.ItemNameType">
+                                            <input name="closeflag" style="display:none;" value="1">
+                                            <input name="issueid" style="display:none;" value="@ViewBag.IssueID">
+                                            <input name="org" style="display:none;" value="@TempData["Org"]">
+                                            <div class="col-sm-4">
+                                                @Html.DropDownList("userid", (IEnumerable<SelectListItem>)ViewBag.EditorList, htmlAttributes: new { @style = "font-size:25px;height:auto", @class = "form-control" })
+                                            </div>
+                                            <label style="font-size:25px;" class="col-md-2 control-label"><b>負責單位</b></label>
+                                            <div class="col-sm-4">
+                                                @Html.DropDownList("ownerid", (IEnumerable<SelectListItem>)ViewBag.OwnerList, htmlAttributes: new { @style = "font-size:25px;height:auto", @class = "form-control" })
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="panel panel-color panel-warning">
+                                                <div class="panel-heading">
+                                                    <h3 class="panel-title" style="font-size:25px;">結案原因</h3>
+                                                </div>
+                                                <div class="panel-body">
+                                                    <div class="col-sm-12">
+                                                        <input style="font-size:25px;height:auto" value="結案" class="form-control">
+                                                        <input name="actionid" style="display:none;" value="10" class="form-control">
+                                                    </div>
+                                                    <div class="col-sm-12">
+                                                        <textarea id="cause_common" class="form-control" value="" name="cause_common" style="display:none;font-size:25px;" rows="5"> </textarea>
+
+                                                        <textarea id="action_common2" class="form-control" name="action_common2" style="font-size:25px;" rows="5" onFocus="if(this.value==this.defaultValue) this.value=''" onBlur="if(this.value=='') this.value=this.defaultValue">請輸入內容...</textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group m-b-1">
+                                            <div class="col-sm-12">
+                                                <input name="file" type="file" multiple />
+                                            </div>
+                                        </div>
+                                        <div class="form-group m-b-1">
+                                            <div class="col-sm-12">
+                                                <input id="ReplySubmitBtn1" type='submit' class="btn btn-success round btn-block" style="font-size:30px;" value='送出' />
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script data-config>
+        var id = function (id) {
+            return document.getElementById(id);
+        };
+        var table = id('example');
+        var totRowIndex = table.getElementsByTagName('tr').length;
+        var tfConfig = {
+            // instruct TableFilter location to import ressources from
+            base_path: '~/Content/TableFilter/',
+            paging: {
+                results_per_page: ['Records: ', [10, 25, 50, 100]]
+            },
+            alternate_rows: true,
+            rows_counter: true,
+            btn_reset: true,
+            loader: true,
+            status_bar: true,
+            sort: true,
+            sort_config: {
+                sort_types: ['String', 'String', 'String', 'US', 'String', 'String', 'String', 'String', 'String', 'String', 'String']
+            },
+            mark_active_columns: true,
+            highlight_keywords: true,
+            //no_results_message: true,
+            col_types: [
+                'string', 'string', 'string', 'number', 'string', 'string', 'string',
+                'string', 'string', 'string', 'string'
+            ],
+            col_widths: [
+                '100px', '250px', '100px', '150px', '100px', '100px', '100px', '350px',
+                '100px', '350px', '100px'
+            ],
+            extensions: [{ name: 'sort' }]
+        };
+        var tf = new TableFilter('example', tfConfig);
+        tf.init();
+        var PTEMember = {
+            "tags": {
+                "person": [{
+                    "name": "Jerry",
+                    "Empid": 13581
+                },
+                {
+                    "name": "Justin",
+                    "Empid": 16608
+                }, {
+                    "name": "Brian",
+                    "Empid": 18484
+                }, {
+                    "name": "Eason",
+                    "Empid": 21231
+                }, {
+                    "name": "Sam",
+                    "Empid": 12688
+                }, {
+                    "name": "Johnny",
+                    "Empid": 20847
+                }, {
+                    "name": "Chris",
+                    "Empid": 14976
+                }, {
+                    "name": "Eric",
+                    "Empid": 4109
+                }, {
+                    "name": "Ken",
+                    "Empid": 16350
+                }, {
+                    "name": "Deven",
+                    "Empid": 16683
+                }, {
+                    "name": "Jasper",
+                    "Empid": 16414
+                }, {
+                    "name": "Danny",
+                    "Empid": 18792
+                }, {
+                    "name": "Ethan",
+                    "Empid": 16605
+                }, {
+                    "name": "Amber",
+                    "Empid": 17065
+                }, {
+                    "name": "Roger",
+                    "Empid": 21122
+                }, {
+                    "name": "Steven",
+                    "Empid": 24528
+                }]
+            }
+        };
+      
+        var tags = new Bloodhound({
+
+            datumTokenizer: function (d) { return Bloodhound.tokenizers.whitespace(d.tag); },
+
+            queryTokenizer: Bloodhound.tokenizers.whitespace,
+
+            local: [
+                { tag: 'Jerry' },
+                { tag: 'Justin' },
+                { tag: 'Brian' },
+                { tag: 'Eason' },
+                { tag: 'Sam' },
+                { tag: 'Johnny' },
+                { tag: 'Chris' },
+                { tag: 'Eric' },
+                { tag: 'Ken' },
+                { tag: 'Deven' },
+                { tag: 'Jasper' },
+                { tag: 'Danny' },
+                { tag: 'Ethan' },
+                { tag: 'Joseph' },
+                { tag: 'Roger' },
+                { tag: 'Amber' },
+                { tag: 'Steven' }
+            ]
+        });
+
+        tags.initialize();
+        
+
+        $('.tag-input').tagInput({
+
+                 tagDataSeparator: '|',
+
+            allowDuplicates: false,
+
+            typeahead: true,
+
+            typeaheadOptions: {
+
+                     highlight: true
+
+            },
+            typeaheadDatasetOptions: {
+
+               displayKey: 'tag',
+
+                source: tags.ttAdapter(),
+
+                member: PTEMember
+
+            }
+              });
+         function Insert_Tracing_PTEMember(empid) {
+               $.ajax({
+                     url: "@Url.Action("InsertTracingInfoAction", "IssueIndex")",
+                   method: "post",
+                   contentType: 'application/json',
+                   data: JSON.stringify({ ItemNameType: @ViewBag.ItemNameType, Empid: empid,Org:'@TempData["Org"]' }),
+                   success: function (data) {
+                     alert('已加入使用者於追綜列');
+                 }
+             });
+         }
+
+         function remove_Tracing_PTEMember(empid) {
+             $.ajax({
+             url: "@Url.Action("RemoveTracingInfoAction", "IssueIndex")",
+                   method: "post",
+                   contentType: 'application/json',
+                   data: JSON.stringify({ ItemNameType: @ViewBag.ItemNameType, Empid: empid,Org:'@TempData["Org"]'}),
+                   success: function (data) {
+                     alert('已將使用者從追綜列移除');
+                 }
+             });
+         }
+    </script>
+
+    <script>
+                    var chart = am4core.create("chartdiv", am4charts.XYChart);
+         var data = [];
+         chart.data =@(new HtmlString(ViewBag.DailyFYRList));
+                    chart.colors.step = 2;
+                    var title = chart.titles.create();
+         title.text = "ItemNameType:  "+"@ViewBag.ItemNameType";
+                    title.fontSize = 25;
+                    title.marginBottom = 30;
+                    // Create axes
+                    var dateAxis = chart.xAxes.push(new am4charts.DateAxis());
+         dateAxis.renderer.minGridDistance = 50;
+                    // Create series
+                    function createAxisAndSeries(field, name, opposite, bullet,visible) {
+             var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+             var series = chart.series.push(new am4charts.LineSeries());
+             series.dataFields.valueY = field;
+             series.dataFields.dateX = "Date";
+             series.strokeWidth = 2;
+             series.yAxis = valueAxis;
+             series.name = name;
+             series.tooltipText = "{name}: [bold]{valueY}[/]";
+             series.tensionX = 0.9;
+             series.visible = visible;
+             var interfaceColors = new am4core.InterfaceColorSet();
+
+             if (field != "FYR") {
+                 switch (bullet) {
+                     case "triangle":
+                         var bullet = series.bullets.push(new am4charts.Bullet());
+                         bullet.width = 12;
+                         bullet.height = 12;
+                         bullet.horizontalCenter = "middle";
+                         bullet.verticalCenter = "middle";
+
+                         var triangle = bullet.createChild(am4core.Triangle);
+                         triangle.stroke = interfaceColors.getFor("background");
+                         triangle.strokeWidth = 2;
+                         triangle.direction = "top";
+                         triangle.width = 12;
+                         triangle.height = 12;
+                         triangle.visible = visible
+                                    break;
+
+                     case "rectangle":
+                         var bullet = series.bullets.push(new am4charts.Bullet());
+                         bullet.width = 10;
+                         bullet.height = 10;
+                         bullet.horizontalCenter = "middle";
+                         bullet.verticalCenter = "middle";
+                         var rectangle = bullet.createChild(am4core.Rectangle);
+                         rectangle.stroke = interfaceColors.getFor("background");
+                         rectangle.strokeWidth = 2;
+                         rectangle.width = 10;
+                         rectangle.height = 10;
+                         rectangle.visible = visible;
+                         break;
+                     default:
+                         var bullet = series.bullets.push(new am4charts.CircleBullet());
+                         bullet.circle.stroke = interfaceColors.getFor("background");
+                         bullet.circle.strokeWidth = 2;
+                         break;
+                 }
+                        } else {
+                           var bullet = series.bullets.push(new am4charts.Bullet());
+                           bullet.events.on("hit", function (ev) {
+                         var item = ev.target.dataItem.component.tooltipDataItem.dataContext;
+                         GetItemNameTypeIssue(item.ItemNameType,item.Date+(" 00:00:00.000"))
+                           }, this);
+                    var image = bullet.createChild(am4core.Image);
+                    image.width = 30;
+                    image.height = 30;
+                    image.horizontalCenter = "middle";
+                    image.verticalCenter = "middle";
+                    image.propertyFields.href = "href";
+                    image.adapter.add("mask", function (mask, target) {
+                    var circleBullet = target.parent;
+                    return circleBullet.circle;
+                    })
+                        }
+                      valueAxis.renderer.line.strokeOpacity = 1;
+                      valueAxis.renderer.line.strokeWidth = 2;
+                      valueAxis.renderer.line.stroke = series.stroke;
+                      valueAxis.renderer.labels.template.fill = series.stroke;
+                      valueAxis.renderer.opposite = opposite;
+                      valueAxis.renderer.grid.template.disabled = true;
+                    }
+                    createAxisAndSeries("FYR", "FYR", true, "circle", true);
+                    createAxisAndSeries("EstimateUPH", "EstimateUPH", true, "triangle", true);
+                    createAxisAndSeries("Spare", "Spare", true, "rectangle",true);
+
+                    var valueAxis_Total = chart.yAxes.push(new am4charts.ValueAxis());
+                    valueAxis_Total.renderer.grid.template.location = 0;
+                    var Histt_series = chart.series.push(new am4charts.ColumnSeries());
+                    Histt_series.dataFields.valueY = "Total";
+                    Histt_series.dataFields.dateX = "Date";
+                    Histt_series.xAxis = dateAxis;
+                    Histt_series.yAxis = valueAxis_Total;
+                    Histt_series.tooltipText = "Total: [bold]{valueY}[/]";
+                    Histt_series.name="Total";
+                    Histt_series.columns.template.fillOpacity = 0.5;
+                    Histt_series.columns.template.strokeOpacity = 0;
+                    Histt_series.columns.template.fill= am4core.color("#ff9d6f");
+                    // Add legend
+                    chart.legend = new am4charts.Legend();
+                    // Add cursor
+        chart.cursor = new am4charts.XYCursor();
+    </script>
+}
+
+else
+{
+    <div class="col-md-12" style="font-size:50px;background-color:whitesmoke;height:100px;text-align:center;line-height:100px;">
+        No Issue
+    </div>
+}
+
+<script>
+    function IssueReplyCheck() {
+        const Commonelement1 = document.getElementById("action_common");
+        const Common1 = Commonelement1.value;
+
+        const Commonelement2 = document.getElementById("cause_common");
+        const Common2 = Commonelement2.value;
+
+        const Commonelement3 = document.getElementById("failitem_string");
+        const Common3 = Commonelement3.value;
+
+        if (Common1 == null || Common1 == "" || Common1 == "請輸入內容..." || Common2 == null || Common2 == "" || Common2 == "請輸入內容..." || Common3 == "") {
+            alert("請輸入處理紀錄...");
+            return false;
+        }
+        if (confirm('是否要持續追綜此Issue')) {
+            // Save it!
+            $("#trace_flag").val(1);
+        }
+        const statusElement = document.getElementById("issuestatus");
+        const Status = statusElement.value;
+
+        if (Status == "Close") {
+            alert("Close狀態不可編輯");
+            return false;
+        }
+
+        return true;
+    };
+
+    function CheckDelete() {
+        const ActionStatus = document.getElementById("statusTxt");
+        const Status = ActionStatus.value;
+
+        if (Status == "Close") {
+            alert("結案紀錄無法刪除");
+            window.event.returnValue = false;
+        }
+
+        else if (confirm("確實要刪除嗎?")) {
+            alert("已經刪除！");
+            window.event.returnValue = true;
+        }
+        else {
+            alert("已經取消了刪除操作");
+            window.event.returnValue = false;
+        }
+    }
+
+    function IssueCloseCheck() {
+
+        const Commonelement2 = document.getElementById("action_common2");
+        const Common2 = Commonelement2.value;
+
+        if (Common2 == null || Common2 == "" || Common2 == "請輸入內容...") {
+            alert("請輸入處理紀錄...");
+            return false;
+        }
+        return true;
+    };
+
+    function ActionReply() {
+        $.ajax({
+            type: 'POST',
+            contentType: 'application/json',
+            data:JSON.stringify({ issueid:'@ViewBag.IssueID',ItemNameType:'@ViewBag.ItemNameType',org:'@TempData["Org"]',startdate:'@TempData["StartDate"]',enddate:'@TempData["EndDate"]'}),
+            success: function (data) {
+                $('#IssuesReply').modal('show');
+
+            }
+        });
+    }
+
+    function ActionClose() {
+        $.ajax({
+            type: 'POST',
+            contentType: 'application/json',
+            data:JSON.stringify({ issueid:'@ViewBag.IssueID',ItemNameType:'@ViewBag.ItemNameType',org:'@TempData["Org"]',startdate:'@TempData["StartDate"]',enddate:'@TempData["EndDate"]'}),
+            success: function (data) {
+                $('#IssuesClose').modal('show');
+
+            }
+        });
+    }
+</script>

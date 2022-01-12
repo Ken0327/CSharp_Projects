@@ -1,0 +1,324 @@
+﻿@model IEnumerable<PTE_Web.Models.Estimate_UPH>
+
+@{
+    ViewBag.Title = "RealTimeUPHPerformance";
+    Layout = "~/Views/Shared/_Layout_bootstrap.cshtml";
+
+}
+<h2>即時測試產出效率</h2>
+
+@{
+
+}
+<!-- 日期選擇物件 Start-->
+<div class="row">
+    <div class="col-md-12">
+        <div class="white-box">
+            <form method="post" name="DateRangeForm" action="@ViewContext.RouteData.Values["action"]" style="width:50%;display: inline;">
+                <div class="input-group">
+                    @Html.DropDownList("DropDownList_org", (IEnumerable<SelectListItem>)ViewBag.OrgList, htmlAttributes: new { @style = "height:50px;width:200px;font-size:30px;padding-right:30px;display:inline", @class = "form-control" })
+                    <input data-mask="9999/99/99" class="form-control" value="@ViewBag.workdate" placeholder="@ViewBag.workdate" type="text"  style="height:50px;width:250px;font-size:30px;padding-right:30px" name="workdate"/>
+                    <input type='submit' class="btn waves-effect waves-light btn-primary" style="font-size:30px;margin-left:15px;text-align:center;" value='Go' />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@if(Model.Count() != 0)
+{
+    <div class="row">
+        <div class="col-md-4">
+            <div class="white-box">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">First Yield Rate</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <h2 style="text-align:center"> <span style="font-size:40px"> @ViewBag.DictOutline["FYR_Total"] %</span></h2>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <i class="fa fa-sun-o">Day</i>
+                                <h3 style="text-align:center"> <span style="font-size:30px"> @ViewBag.DictOutline["FYR_D"] %</span></h3>
+                            </div>    
+                            <div class="col-sm-6">
+                                <i class="fa fa-moon-o">Night</i>
+                                <h3 style="text-align:center"> <span style="font-size:30px"> @ViewBag.DictOutline["FYR_N"] %</span></h3>
+                            </div>  
+                        </div>                        
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="white-box">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">UPH Achievement Rate</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <h2 style="text-align:center"> <span style="font-size:40px"> @ViewBag.DictOutline["UPH_Total"] %</span></h2>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <i class="fa fa-sun-o">Day</i>
+                                <h3 style="text-align:center"> <span style="font-size:30px"> @ViewBag.DictOutline["UPH_D"] %</span></h3>
+                            </div>    
+                            <div class="col-sm-6">
+                                <i class="fa fa-moon-o">Night</i>
+                                <h3 style="text-align:center"> <span style="font-size:30px"> @ViewBag.DictOutline["UPH_N"] %</span></h3>
+                            </div>  
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="white-box" style="height:290px">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Delta Station: @ViewBag.TitleDelta["CompareCount"] / @ViewBag.TitleDelta["TodayCount"] </h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="table-wrap">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Type</th>
+                                                <th><img src="~/Content/up.jpg" height="20" width="20" /> Improvement Rate</th>
+                                                <th><img src="~/Content/down.jpg" height="20" width="20"/> Deterioration Rate</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>FYR</td>
+                                                <td>@ViewBag.TitleDelta["FYR_Better_Rate"] % (@ViewBag.TitleDelta["FYR_Better"] Stations)</td>
+                                                <td>@ViewBag.TitleDelta["FYR_Worst_Rate"] % (@ViewBag.TitleDelta["FYR_Worst"] Stations)</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Spare</td>
+                                                <td>@ViewBag.TitleDelta["Spare_Better_Rate"] % (@ViewBag.TitleDelta["Spare_Better"] Stations)</td>
+                                                <td>@ViewBag.TitleDelta["Spare_Worst_Rate"] % (@ViewBag.TitleDelta["Spare_Worst"] Stations) </td>
+                                            </tr>
+                                            <tr>
+                                                <td>UPH</td>
+                                                <td>@ViewBag.TitleDelta["UPH_Better_Rate"] % (@ViewBag.TitleDelta["UPH_Better"] Stations)</td>
+                                                <td>@ViewBag.TitleDelta["UPH_Worst_Rate"] % (@ViewBag.TitleDelta["UPH_Worst"] Stations)</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>                            
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="white-box">
+                <h2 class="header-title">Real Output Table</h2>
+                    @*<a id="export" title="Export to Excel" href="@Url.Action("cusDataExport", "RealTime", new { Title ="RealTime",org=TempData["Org"],shift = ViewBag.shift})" target="_blank" style="float:right;">
+                        <img src="~/Content/Excel.png" border="0">
+                    </a>*@
+                <div class="table-responsive" style="min-width:400px;height:700px">
+                    @*<div id="Containers"></div>*@
+                    <table id="example_1" class="display table" style="font-size:18px">
+                        <thead>
+                            <tr style="text-align: right;">
+                                    <th>@Html.DisplayNameFor(model => model.shift)</th>
+                                    <th>@Html.DisplayNameFor(model => model.itemnametype)</th>
+                                    <th>@Html.DisplayNameFor(model => model.productname)</th>
+                                    <th>@Html.DisplayNameFor(model => model.RealOutput)</th>
+                                    <th>@Html.DisplayNameFor(model => model.FYR)</th>
+                                    <th>@Html.DisplayNameFor(model => model.AvgSpare)</th>
+                                    <th>@Html.DisplayNameFor(model => model.UPH)</th>
+                                    <th>@Html.DisplayNameFor(model => model.EstimateUPH)</th>
+                                    <th>@Html.DisplayNameFor(model => model.Gap)</th>
+                                    <th>Functions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                if(item.RealOutput >= 50)
+                                {
+                                    <tr>
+                                        <td>@Html.DisplayFor(modelItem => item.shift)</td>
+                                        <td><button type="button" id="btnAdd" class="btn btn-default" onclick="getSubTrendGraph('@ViewBag.org',@Html.DisplayFor(modelItem => item.itemnametype),'@Html.DisplayFor(modelItem => item.shift)','@ViewBag.workdate')">@Html.DisplayFor(modelItem => item.itemnametype)</button></td>
+                                        <td>@Html.DisplayFor(modelItem => item.productname)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.RealOutput)</td>
+                                        @if(double.Parse(Html.DisplayFor(modelItem => item.FYR).ToString()) < 90)
+                                        {
+                                            <td><span style="color:red">@Html.DisplayFor(modelItem => item.FYR)</span></td>
+                                        }
+                                        else
+                                        {
+                                            <td>@Html.DisplayFor(modelItem => item.FYR)</td>
+                                        }                                        
+                                        <td>@Html.DisplayFor(modelItem => item.AvgSpare)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.UPH)</td>
+                                        @if(item.EstimateUPH > (item.UPH*0.95) || item.UPH==999)
+                                        {
+                                           <td>@Html.DisplayFor(modelItem => item.EstimateUPH)</td>
+                                           <td><span>NaN</span></td>
+                                        }
+                                        @if(item.EstimateUPH <= (item.UPH*0.95) && item.UPH!=999)
+                                        {
+                                           <td><span style="color:red">@Html.DisplayFor(modelItem => item.EstimateUPH)</span></td>
+                                            {
+                                                ViewBag.PercentGap = item.Gap / item.AvgSpare;
+                                            }
+                                            if(ViewBag.PercentGap <= 0.3)
+                                            {
+                                                <td><span style="color:red">@Html.DisplayFor(modelItem => item.Gap)</span></td>
+                                            }
+                                            else if(ViewBag.PercentGap > 0.3)
+                                            {
+                                                <td><span>@Html.DisplayFor(modelItem => item.Gap)</span></td>
+                                            }
+                                            else
+                                            {
+                                                <td><span>@Html.DisplayFor(modelItem => item.Gap)</span></td>
+
+                                            }
+
+                                        }
+                                        <td>
+                                            @if(item.itemnametype<900000)
+                                            {
+                                                @Html.ActionLink("Spare", "Index", "SpareTool", new { org= ViewBag.org,itemnametype = item.itemnametype, startdate=DateTime.Today.AddDays(-14).ToString("yyyy-MM-dd"),enddate=DateTime.Today.ToString("yyyy-MM-dd") }, new { target = "_blank", @class = "btn btn-info"  })
+                                                @Html.ActionLink("FYR", "AnalyzeItemNameType", "AnalyzeTool", new { itemnametype = item.itemnametype, org = ViewBag.org },new { target = "_blank", @class = "btn btn-success" })
+
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            
+                            }
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>  
+                 <script data-config>
+                        var id = function (id) {
+                            return document.getElementById(id);
+                        };
+                        var table = id('example_1');
+                        var totRowIndex = table.getElementsByTagName('tr').length;
+                        var tfConfig = {
+                            // instruct TableFilter location to import ressources from
+                            base_path: '~/Content/TableFilter/',
+                            paging: {
+                                results_per_page: ['Records: ', [10, 25, 50, 100]]
+                            },
+                            col_0: 'select',
+                            alternate_rows: true,
+                            rows_counter: true,
+                            btn_reset: true,
+                            loader: true,
+                            status_bar: true,
+                            sort: true,
+                            sort_config: {
+                                sort_types: ['String','String','String', 'US', 'US', 'US', 'US','String','String']
+                            },
+                            mark_active_columns: true,
+                            highlight_keywords: true,
+                            //no_results_message: true,
+                            col_types: [
+                                'string','string','string', 'number', 'number','number', 'number', 'number','string','string'
+                            ],
+                            col_widths: [
+                               '100px','200px', '400px', '150px','100px','150px','70px','150px','100px','150px'
+                            ],
+                            extensions: [{ name: 'sort' }]
+
+                        };
+
+                        var tf = new TableFilter('example_1', tfConfig);
+                     tf.init();
+                 </script>
+    </div>
+                <script data-config>
+
+                        function getSubTrendGraph(org,itemnametype,shift,date) {
+                        $.ajax({
+                            method: "post",
+                            contentType: 'application/json',
+                            url: "@Url.Action("_RealTimeUPHPerformance", "RealTime")",
+                            data: JSON.stringify({ org:org , itemnametype:itemnametype , shift: shift,date:date }),
+                            success: function (data) {
+                                $('#showDistribution').modal('show');
+                                $("#divContainer").html(data);
+                            },
+                            error: function () {
+                                alert("此測站兩個月內無生產紀錄");
+                            }
+                        });
+                    }
+                </script>
+    
+    <style>
+        .modal-lg {
+            min-width: 80% !important;
+        }
+    </style>    <div class="modal fade" id="showDistribution" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Trend Info</h4>
+                </div>
+                <div class="modal-body">
+                    <div id="divContainer">
+                        @Html.Partial("_RealTimeUPHPerformance", ViewData)
+                    </div>
+
+                    @*<div class="panel with-nav-tabs panel-success">
+                        <ul class="nav nav-tabs">
+                            <li class="active"><a data-toggle="tab" href="#tab1">Trend Chart</a></li>
+                            <li><a data-toggle="tab" href="#menu1">Delta Table</a></li>
+                        </ul>
+                        <div class="tab-content">
+                            <div id="tab1" class="tab-pane fade">
+                                <div id="divContainer">
+                                   @Html.Partial("_RealTimeUPHPerformance", ViewData)
+                                </div>
+                            </div>
+                            <div id="menu1" class="tab-pane fade">
+                                <div  style="min-height:500px"></div>
+                            </div>
+                        </div>
+                    </div>*@
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+
+else
+{
+    <div class="col-md-12" style="font-size:50px;background-color:whitesmoke;height:100px;text-align:center;line-height:100px;">
+　    Please choose Org and Shift, then hold on a moment please....
+    </div>
+}
+
+
+
+
+

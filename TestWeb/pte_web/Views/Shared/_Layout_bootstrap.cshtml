@@ -1,0 +1,139 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="~/Content/assets/images/title-logo.jpg">
+    <title>PTE Web</title>
+
+    @Styles.Render("~/bundles/assets/css")
+    @Scripts.Render("~/bundles/amcharts")
+    @Styles.Render("~/bundles/datetimepicker/css")
+    @Styles.Render("~/bundles/bootstrap-switch/css")
+    @Styles.Render("~/bundles/highCharts/css")
+    @Styles.Render("~/CustomCss")
+    @*@Scripts.Render("~/bundles/TableFilter")*@
+
+    @RenderSection("css", required: false)
+
+    @Scripts.Render("~/bundles/assets/jquery")
+
+    @Scripts.Render("~/bundles/assets/plugins/datatables")
+    @Scripts.Render("~/bundles/bootstrap-switch")
+    @Scripts.Render("~/CustomJs")
+</head>
+
+<body class="sticky-header">
+    <!--Start left side Menu-->
+    <div class="left-side sticky-left-side">
+        <!--Please adjust the Version as the datetime format while release web to server.-->
+        <!--Version format: year.month.day.serialnumber(1->) -->
+        <!--Version-->
+        <!--logo-->
+        <div class="logo" style="Top:20;">
+            <a href="#"><img src="~/Content/assets/images/logo2.png" height="50" width="200"></a>
+        </div>
+        <!--logo-->
+
+        <div class="left-side-inner">
+            <!--Sidebar nav-->
+            <ul class="nav nav-pills nav-stacked custom-nav">
+                <li class="menu-list nav-active">
+                    <a href="#"><i class="icon-home"></i> <span>Dashboard</span></a>
+                    <ul class="sub-menu-list">
+                        <li>@Html.ActionLink("DashBoard", "DashBoard", "DashBoard", new { startdate = TempData["StartDate"], enddate = TempData["EndDate"] }, null)</li>
+                        <li>@Html.ActionLink("T1 Performance", "DashBoardByOrg", "DashBoard", new { Org = "T1", startdate = TempData["StartDate"], enddate = TempData["EndDate"] }, null)</li>
+                        <li>@Html.ActionLink("T2 Performance", "DashBoardByOrg", "DashBoard", new { Org = "T2", startdate = TempData["StartDate"], enddate = TempData["EndDate"] }, null)</li>
+                        <li>@Html.ActionLink("T3 Performance", "DashBoardByOrg", "DashBoard", new { Org = "T3", startdate = TempData["StartDate"], enddate = TempData["EndDate"] }, null)</li>
+                        <li>@Html.ActionLink("T5 Performance", "DashBoardByOrg", "DashBoard", new { Org = "T5", startdate = TempData["StartDate"], enddate = TempData["EndDate"] }, null)</li>
+                        <li>@Html.ActionLink("Personal Performance", "DashBoardByPerson", "DashBoard", new { Owner = "", startdate = TempData["StartDate"], enddate = TempData["EndDate"] }, null)</li>
+                        <li>@Html.ActionLink("FixtureBoard", "Index", "FixtureBoard", new { Org = "T1" }, null)</li>
+
+                        <li>@Html.ActionLink("Owner Editor", "ProductOwnerEditor", "DashBoard", new { owner = "" }, null)</li>
+                    </ul>
+                </li>
+
+                <li class="menu-list">
+                    <a href="#"><i class="icon-grid"></i> <span>Analyze Tools</span></a>
+                    <ul class="sub-menu-list">
+                        <li>@Html.ActionLink("Item FailRate Tool", "AnalyzeItemNameType", "AnalyzeTool", new { startdate = TempData["StartDate"], enddate = TempData["EndDate"] }, null)</li>
+                        <li>@Html.ActionLink("Item Spare Tool", "Index", "SpareTool", new { startdate = TempData["StartDate"], enddate = TempData["EndDate"] }, null)</li>
+                        <li>@*@Html.ActionLink("Fixture Monitorl", "RealTimeFixtureMonitor", "AnalyzeTool", new { }, null)*@</li>
+                    </ul>
+                </li>
+                <li class="menu-list">
+                    <a href="#"><i class="fa fa-signal"></i> <span>RealTime</span></a>
+                    <ul class="sub-menu-list">
+                        @*<li>@Html.ActionLink("UPH Trend Home", "RealUPHDailyHomePage", "RealTime")</li>*@
+                        <li>@Html.ActionLink("UPH", "RealTimeUPHPerformance", "RealTime")</li>
+                    </ul>
+                </li>
+                <li class="menu-list">
+                    <a href="#"><i class="fa fa-car"></i> <span>BMW MGU </span></a>
+                    <ul class="sub-menu-list">
+                        <li>@Html.ActionLink("MGU18 DailyTrend", "MGUHome", "MGU")</li>
+                        <li>@Html.ActionLink("MGU18 Detail", "MGUDashBoard", "MGU")</li>
+                        @*<li>@Html.ActionLink("Fixture Correlation", "RealTimeFixtureCorrelation", "RealTime")</li>*@
+                    </ul>
+                </li>
+                <li class="menu-list">
+                    <a href="#"><i class="fa fa-database"></i> <span>DataBaseBrowser</span></a>
+                    <ul class="sub-menu-list">
+                        <li>@Html.ActionLink("Data Browser", "HomePlayGround", "PTEWebDataBaseBrowser")</li>
+                        <li>@Html.ActionLink("Cpk Data", "CpkDataTable", "PTEWebDataBaseBrowser")</li>
+                    </ul>
+                </li>
+                <li class="menu-list">
+                    <a href="#"><i class="fa fa-exclamation-circle"></i> <span>Issue</span></a>
+                    <ul class="sub-menu-list">
+                        <li>@Html.ActionLink("Issues List", "Index", "IssueIndex")</li>
+                        @*<li>@Html.ActionLink("Issue Editor", "IssueEditor", "IssueIndex")</li>*@
+                    </ul>
+                </li>
+                <li class="menu-list">
+                    <a href="#"><i class="icon-wrench"></i> <span>Help</span></a>
+                    <ul class="sub-menu-list">
+                        <li>
+                            <a target="_blank" href="~/Source/PTE Web 使用文件.pdf">Documents</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <!--End sidebar nav-->
+        </div>
+    </div>
+    <!--End left side menu-->
+    <!-- main content start-->
+
+    <div class="main-content">
+
+        <!-- header section start-->
+        @*<div class="header-section">
+
+                <a class="toggle-btn"><i class="fa fa-bars"></i></a>
+
+                <form class="searchform">
+                    <input type="text" class="form-control" name="keyword" placeholder="Search here..." />
+                </form>
+            </div>*@
+        <!-- header section end-->
+        <!--body wrapper start-->
+        <div class="wrapper">
+            @RenderBody()
+        </div>
+        <!-- End Wrapper-->
+    </div>
+    <!--End main content -->
+
+    @Scripts.Render("~/bundles/assets/plugins")
+
+    @Scripts.Render("~/bundles/datetimepicker/js")
+
+    @Scripts.Render("~/bundles/highCharts")
+</body>
+@RenderSection("scripts", required: false)
+</html>

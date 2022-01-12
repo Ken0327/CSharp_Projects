@@ -1,0 +1,318 @@
+﻿<div class=" col-md-9">
+    <div class="white-box" style="height:650px">
+        <div class="panel with-nav-tabs panel-success" style="height:600px">
+            <ul class="nav nav-tabs">
+                <li class="active">
+                    <a class="nav-link fade in active" data-toggle="tab" href="#FYR_Trend" style="font-size:15px;font-weight:bold;font-style:italic" role="tab">First Pass Rate</a>
+                </li>
+                <li>
+                    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#Retry_Trend" style="font-size:15px;font-weight:bold;font-style:italic" role="tab">Retry Rate</a>
+                </li>
+            </ul>
+            <div class="tab-content" id="TrendCharts">
+                <div class="tab-pane active" role="tabpanel" id="FYR_Trend">
+                    <div id="chartdiv2" style="width:100%;height:450px"></div>
+                </div>
+                <div class="tab-pane" role="tabpanel" id="Retry_Trend">
+                    <div id="retry_chartdiv2" style="width:100%;height:450px"></div>
+                </div>
+                <script>
+
+                var chart = am4core.create("chartdiv2", am4charts.XYChart);
+
+                // some extra padding for range labels
+                chart.paddingBottom = 50;
+
+                chart.cursor = new am4charts.XYCursor();
+                chart.scrollbarX = new am4core.Scrollbar();
+
+                // Add Chart Title
+                var title = chart.titles.create();
+                title.text = "[bold font-size: 20]@ViewBag.TrendTitle  [/]\n @ViewBag.TrendSubTitle";
+                title.textAlign = "middle";
+                // will use this to store colors of the same items
+                var colors = {};
+
+                var categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
+                categoryAxis.dataFields.category = "category";
+                categoryAxis.renderer.minGridDistance = 60;
+                categoryAxis.renderer.grid.template.location = 0;
+                categoryAxis.dataItems.template.text = "{realName}";
+                categoryAxis.adapter.add("tooltipText", function(tooltipText, target){
+                  return categoryAxis.tooltipDataItem.dataContext.realName;
+                })
+
+                var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+                valueAxis.tooltip.disabled = true;
+                valueAxis.title.text = "First Pass Rate(%)";
+
+                // single column series for all data
+                var columnSeries = chart.series.push(new am4charts.ColumnSeries());
+                columnSeries.columns.template.width = am4core.percent(80);
+                columnSeries.tooltipText = "{provider}: {realName} {valueY} %";
+                columnSeries.dataFields.categoryX = "category";
+                columnSeries.dataFields.valueY = "value";
+
+                var bullet = columnSeries.bullets.push(new am4charts.LabelBullet())
+                bullet.interactionsEnabled = false
+                bullet.dy = 15;
+                bullet.label.text = '{valueY}%'
+                bullet.label.fill = am4core.color('#000000')
+                chart.maskBullets = false;
+
+                // second value axis for quantity
+                var valueAxis2 = chart.yAxes.push(new am4charts.ValueAxis());
+                valueAxis2.renderer.opposite = true;
+                valueAxis2.syncWithAxis = valueAxis;
+                valueAxis2.tooltip.disabled = true;
+
+                // quantity line series
+                var lineSeries = chart.series.push(new am4charts.LineSeries());
+                lineSeries.tooltipText = "{valueY} %";
+                lineSeries.dataFields.categoryX = "category";
+                lineSeries.dataFields.valueY = "Average_FPR";
+                lineSeries.yAxis = valueAxis2;
+                lineSeries.bullets.push(new am4charts.CircleBullet());
+                lineSeries.stroke = chart.colors.getIndex(13);
+                lineSeries.fill = lineSeries.stroke;
+                lineSeries.strokeWidth = 2;
+                lineSeries.snapTooltip = true;
+
+                // when data validated, adjust location of data item based on count
+                lineSeries.events.on("datavalidated", function(){
+                 lineSeries.dataItems.each(function(dataItem){
+                   // if count divides by two, location is 0 (on the grid)
+                   if(dataItem.dataContext.count / 2 == Math.round(dataItem.dataContext.count / 2)){
+                   dataItem.setLocation("categoryX", 0);
+                   }
+                   // otherwise location is 0.5 (middle)
+                   else{
+                    dataItem.setLocation("categoryX", 0.5);
+                   }
+                 })
+                })
+
+                // fill adapter, here we save color value to colors object so that each time the item has the same name, the same color is used
+                columnSeries.columns.template.adapter.add("fill", function(fill, target) {
+                 var name = target.dataItem.dataContext.realName;
+                 if (!colors[name]) {
+                   colors[name] = chart.colors.next();
+                 }
+                 target.stroke = colors[name];
+                 return colors[name];
+                })
+
+                var rangeTemplate = categoryAxis.axisRanges.template;
+                rangeTemplate.tick.disabled = false;
+                rangeTemplate.tick.location = 0;
+                rangeTemplate.tick.strokeOpacity = 0.6;
+                rangeTemplate.tick.length = 60;
+                rangeTemplate.grid.strokeOpacity = 0.5;
+                rangeTemplate.label.tooltip = new am4core.Tooltip();
+                rangeTemplate.label.tooltip.dy = -10;
+                rangeTemplate.label.cloneTooltip = false;
+
+                ///// DATA
+                var chartData = [];
+                var lineSeriesData = [];
+
+                var data = @(new HtmlString(ViewBag.Data));
+
+                // process data ant prepare it for the chart
+                for (var providerName in data) {//providerName  is Week number
+                    var providerData = data[providerName];
+
+                    // add data of one provider to temp array
+                    var tempArray = [];
+                    var count = 0;
+                    // add items
+                    for (var itemName in providerData) { //itemName is T1 T2 T3
+                        if (itemName != "Average_FPR" && itemName != "T1_retry" && itemName != "T2_retry" && itemName != "T3_retry" && itemName != "T5_retry"){
+                            count++;
+
+                            // we generate unique category for each column (providerName + "_" + itemName) and store realName
+                            tempArray.push({ category: providerName + "_" + itemName, realName: itemName, value: providerData[itemName], provider: providerName})
+                        }
+                    }
+
+                    // add quantity and count to middle data item (line series uses it)
+                    var lineSeriesDataIndex = Math.floor(count / 2);
+                    tempArray[lineSeriesDataIndex].Average_FPR = providerData.Average_FPR;
+                    tempArray[lineSeriesDataIndex].count = count;
+                    // push to the final data
+                    am4core.array.each(tempArray, function(item) {
+                        chartData.push(item);
+                    })
+
+                    // create range (the additional label at the bottom)
+                    var range = categoryAxis.axisRanges.create();
+                    range.category = tempArray[0].category;
+                    range.endCategory = tempArray[tempArray.length - 1].category;
+                    range.label.text = tempArray[0].provider;
+                    range.label.dy = 30;
+                    range.label.truncate = true;
+                    range.label.fontWeight = "bold";
+                    range.label.tooltipText = tempArray[0].provider;
+                }
+
+                chart.data = chartData;
+
+                // last tick
+                var range = categoryAxis.axisRanges.create();
+                range.category = chart.data[chart.data.length - 1].category;
+                range.label.disabled = true;
+                range.tick.location = 1;
+                range.grid.location = 1;
+                </script>
+                <script>
+
+                    var chart = am4core.create("retry_chartdiv2", am4charts.XYChart);
+
+                // some extra padding for range labels
+                chart.paddingBottom = 50;
+
+                chart.cursor = new am4charts.XYCursor();
+                chart.scrollbarX = new am4core.Scrollbar();
+
+                // Add Chart Title
+                var title = chart.titles.create();
+                title.text = "[bold font-size: 20]@ViewBag.TrendTitle  [/]\n @ViewBag.TrendSubTitle";
+                title.textAlign = "middle";
+                // will use this to store colors of the same items
+                var colors = {};
+
+                var categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
+                categoryAxis.dataFields.category = "category";
+                categoryAxis.renderer.minGridDistance = 60;
+                categoryAxis.renderer.grid.template.location = 0;
+                categoryAxis.dataItems.template.text = "{realName}";
+                categoryAxis.adapter.add("tooltipText", function(tooltipText, target){
+                  return categoryAxis.tooltipDataItem.dataContext.realName;
+                })
+
+                var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+                valueAxis.tooltip.disabled = true;
+                valueAxis.title.text = "Retry Rate(%)";
+
+                // single column series for all data
+                var columnSeries = chart.series.push(new am4charts.ColumnSeries());
+                columnSeries.columns.template.width = am4core.percent(80);
+                columnSeries.tooltipText = "{provider}: {realName} {valueY} %";
+                columnSeries.dataFields.categoryX = "category";
+                columnSeries.dataFields.valueY = "value";
+
+                var bullet = columnSeries.bullets.push(new am4charts.LabelBullet())
+                bullet.interactionsEnabled = false
+                bullet.dy = 15;
+                bullet.label.text = '{valueY}%'
+                bullet.label.fill = am4core.color('#000000')
+                chart.maskBullets = false;
+
+                // second value axis for quantity
+                var valueAxis2 = chart.yAxes.push(new am4charts.ValueAxis());
+                valueAxis2.renderer.opposite = true;
+                valueAxis2.syncWithAxis = valueAxis;
+                valueAxis2.tooltip.disabled = true;
+
+                // quantity line series
+                var lineSeries = chart.series.push(new am4charts.LineSeries());
+                lineSeries.tooltipText = "{valueY} %";
+                lineSeries.dataFields.categoryX = "category";
+                lineSeries.dataFields.valueY = "Average_FPR";
+                lineSeries.yAxis = valueAxis2;
+                lineSeries.bullets.push(new am4charts.CircleBullet());
+                lineSeries.stroke = chart.colors.getIndex(13);
+                lineSeries.fill = lineSeries.stroke;
+                lineSeries.strokeWidth = 2;
+                lineSeries.snapTooltip = true;
+
+                // when data validated, adjust location of data item based on count
+                lineSeries.events.on("datavalidated", function(){
+                 lineSeries.dataItems.each(function(dataItem){
+                   // if count divides by two, location is 0 (on the grid)
+                   if(dataItem.dataContext.count / 2 == Math.round(dataItem.dataContext.count / 2)){
+                   dataItem.setLocation("categoryX", 0);
+                   }
+                   // otherwise location is 0.5 (middle)
+                   else{
+                    dataItem.setLocation("categoryX", 0.5);
+                   }
+                 })
+                })
+
+                // fill adapter, here we save color value to colors object so that each time the item has the same name, the same color is used
+                columnSeries.columns.template.adapter.add("fill", function(fill, target) {
+                 var name = target.dataItem.dataContext.realName;
+                 if (!colors[name]) {
+                   colors[name] = chart.colors.next();
+                 }
+                 target.stroke = colors[name];
+                 return colors[name];
+                })
+
+                var rangeTemplate = categoryAxis.axisRanges.template;
+                rangeTemplate.tick.disabled = false;
+                rangeTemplate.tick.location = 0;
+                rangeTemplate.tick.strokeOpacity = 0.6;
+                rangeTemplate.tick.length = 60;
+                rangeTemplate.grid.strokeOpacity = 0.5;
+                rangeTemplate.label.tooltip = new am4core.Tooltip();
+                rangeTemplate.label.tooltip.dy = -10;
+                rangeTemplate.label.cloneTooltip = false;
+
+                ///// DATA
+                var chartData = [];
+                var lineSeriesData = [];
+
+                    var data = @(new HtmlString(ViewBag.Data));
+
+                // process data ant prepare it for the chart
+                for (var providerName in data) {
+                 var providerData = data[providerName];
+
+                 // add data of one provider to temp array
+                 var tempArray = [];
+                 var count = 0;
+                 // add items
+                 for (var itemName in providerData) {
+                     if (itemName != "Average_FPR" && itemName != "T1" && itemName != "T2" && itemName != "T3" && itemName != "T5"){
+                         count++;
+                         //itemName = itemName.replace("_retry", "");
+                   // we generate unique category for each column (providerName + "_" + itemName) and store realName
+                         tempArray.push({ category: providerName + "_" + itemName.replace("_retry", ""), realName: itemName.replace("_retry", ""), value: providerData[itemName], provider: providerName})
+                   }
+                 }
+
+                 // add quantity and count to middle data item (line series uses it)
+                 var lineSeriesDataIndex = Math.floor(count / 2);
+                 tempArray[lineSeriesDataIndex].Average_FPR = providerData.Average_FPR;
+                 tempArray[lineSeriesDataIndex].count = count;
+                 // push to the final data
+                 am4core.array.each(tempArray, function(item) {
+                   chartData.push(item);
+                 })
+
+                 // create range (the additional label at the bottom)
+                 var range = categoryAxis.axisRanges.create();
+                 range.category = tempArray[0].category;
+                 range.endCategory = tempArray[tempArray.length - 1].category;
+                 range.label.text = tempArray[0].provider;
+                 range.label.dy = 30;
+                 range.label.truncate = true;
+                 range.label.fontWeight = "bold";
+                 range.label.tooltipText = tempArray[0].provider;
+                }
+
+                chart.data = chartData;
+
+                // last tick
+                var range = categoryAxis.axisRanges.create();
+                range.category = chart.data[chart.data.length - 1].category;
+                range.label.disabled = true;
+                range.tick.location = 1;
+                range.grid.location = 1;
+                </script>
+            </div>
+        </div>
+    </div>
+</div>

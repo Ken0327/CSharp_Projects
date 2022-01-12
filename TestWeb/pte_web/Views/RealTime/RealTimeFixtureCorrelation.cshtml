@@ -1,0 +1,25 @@
+﻿
+@{
+    ViewBag.Title = "RealTimeFixtureCorrelation";
+    Layout = "~/Views/Shared/_Layout_bootstrap.cshtml";
+}
+
+<h2>即時治具集中性分析</h2>
+
+@{
+
+}
+<!-- 日期選擇物件 Start-->
+<div class="row">
+    <div class="white-box">
+        <div class="col-md-12">
+            <form method="post" name="DateRangeForm" action="@ViewContext.RouteData.Values["action"]" style="width:50%;display: inline;">
+                <div class="input-group">
+
+                    @Html.DropDownList("DropDownList_org", (IEnumerable<SelectListItem>)ViewBag.OrgList, htmlAttributes: new { @style = "height:50px;width:200px;font-size:30px;padding-right:30px;display:inline", @class = "form-control" })
+                    <input type='submit' class="btn waves-effect waves-light btn-primary" style="font-size:30px;margin-left:15px;text-align:center;" value='Go' />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
