@@ -19,9 +19,9 @@ namespace OOProgramming.OOP
             name = first + "" + last;
         }
 
-        public void setName(string first, string middle, string last)
+        public string setName(string first, string middle, string last)
         {
-            name = first + "" + middle + "" + last;
+            return name = first + "" + middle + "" + last;
         }
 
         public void Main()
@@ -34,8 +34,10 @@ namespace OOProgramming.OOP
             FunctionOverloading obj = new FunctionOverloading();
 
             obj.setName("barack");
+            Console.WriteLine(obj.name);
             obj.setName("barack ", " obama ");
-            obj.setName("barack ", "hussian", "obama");
+            Console.WriteLine(obj.name);
+            Console.WriteLine(obj.setName("barack ", "hussian", "obama"));
             Console.WriteLine("------------------------------------------------------------------------");
         }
     }

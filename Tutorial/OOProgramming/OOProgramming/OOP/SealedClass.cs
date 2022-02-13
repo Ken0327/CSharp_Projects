@@ -22,9 +22,12 @@ namespace OOProgramming.OOP
                 "The Brushes.Blue represents a brush with blue color. \n" +
                 "So when you're designing a class library and want to restrict your classes not to be derived by developers, you may want to use sealed classes.");
 
-            new X().Main();
-            new Y().Main();
-            new Z().Main();
+            var x = new X();
+            x.Main();
+            var y = new Y();
+            y.Main();
+            var z = new Z();
+            z.Main();
             Console.WriteLine("------------------------------------------------------------------------");
         }
 

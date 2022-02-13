@@ -92,7 +92,7 @@ namespace OOProgramming.OOP
                 Console.WriteLine("child class constructor");
             }
 
-            public Child1(string name) : base(name)
+            public Child1(string name) : base(name) // base() or base(name)
             {
                 Console.WriteLine(name + " child class constructor");
             }
