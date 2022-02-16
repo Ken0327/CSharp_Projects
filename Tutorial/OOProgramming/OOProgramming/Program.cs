@@ -284,23 +284,27 @@ namespace OOProgramming
             Console.WriteLine("Start (3) Run Methods parameter: ref, out, params");
             int a = 5;
             int b = 5;
+            int c = 0;
             Add(ref a);
-            b = Add2(b);
-            Console.Write(a);
-            Console.Write(b);
+            Add2(b);
+            c = Add2(b);
+            Console.WriteLine(a);
+            Console.WriteLine(b);
+            Console.WriteLine(c);
 
             TestClass A = new TestClass();
             Console.WriteLine("初始值x=" + A.x);
-            Add(A);
+            var C = Add(A);
             Console.WriteLine("執行完Add方法後，x=" + A.x);
+            Console.WriteLine("執行完Add方法後回傳C，x=" + C.x);
 
             // add ref
             Console.WriteLine("Add ref parameter:");
             A = new TestClass();
             Console.WriteLine("初始值x=" + A.x);
-            Add(ref A);
+            var D = Add(ref A);
             Console.WriteLine("執行完Add方法後，x=" + A.x);
-            Console.ReadLine();
+            Console.WriteLine("執行完Add方法後回傳D，x=" + D.x);
 
             Console.WriteLine("Add out parameter:");
             // out:只出不進的方式，當參數加上out代表會由方法內將此參數傳出。
@@ -309,7 +313,6 @@ namespace OOProgramming
             Console.WriteLine("執行完Add方法後，x=" + B.x);
 
             Console.WriteLine("Done. 請按任意鍵繼續");
-            Console.ReadLine();
         }
 
         public static void Add(ref int x)
@@ -322,14 +325,16 @@ namespace OOProgramming
             return x = x + 1;
         }
 
-        public static TestClass Add(TestClass B)
+        public static TestClass Add(TestClass A)
         {
-            Console.WriteLine("進入Add方法後，x=" + B.x);
-            B.x = 10;
-            Console.WriteLine("B.x修改值為10，x=" + B.x);
-            B = new TestClass();
-            Console.WriteLine("B new新的class，x=" + B.x);
-            return B;
+            Console.WriteLine("進入Add方法後，x=" + A.x);
+            A.x = 10;
+            Console.WriteLine("A.x修改值為10，x=" + A.x);
+            // Add new A class, not original A class
+            A = new TestClass();
+            Console.WriteLine("A new新的class，x=" + A.x);
+            Console.WriteLine("Add new A class, not original A class");
+            return A;
         }
 
         public class TestClass
@@ -337,14 +342,14 @@ namespace OOProgramming
             public int x = 0;
         }
 
-        public static TestClass Add(ref TestClass B)
+        public static TestClass Add(ref TestClass A)
         {
-            Console.WriteLine("進入Add方法後，x=" + B.x);
-            B.x = 10;
-            Console.WriteLine("B.x修改值為10，x=" + B.x);
-            B = new TestClass();
-            Console.WriteLine("B new新的class，x=" + B.x);
-            return B;
+            Console.WriteLine("進入Add方法後，x=" + A.x);
+            A.x = 10;
+            Console.WriteLine("A.x修改值為10，x=" + A.x);
+            A = new TestClass();
+            Console.WriteLine("A new新的class，x=" + A.x);
+            return A;
         }
 
         public static void Add2(out TestClass B)

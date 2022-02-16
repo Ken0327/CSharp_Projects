@@ -12,13 +12,16 @@ namespace OOProgramming.OOP
             Console.WriteLine(
                 "Polymorphism is the ability to treat the various objects in the same manner. It is one of the significant benefits of inheritance. \n" +
                 "Compile-time polymorphism \n" +
-                "Compile-time polymorphism can be achieved by using method overloading, and it is also called early binding or static binding." +
-                
+                "Compile-time polymorphism can be achieved by using method overloading, and it is also called early binding or static binding.\n" +
+                "Early/Static Binding - It recognizes and checks the methods, or properties during compile time.In this binding, the compiler already knows about what kind of object it is and what are the methods or properties it holds, here the objects are static objects.The performance of early binding is fast and it is easy to code.It decreases the number of run-time errors. \n\n" +
+
                 
                 "We can decide the correct call at runtime based on the derived type of the base reference. This is called late binding. \n" +
 
                 "Run time polymorphism \n" +
                 "Run time polymorphism can be achieved by using method overriding, and it is also called late binding or dynamic binding." +
+                "Late/Dynamic Binding - the compiler does not know about what kind of object it is and what are the methods or properties it holds, here the objects are dynamic objects. The type of the object is decided on the bases of the data it holds on the right-hand side during run-time. Basically, late binding is achieved by using virtual methods. The performance of late binding is slower than early binding because it requires lookups at run-time.\n\n" +
+
 
                 "In the following example, instead of having a separate routine for the hrDepart, itDepart and financeDepart classes, " +
                 "we can write a generic algorithm that uses the base type functions.The method LeaderName() declared in the base abstract class is redefined as per our needs in 2 different classes.");
